@@ -1,0 +1,311 @@
+  Project: Attendance
+  -------------------
+
+          Components
+          ----------
+          Code Lines: 4,956 (96.87%)
+          Comment Lines: 153 (2.99%)
+          Blank Lines: 7 (.14%)
+          TOTAL COMPONENTS: 5
+
+          Controls
+          --------
+          Public Events: 0
+          Properties: 1
+          Methods: 223
+          TOTAL CONTROLS: 224
+
+          Lines
+          -----
+          CheckBox(s): 23
+          ComboBox(s): 9
+          CommandButton(s): 35
+          DTPicker(s): 11
+          Frame(s): 27
+          Label(s): 73
+          Line(s): 5
+          ListBox(s): 7
+          Menu(s): 13
+          OptionButton(s): 10
+          ProgressBar(s): 1
+          RichTextBox(s): 1
+          Shape(s): 3
+          SSTab(s): 1
+          TextBox(s): 9
+          Timer(s): 6
+          vbalGrid(s): 4
+          TOTAL LINES: 238
+
+          Members
+          -------
+          Modules: 1
+          Forms: 9
+          TOTAL MEMBERS: 10
+
+          Component Details
+          -----------------
+
+                  Form: Form1
+                  -----------
+                          Lines
+                          -----
+                          Code Lines: 1,601 (96.68%)
+                          Comment Lines: 54 (3.26%)
+                          Blank Lines: 1 (.06%)
+                          TOTAL LINES: 1,656
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 76
+                          TOTAL MEMBERS: 76
+
+                          Controls
+                          --------
+                          CheckBox(s): 23
+                          ComboBox(s): 9
+                          CommandButton(s): 35
+                          DTPicker(s): 11
+                          Frame(s): 27
+                          Label(s): 73
+                          ListBox(s): 7
+                          Menu(s): 13
+                          RichTextBox(s): 1
+                          Shape(s): 3
+                          TextBox(s): 9
+                          Timer(s): 6
+                          vbalGrid(s): 4
+                          TOTAL CONTROLS: 221
+
+                  Form: frmReport
+                  ---------------
+                          Lines
+                          -----
+                          Code Lines: 1,025 (97.43%)
+                          Comment Lines: 24 (2.28%)
+                          Blank Lines: 3 (.29%)
+                          TOTAL LINES: 1,052
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 28
+                          TOTAL MEMBERS: 28
+
+                          Controls
+                          --------
+                          CheckBox(s): 1
+                          CommandButton(s): 6
+                          DTPicker(s): 2
+                          Frame(s): 7
+                          Label(s): 7
+                          ListBox(s): 4
+                          OptionButton(s): 10
+                          SSTab(s): 1
+                          vbalGrid(s): 1
+                          TOTAL CONTROLS: 39
+
+                  Form: frmVacations
+                  ------------------
+                          Lines
+                          -----
+                          Code Lines: 902 (95.55%)
+                          Comment Lines: 42 (4.45%)
+                          Blank Lines: 0 (.00%)
+                          TOTAL LINES: 944
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 53
+                          TOTAL MEMBERS: 53
+
+                          Controls
+                          --------
+                          CheckBox(s): 3
+                          ComboBox(s): 2
+                          CommandButton(s): 10
+                          DTPicker(s): 2
+                          Frame(s): 5
+                          Label(s): 20
+                          Line(s): 5
+                          ListBox(s): 1
+                          Menu(s): 4
+                          OptionButton(s): 4
+                          Shape(s): 1
+                          TextBox(s): 4
+                          Timer(s): 2
+                          vbalGrid(s): 1
+                          TOTAL CONTROLS: 64
+
+                  Form: frmVacationReports
+                  ------------------------
+                          Lines
+                          -----
+                          Code Lines: 479 (98.16%)
+                          Comment Lines: 8 (1.64%)
+                          Blank Lines: 1 (.20%)
+                          TOTAL LINES: 488
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 11
+                          TOTAL MEMBERS: 11
+
+                          Controls
+                          --------
+                          CheckBox(s): 7
+                          CommandButton(s): 4
+                          DTPicker(s): 2
+                          Frame(s): 5
+                          Label(s): 2
+                          ListBox(s): 1
+                          vbalGrid(s): 1
+                          TOTAL CONTROLS: 22
+
+                  Form: frmAlarm
+                  --------------
+                          Lines
+                          -----
+                          Code Lines: 156 (99.36%)
+                          Comment Lines: 1 (.64%)
+                          Blank Lines: 0 (.00%)
+                          TOTAL LINES: 157
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 9
+                          TOTAL MEMBERS: 9
+
+                          Controls
+                          --------
+                          CheckBox(s): 4
+                          CommandButton(s): 1
+                          Label(s): 9
+                          Timer(s): 1
+                          TOTAL CONTROLS: 15
+
+                  Form: frmFilters
+                  ----------------
+                          Lines
+                          -----
+                          Code Lines: 57 (98.28%)
+                          Comment Lines: 0 (.00%)
+                          Blank Lines: 1 (1.72%)
+                          TOTAL LINES: 58
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 6
+                          TOTAL MEMBERS: 6
+
+                          Controls
+                          --------
+                          CheckBox(s): 7
+                          CommandButton(s): 1
+                          DTPicker(s): 2
+                          Frame(s): 2
+                          Label(s): 3
+                          TOTAL CONTROLS: 15
+
+                  Form: frmPrinters
+                  -----------------
+                          Lines
+                          -----
+                          Code Lines: 53 (100.00%)
+                          Comment Lines: 0 (.00%)
+                          Blank Lines: 0 (.00%)
+                          TOTAL LINES: 53
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 9
+                          TOTAL MEMBERS: 9
+
+                          Controls
+                          --------
+                          ComboBox(s): 1
+                          CommandButton(s): 1
+                          Frame(s): 2
+                          Label(s): 1
+                          OptionButton(s): 2
+                          TOTAL CONTROLS: 7
+
+                  Form: frmAddNewEmp
+                  ------------------
+                          Lines
+                          -----
+                          Code Lines: 52 (100.00%)
+                          Comment Lines: 0 (.00%)
+                          Blank Lines: 0 (.00%)
+                          TOTAL LINES: 52
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 6
+                          TOTAL MEMBERS: 6
+
+                          Controls
+                          --------
+                          ComboBox(s): 2
+                          CommandButton(s): 2
+                          DTPicker(s): 1
+                          Label(s): 7
+                          TextBox(s): 2
+                          TOTAL CONTROLS: 14
+
+                  Form: frmPBar
+                  -------------
+                          Lines
+                          -----
+                          Code Lines: 6 (100.00%)
+                          Comment Lines: 0 (.00%)
+                          Blank Lines: 0 (.00%)
+                          TOTAL LINES: 6
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 0
+                          Methods: 1
+                          TOTAL MEMBERS: 1
+
+                          Controls
+                          --------
+                          CommandButton(s): 1
+                          Frame(s): 1
+                          Label(s): 2
+                          ProgressBar(s): 1
+                          Shape(s): 1
+                          TOTAL CONTROLS: 6
+
+                  Module: Module1
+                  ---------------
+                          Lines
+                          -----
+                          Code Lines: 625 (96.15%)
+                          Comment Lines: 24 (3.69%)
+                          Blank Lines: 1 (.16%)
+                          TOTAL LINES: 650
+
+                          Members
+                          -------
+                          Public Events: 0
+                          Properties: 1
+                          Methods: 24
+                          TOTAL MEMBERS: 25
+
+

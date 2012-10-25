@@ -1,0 +1,13 @@
+[History]
+1=#P0#=mb	#P1#=cmdAddNew_Click	#P2#=Attendance/frmAddNewEmp/cmdAddNew_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20121018104901	#P7#=0	#P8#=16	.
+2=#P0#=mb	#P1#=CheckForName	#P2#=Attendance/Module1/CheckForName	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121018104734	#P7#=0	#P8#=10	.
+3=#P0#=mb	#P1#=EnumRegistryValues	#P2#=Attendance/Module1/EnumRegistryValues	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121018104557	#P7#=0	#P8#=-2	.
+4=#P0#=mb	#P1#=ReturnEmpInfo	#P2#=Attendance/Module1/ReturnEmpInfo	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121018104022	#P7#=0	#P8#=23	.
+5=#P0#=mb	#P1#=ClearEmpInfo	#P2#=Attendance/Module1/ClearEmpInfo	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121018103640	#P7#=0	#P8#=-1	.
+6=#P0#=mb	#P1#=GetDataBaseStats	#P2#=Attendance/Module1/GetDataBaseStats	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121018103600	#P7#=0	#P8#=4	.
+7=#P0#=mb	#P1#=MySort	#P2#=Attendance/frmVacationReports/MySort	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121008115140	#P7#=0	#P8#=0	.
+8=#P0#=mb	#P1#=CustomDateRange	#P2#=Attendance/frmVacationReports/CustomDateRange	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121008114748	#P7#=0	#P8#=36	.
+9=#P0#=mb	#P1#=Label13_Click	#P2#=Attendance/Form1/Label13_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20121004130526	#P7#=0	#P8#=9	.
+10=#P0#=mb	#P1#=StartTimer	#P2#=Attendance/Module1/StartTimer	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20121025110027	#P7#=0	#P8#=0	.
+11=#P0#=mb	#P1#=PrintSGrid	#P2#=Attendance/frmVacations/PrintSGrid	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120831090931	#P7#=0	#P8#=90	.
+12=#P0#=mb	#P1#=LoadEntries	#P2#=Attendance/frmVacations/LoadEntries	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120830084700	#P7#=0	#P8#=17	.

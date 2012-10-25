@@ -1,0 +1,10 @@
+vbalGrid = 75, 75, 1061, 685, Z, 0, 0, 0, 0, C
+mSGrid = 25, 25, 990, 636, 
+cGridSortObject = 0, 0, 0, 0, C
+cGridCell = 0, 0, 0, 0, C
+cHeaderControl = 0, 0, 0, 0, C
+cFlatHeader = 0, 0, 0, 0, C
+cScrollBars = 0, 0, 0, 0, C
+mMouseHook = 50, 50, 1036, 660, 
+cImageListDrag = 0, 0, 0, 0, C
+IGridCellOwnerDraw = 0, 0, 0, 0, C

@@ -1,0 +1,9 @@
+[History]
+1=#P0#=mb	#P1#=Form_Resize	#P2#=pTestSGrid6/frmDemo/Form_Resize	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120611110357	#P7#=0	#P8#=11	.
+2=#P0#=mb	#P1#=grdThis_MouseUp	#P2#=pTestSGrid6/frmDemo/grdThis_MouseUp	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120611102354	#P7#=0	#P8#=14	.
+3=#P0#=mb	#P1#=pLoadDelimitedFile	#P2#=pTestSGrid6/frmMatrixDemo/pLoadDelimitedFile	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611102309	#P7#=0	#P8#=20	.
+4=#P0#=mb	#P1#=initialiseGrid	#P2#=pTestSGrid6/frmDemo/initialiseGrid	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611110459	#P7#=0	#P8#=9	.
+5=#P0#=mb	#P1#=addData	#P2#=pTestSGrid6/frmDemo/addData	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611101727	#P7#=0	#P8#=27	.
+6=#P0#=mb	#P1#=mnuContext_Click	#P2#=pTestSGrid6/frmDemo/mnuContext_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120611100614	#P7#=0	#P8#=12	.
+7=#P0#=mb	#P1#=deleteMail	#P2#=pTestSGrid6/frmOutlookDemo/deleteMail	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120306142427	#P7#=0	#P8#=11	.
+8=#P0#=mb	#P1#=mnuContext_Click	#P2#=pTestSGrid6/frmOutlookDemo/mnuContext_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120306142343	#P7#=0	#P8#=9	.

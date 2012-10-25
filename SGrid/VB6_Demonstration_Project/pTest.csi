@@ -1,0 +1,9 @@
+[History]
+1=#P0#=mb	#P1#=Form_Load	#P2#=pTestSGrid/frmDemo/Form_Load	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120220151615	#P7#=0	#P8#=10	.
+2=#P0#=mb	#P1#=grdThis_ColumnClick	#P2#=pTestSGrid/frmDemo/grdThis_ColumnClick	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120217164619	#P7#=0	#P8#=4	.
+3=#P0#=mb	#P1#=pPopulate	#P2#=pTestSGrid/frmDemo/pPopulate	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120215152832	#P7#=0	#P8#=14	.
+4=#P0#=mb	#P1#=chkEditable_Click	#P2#=pTestSGrid/frmDemo/chkEditable_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120215152816	#P7#=0	#P8#=-1	.
+5=#P0#=mb	#P1#=chkVisible_Click	#P2#=pTestSGrid/frmDemo/chkVisible_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120215152001	#P7#=0	#P8#=4	.
+6=#P0#=mb	#P1#=chkOptions_Click	#P2#=pTestSGrid/frmDemo/chkOptions_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120215151930	#P7#=0	#P8#=1	.
+7=#P0#=mb	#P1#=chkBold_Click	#P2#=pTestSGrid/frmDemo/chkBold_Click	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120215150956	#P7#=0	#P8#=11	.
+8=#P0#=mb	#P1#=TestVeryLongText	#P2#=pTestSGrid/frmDemo/TestVeryLongText	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120215142736	#P7#=0	#P8#=4	.
