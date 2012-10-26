@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacationReports 
    BorderStyle     =   1  'Fixed Single
@@ -66,6 +66,14 @@ Begin VB.Form frmVacationReports
       TabIndex        =   0
       Top             =   120
       Width           =   8715
+      Begin VB.CommandButton cmdToExcel 
+         Caption         =   "To Excel"
+         Height          =   300
+         Left            =   7740
+         TabIndex        =   22
+         Top             =   3360
+         Width           =   810
+      End
       Begin VB.Frame Frame4 
          Caption         =   "Filters"
          Height          =   855
@@ -207,7 +215,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   206045185
+            Format          =   209321985
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -229,7 +237,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   206045185
+            Format          =   209321985
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -783,6 +791,32 @@ getout:
     End If
     bolMonthAdded = False
 End Sub
+
+Private Sub cmdToExcel_Click()
+
+    Dim XcLApp   As Object  'used for excel application'
+    Dim XcLWB     As Object 'used for excel work book'
+    Dim XcLWS     As Object 'used for excel work sheet'
+    
+    Dim i As Integer, c As Integer ' counter for the rows of the flexgrid'
+    
+    Set XcLApp = CreateObject("Excel.Application")  'creating new excel application'
+    Set XcLWB = XcLApp.Workbooks.Add                'opening new excel work book'
+    Set XcLWS = XcLWB.Worksheets.Add                'opening new excel worksheet'
+    'taking data from flexgrid and sendting it to excel'
+    With Grid1
+    
+        For i = 1 To .Rows - 1
+            
+            For c = 1 To .Columns
+            XcLWS.Range(Addres_Excel(i, c)).Value = .Cell(i, c).Text
+         
+            Next c
+        Next i
+    End With
+    XcLApp.Visible = True
+End Sub
+
 Private Sub cmdWhosOnVaca_Click()
     Dim intMonths() As Integer
     ReDim intMonths(1)
@@ -894,3 +928,6 @@ Private Sub ReSizeSGrid()
     Grid1.Redraw = True
 End Sub
 
+Private Sub Grid1_ColumnClick(ByVal lCol As Long)
+
+End Sub

@@ -126,6 +126,19 @@ Number As String
 
         
 End Type
+Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As String
+'this function is used to send the columns from grid to excel'
+'make column header to look like the letters used in excel'
+'for example for col 1 the first column we will send "1" and will return "A"'
+
+    Dim modval As Long  'used to get the reminder'
+    Dim strval As String   'get the transferd letter'
+    modval = (lng_col - 1) Mod 26   'using mode we get the reminder. 26 is for the letters in engl.'
+    strval = Chr$(Asc("A") + modval) 'using the reminder we get the letter'
+    modval = ((lng_col - 1) \ 26) - 1 'check to see if it is not addres like "AA"'
+    If modval >= 0 Then strval = Chr$(Asc("A") + modval) & strval 'if we have more then we add the letter'
+    Addres_Excel = strval & lng_row 'return the value to the function'
+End Function
 
 ' KEY_ENUMERATE_SUB_KEYS Or KEY_NOTIFY) And (Not
 ' SYNCHRONIZE))
