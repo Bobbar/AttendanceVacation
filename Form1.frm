@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   12091
          _ExtentY        =   1508
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -190,7 +189,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   198639617
+         Format          =   210436097
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -213,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   198639617
+         Format          =   210436097
          CurrentDate     =   40484
       End
       Begin VB.Label Label13 
@@ -758,7 +757,6 @@ Private Declare Function sndPlaySound _
 Private intSearchWaitTicks As Integer
 Private UpdateMode         As Boolean
 Private strNotes           As String
-
 Private Sub DrawSGridForPrint()
     Dim i     As Integer
     Dim Hours As Single
@@ -949,7 +947,6 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     strSQL1 = "SELECT idName,idNumber From emplist Where idName Like '%" & strSearchString & "%' Order By EmpList.idName"
     rs.Open strSQL1, cn, adOpenKeyset
     ReDim intEmpNum(rs.RecordCount)
-    
     Do Until rs.EOF
         With rs
             List1.AddItem !idName, Row
@@ -982,10 +979,10 @@ Public Sub DateRangeReport()
     Dim BuiltQrys        As Integer
     Dim sFntUnder        As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     On Error Resume Next
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
@@ -1235,10 +1232,10 @@ Public Sub GetEntries()
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     Set rs = New ADODB.Recordset
     Set cn = New ADODB.Connection
     AttenVals.FullExcused = 0
@@ -1356,12 +1353,11 @@ End Sub
 Public Sub FillHeader(EmpNum As String)
     txtAttenEmpNum.Text = EmpNum
     strCurrentEmpInfo.Number = EmpNum
-    txtAttenEmpName.Text = ReturnEmpInfo(EmpNum).name
-    strCurrentEmpInfo.name = ReturnEmpInfo(EmpNum).name
+    txtAttenEmpName.Text = ReturnEmpInfo(EmpNum).Name
+    strCurrentEmpInfo.Name = ReturnEmpInfo(EmpNum).Name
     lblHireDate.Caption = ReturnEmpInfo(EmpNum).HireDate
     strCurrentEmpInfo.HireDate = ReturnEmpInfo(EmpNum).HireDate
-    strCurrentEmpInfo.VacaWeeks = ReturnEmpInfo(EmpNum).VacaWeeks
-    
+    strCurrentEmpInfo.VacaHours = ReturnEmpInfo(EmpNum).VacaHours
     If ReturnEmpInfo(EmpNum).IsActive = "TRUE" Then
         chkIsActive.Enabled = True
         chkIsActive.Value = 1
@@ -1371,7 +1367,6 @@ Public Sub FillHeader(EmpNum As String)
         chkIsActive.Value = 0
         chkIsActive.Caption = "Inactive"
     End If
-    
     cmbLocation2.Text = ReturnEmpInfo(EmpNum).Location2
     strCurrentEmpInfo.Location2 = ReturnEmpInfo(EmpNum).Location2
     cmbLocation.Text = ReturnEmpInfo(EmpNum).Location1
@@ -1415,7 +1410,7 @@ Private Sub cmdClear2_Click()
     ClearFields
     'ClearVacation
 End Sub
-Public Sub AddEmpToDB(name As Variant, _
+Public Sub AddEmpToDB(Name As Variant, _
                       Num As String, _
                       HireDate As String, _
                       Location1 As String, _
@@ -1431,7 +1426,7 @@ Public Sub AddEmpToDB(name As Variant, _
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     cn.CursorLocation = adUseClient
     FormatDate = Format$(HireDate, strDBDateFormat)
-    strSQL2 = "INSERT INTO attendb.emplist (idName,idLocation1,idLocation2,idNumber,idHireDate,idIsActive) VALUES ('" & name & "','" & Location1 & "','" & Location2 & "','" & Num & "','" & FormatDate & "','" & IsActive & "')"
+    strSQL2 = "INSERT INTO attendb.emplist (idName,idLocation1,idLocation2,idNumber,idHireDate,idIsActive) VALUES ('" & Name & "','" & Location1 & "','" & Location2 & "','" & Num & "','" & FormatDate & "','" & IsActive & "')"
     rs.Open strSQL2, cn, adOpenKeyset, adLockOptimistic
     Exit Sub
 errs:
@@ -1554,10 +1549,8 @@ Private Sub Form_Initialize()
     CheckForDLLS
 End Sub
 Private Sub Form_Load()
-
-FindMySQLDriver
-
-lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
+    FindMySQLDriver
+    lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     intQryIndex = 0
     ReDim lngTimeRemainingArray(1)
     strServerAddress = "10.0.1.232"
@@ -1566,7 +1559,6 @@ lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     strFullAccessPass = "y2zq3T21Ejia"
     strROAccessUser = "AttenUserRO"
     strROAccessPass = "8f0DYyS7y056"
- 
     Select Case UCase$(Environ$("USERNAME"))
         Case "SORRELLJ"
             strUsername = strFullAccessUser
@@ -1584,7 +1576,8 @@ lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
             strUsername = strROAccessUser
             strPassword = strROAccessPass
     End Select
-
+    dtVacaPeriod.StartDate = "1/1/" & DateTime.Year(DateTime.Date)
+    dtVacaPeriod.EndDate = "12/31/" & DateTime.Year(DateTime.Date)
     cmbExcused.AddItem "", 0
     cmbExcused.AddItem "EXCUSED", 1
     cmbExcused.AddItem "UNEXCUSED", 2
@@ -1670,7 +1663,7 @@ End Sub
 Sub EndProgram()
     Dim tmpForm As Form
     For Each tmpForm In Forms
-        If tmpForm.name <> "Form1" Then
+        If tmpForm.Name <> "Form1" Then
             Unload tmpForm
             Set tmpForm = Nothing
         End If
@@ -1812,7 +1805,6 @@ Private Sub GridAtten_MouseUp(Button As Integer, _
     End If
 End Sub
 Private Sub Label13_Click()
-
     StartTimer
     Dim TotAttenEnt As Long
     Dim blah
@@ -1851,39 +1843,24 @@ Private Sub Label13_Click()
         strBreakdown = strBreakdown + AttenStats(i).ExTypeName & ": " & AttenStats(i).ExTypeCount & " (" & AttenStats(i).ExTypePct & "%)" & vbCrLf
     Next i
     ReDim strChartData(UBound(AttenStats) - 1, 1)
-   'ReDim strChartData(1, UBound(AttenStats) - 1)
+    'ReDim strChartData(1, UBound(AttenStats) - 1)
     Dim c As Integer
-  
- 
-     For c = 0 To UBound(AttenStats) - 1
-         strChartData(c, 0) = AttenStats(c).ExTypeName & "(" & AttenStats(c).ExTypeCount & ")"
-         
-      
-     Next c
-     For c = 0 To UBound(AttenStats) - 1
-         strChartData(c, 1) = AttenStats(c).ExTypeCount
-         
-
-     Next c
-     
+    For c = 0 To UBound(AttenStats) - 1
+        strChartData(c, 0) = AttenStats(c).ExTypeName & "(" & AttenStats(c).ExTypeCount & ")"
+    Next c
+    For c = 0 To UBound(AttenStats) - 1
+        strChartData(c, 1) = AttenStats(c).ExTypeCount
+    Next c
     MySort strChartData
-  
-    
-    
-    blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " _
-    & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & _
-    "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " _
-    & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
-     
-     
+    blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
     If blah = vbOK Then
-      frmChart.Show
-'        strBreakdown = vbNullString
-'        For i = 0 To UBound(AttenStats) - 1
-'            strBreakdown = strBreakdown + AttenStats(i).ExTypeName & vbTab & AttenStats(i).ExTypeCount & vbCrLf
-'        Next i
-'        Clipboard.Clear
-'        Clipboard.SetText strBreakdown
+        frmChart.Show
+        '        strBreakdown = vbNullString
+        '        For i = 0 To UBound(AttenStats) - 1
+        '            strBreakdown = strBreakdown + AttenStats(i).ExTypeName & vbTab & AttenStats(i).ExTypeCount & vbCrLf
+        '        Next i
+        '        Clipboard.Clear
+        '        Clipboard.SetText strBreakdown
     Else
     End If
 End Sub
@@ -2046,7 +2023,6 @@ Private Sub mnuPrint_Click()
     'GridAtten.AddColumn 7
     GetEntries
     Unload frmFilters
-    
 End Sub
 Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                        Optional sTitle As String, _
@@ -2089,7 +2065,7 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
     Printer.Print "    Report date: " & Date & " " & Time & "      Printed by: " & UCase$(Environ$("USERNAME"))
     Const GAP = 40
     With Printer.Font
-        .name = FlexGrid.Font.name
+        .Name = FlexGrid.Font.Name
         .Size = 9
     End With
     Printer.Print ""

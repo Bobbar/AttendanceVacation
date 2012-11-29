@@ -1,8 +1,6 @@
 Attribute VB_Name = "Module1"
 Option Explicit
-
 Public strSQLDriver As String
-
 Public Type DBAttenStats
     ExTypeName As String
     ExTypeCount As Long
@@ -10,7 +8,6 @@ Public Type DBAttenStats
 End Type
 Public AttenStats() As DBAttenStats
 Public strChartData()
-
 Public strUsername                      As String, strPassword As String, strServerAddress As String
 Public ControlFocus(8)                  As Integer
 Public bolAlarmOKed                     As Boolean
@@ -65,18 +62,21 @@ Type MonthDates
 End Type
 Public bolVacationOpen As Boolean
 Public dtFiscalYearEnd As Date
+Public dtVacaPeriod    As MonthDates
 Public Type EmpInfo
-    name As String
+    Name As String
     Location1 As String
     Location2 As String
     Number As String
     HireDate As Date
     VacaWeeks As Integer
+    VacaHours As Single
     IsActive As Boolean
 End Type
 Public Type Tenure
     YearsWorked As Integer
     VacaWeeksAvail As Integer
+    VacaHoursAvail As Single
 End Type
 Public Type DBStats
     TotalAttenEntries As Integer
@@ -99,19 +99,31 @@ Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Int
 Public Const VK_TAB = &H9
 Public intPartialUnExcused As Integer, intFullUnExcused As Integer, intFullExcused As Integer, intPartialExcused As Integer
 Public lngAddQry           As Double
-Public Const colGridBusy As Long = &HE0E0E0        '&H80FF80
+Public Const colGridBusy   As Long = &HE0E0E0        '&H80FF80
 Const HKEY_LOCAL_MACHINE = &H80000002
-Private Declare Function RegOpenKeyEx Lib "advapi32.dll" Alias "RegOpenKeyExA" _
-(ByVal hKey As Long, ByVal lpSubKey As String, ByVal ulOptions As Long, _
-ByVal samDesired As Long, phkResult As Long) As Long
-Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As _
-Long
-Private Declare Function RegEnumValue Lib "advapi32.dll" Alias "RegEnumValueA" _
-(ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpValueName As String, _
-lpcbValueName As Long, ByVal lpReserved As Long, lpType As Long, _
-lpData As Any, lpcbData As Long) As Long
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As _
-Any, Source As Any, ByVal numBytes As Long)
+Private Declare Function RegOpenKeyEx _
+                Lib "advapi32.dll" _
+                Alias "RegOpenKeyExA" (ByVal hKey As Long, _
+                                       ByVal lpSubKey As String, _
+                                       ByVal ulOptions As Long, _
+                                       ByVal samDesired As Long, _
+                                       phkResult As Long) As Long
+Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
+Private Declare Function RegEnumValue _
+                Lib "advapi32.dll" _
+                Alias "RegEnumValueA" (ByVal hKey As Long, _
+                                       ByVal dwIndex As Long, _
+                                       ByVal lpValueName As String, _
+                                       lpcbValueName As Long, _
+                                       ByVal lpReserved As Long, _
+                                       lpType As Long, _
+                                       lpData As Any, _
+                                       lpcbData As Long) As Long
+Private Declare Sub CopyMemory _
+                Lib "kernel32" _
+                Alias "RtlMoveMemory" (dest As Any, _
+                                       Source As Any, _
+                                       ByVal numBytes As Long)
 Const REG_SZ = 1
 Const REG_EXPAND_SZ = 2
 Const REG_BINARY = 3
@@ -119,18 +131,14 @@ Const REG_DWORD = 4
 Const REG_MULTI_SZ = 7
 Const ERROR_MORE_DATA = 234
 Const KEY_READ = &H20019 ' ((READ_CONTROL Or KEY_QUERY_VALUE Or
-
 Public Type EmpExist
-Exist As Boolean
-Number As String
-
-        
+    Exist As Boolean
+    Number As String
 End Type
 Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As String
-'this function is used to send the columns from grid to excel'
-'make column header to look like the letters used in excel'
-'for example for col 1 the first column we will send "1" and will return "A"'
-
+    'this function is used to send the columns from grid to excel'
+    'make column header to look like the letters used in excel'
+    'for example for col 1 the first column we will send "1" and will return "A"'
     Dim modval As Long  'used to get the reminder'
     Dim strval As String   'get the transferd letter'
     modval = (lng_col - 1) Mod 26   'using mode we get the reminder. 26 is for the letters in engl.'
@@ -139,7 +147,6 @@ Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As St
     If modval >= 0 Then strval = Chr$(Asc("A") + modval) & strval 'if we have more then we add the letter'
     Addres_Excel = strval & lng_row 'return the value to the function'
 End Function
-
 ' KEY_ENUMERATE_SUB_KEYS Or KEY_NOTIFY) And (Not
 ' SYNCHRONIZE))
 ' Enumerate values under a given registry key
@@ -147,78 +154,75 @@ End Function
 ' returns a collection, where each element of the collection
 ' is a 2-element array of Variants:
 ' element(0) is the value name, element(1) is the value's value
-Function EnumRegistryValues(ByVal hKey As Long, ByVal KeyName As String) As _
-Collection
-Dim handle As Long
-Dim index As Long
-Dim valueType As Long
-Dim name As String
-Dim nameLen As Long
-Dim resLong As Long
-Dim resString As String
-Dim dataLen As Long
-Dim valueInfo(0 To 1) As Variant
-Dim retVal As Long
-' initialize the result
-Set EnumRegistryValues = New Collection
-' Open the key, exit if not found.
-If Len(KeyName) Then
-If RegOpenKeyEx(hKey, KeyName, 0, KEY_READ, handle) Then Exit Function
-' in all cases, subsequent functions use hKey
-hKey = handle
-End If
-Do
-' this is the max length for a key name
-nameLen = 260
-name = Space$(nameLen)
-' prepare the receiving buffer for the value
-dataLen = 4096
-ReDim resBinary(0 To dataLen - 1) As Byte
-' read the value's name and data
-' exit the loop if not found
-retVal = RegEnumValue(hKey, index, name, nameLen, ByVal 0&, valueType, _
-resBinary(0), dataLen)
-' enlarge the buffer if you need more space
-If retVal = ERROR_MORE_DATA Then
-ReDim resBinary(0 To dataLen - 1) As Byte
-retVal = RegEnumValue(hKey, index, name, nameLen, ByVal 0&, _
-valueType, resBinary(0), dataLen)
-End If
-' exit the loop if any other error (typically, no more values)
-If retVal Then Exit Do
-' retrieve the value's name
-valueInfo(0) = Left$(name, nameLen)
-' return a value corresponding to the value type
-Select Case valueType
-Case REG_DWORD
-CopyMemory resLong, resBinary(0), 4
-valueInfo(1) = resLong
-Case REG_SZ, REG_EXPAND_SZ
-' copy everything but the trailing null char
-resString = Space$(dataLen - 1)
-CopyMemory ByVal resString, resBinary(0), dataLen - 1
-valueInfo(1) = resString
-Case REG_BINARY
-' shrink the buffer if necessary
-If dataLen < UBound(resBinary) + 1 Then
-ReDim Preserve resBinary(0 To dataLen - 1) As Byte
-End If
-valueInfo(1) = resBinary()
-Case REG_MULTI_SZ
-' copy everything but the 2 trailing null chars
-resString = Space$(dataLen - 2)
-CopyMemory ByVal resString, resBinary(0), dataLen - 2
-valueInfo(1) = resString
-Case Else
-' Unsupported value type - do nothing
-End Select
-' add the array to the result collection
-' the element's key is the value's name
-EnumRegistryValues.Add valueInfo, valueInfo(0)
-index = index + 1
-Loop
-' Close the key, if it was actually opened
-If handle Then RegCloseKey handle
+Function EnumRegistryValues(ByVal hKey As Long, ByVal KeyName As String) As Collection
+    Dim handle            As Long
+    Dim index             As Long
+    Dim valueType         As Long
+    Dim Name              As String
+    Dim nameLen           As Long
+    Dim resLong           As Long
+    Dim resString         As String
+    Dim dataLen           As Long
+    Dim valueInfo(0 To 1) As Variant
+    Dim retVal            As Long
+    ' initialize the result
+    Set EnumRegistryValues = New Collection
+    ' Open the key, exit if not found.
+    If Len(KeyName) Then
+        If RegOpenKeyEx(hKey, KeyName, 0, KEY_READ, handle) Then Exit Function
+        ' in all cases, subsequent functions use hKey
+        hKey = handle
+    End If
+    Do
+        ' this is the max length for a key name
+        nameLen = 260
+        Name = Space$(nameLen)
+        ' prepare the receiving buffer for the value
+        dataLen = 4096
+        ReDim resBinary(0 To dataLen - 1) As Byte
+        ' read the value's name and data
+        ' exit the loop if not found
+        retVal = RegEnumValue(hKey, index, Name, nameLen, ByVal 0&, valueType, resBinary(0), dataLen)
+        ' enlarge the buffer if you need more space
+        If retVal = ERROR_MORE_DATA Then
+            ReDim resBinary(0 To dataLen - 1) As Byte
+            retVal = RegEnumValue(hKey, index, Name, nameLen, ByVal 0&, valueType, resBinary(0), dataLen)
+        End If
+        ' exit the loop if any other error (typically, no more values)
+        If retVal Then Exit Do
+        ' retrieve the value's name
+        valueInfo(0) = Left$(Name, nameLen)
+        ' return a value corresponding to the value type
+        Select Case valueType
+            Case REG_DWORD
+                CopyMemory resLong, resBinary(0), 4
+                valueInfo(1) = resLong
+            Case REG_SZ, REG_EXPAND_SZ
+                ' copy everything but the trailing null char
+                resString = Space$(dataLen - 1)
+                CopyMemory ByVal resString, resBinary(0), dataLen - 1
+                valueInfo(1) = resString
+            Case REG_BINARY
+                ' shrink the buffer if necessary
+                If dataLen < UBound(resBinary) + 1 Then
+                    ReDim Preserve resBinary(0 To dataLen - 1) As Byte
+                End If
+                valueInfo(1) = resBinary()
+            Case REG_MULTI_SZ
+                ' copy everything but the 2 trailing null chars
+                resString = Space$(dataLen - 2)
+                CopyMemory ByVal resString, resBinary(0), dataLen - 2
+                valueInfo(1) = resString
+            Case Else
+                ' Unsupported value type - do nothing
+        End Select
+        ' add the array to the result collection
+        ' the element's key is the value's name
+        EnumRegistryValues.Add valueInfo, valueInfo(0)
+        index = index + 1
+    Loop
+    ' Close the key, if it was actually opened
+    If handle Then RegCloseKey handle
 End Function
 ' get the list of ODBC drivers through the registry
 '
@@ -227,66 +231,45 @@ End Function
 '
 ' requires the EnumRegistryValues function
 Function GetODBCDrivers() As Collection
-Dim res As Collection
-Dim values As Variant
-' initialize the result
-Set GetODBCDrivers = New Collection
-' the names of all the ODBC drivers are kept as values
-' under a registry key
-' the EnumRegistryValue returns a collection
-For Each values In EnumRegistryValues(HKEY_LOCAL_MACHINE, "Software\ODBC\ODBCINST.INI\ODBC Drivers")
-' each element is a two-item array:
-' values(0) is the name, values(1) is the data
-If StrComp(values(1), "Installed", 1) = 0 Then
-' if installed, add to the result collection
-GetODBCDrivers.Add values(0), values(0)
-End If
-Next
+    Dim res    As Collection
+    Dim values As Variant
+    ' initialize the result
+    Set GetODBCDrivers = New Collection
+    ' the names of all the ODBC drivers are kept as values
+    ' under a registry key
+    ' the EnumRegistryValue returns a collection
+    For Each values In EnumRegistryValues(HKEY_LOCAL_MACHINE, "Software\ODBC\ODBCINST.INI\ODBC Drivers")
+        ' each element is a two-item array:
+        ' values(0) is the name, values(1) is the data
+        If StrComp(values(1), "Installed", 1) = 0 Then
+            ' if installed, add to the result collection
+            GetODBCDrivers.Add values(0), values(0)
+        End If
+    Next
 End Function
 Public Sub FindMySQLDriver()
-
-GetODBCDrivers
-
+    GetODBCDrivers
     Dim i           As Integer
-
     Dim strPossis() As String
-
     Dim blah
-
     ReDim strPossis(0)
-Debug.Print GetODBCDrivers.Count
-
+    Debug.Print GetODBCDrivers.Count
     For i = 1 To GetODBCDrivers.Count
-
         If InStr(1, GetODBCDrivers.Item(i), "MySQL") Then
             strPossis(UBound(strPossis)) = GetODBCDrivers.Item(i)
             ReDim Preserve strPossis(UBound(strPossis) + 1)
-
         End If
-
     Next i
-
-    
-        For i = 0 To UBound(strPossis)
-
+    For i = 0 To UBound(strPossis)
         Debug.Print i & " " & strPossis(i)
-
-        Next i
-    
+    Next i
     If UBound(strPossis) > 1 Then
         blah = MsgBox("Multiple MySQL Drivers detected!", vbExclamation + vbOKOnly, "Gasp!")
-
         strSQLDriver = strPossis(0)
-
     Else
-
-      strSQLDriver = strPossis(0)
-
+        strSQLDriver = strPossis(0)
     End If
-
 End Sub
-    
-
 Public Sub CountExcusesInYear(Excused As String, TimeOffType As String, EntryDate As Date)
     Dim LastYearDate As Date
     Dim CurrentDate  As String
@@ -315,7 +298,6 @@ Public Sub GetDataBaseStats()
     strSQL1 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0"
     strSQL2 = "SELECT COUNT(*) FROM attendb.emplist emplist_0"
     strSQL3 = "SELECT COUNT(*) FROM attendb.vacations vacations_0"
-    
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     cn.CursorLocation = adUseClient
     rs.Open strSQL1, cn, adOpenForwardOnly, adLockReadOnly
@@ -335,28 +317,52 @@ Public Function GetTabState() As Boolean
         GetTabState = True
     End If
 End Function
+Public Function DateDiffW(BegDate As Date, EndDate As Date)
+    Const SUNDAY = 1
+    Const SATURDAY = 7
+    Dim NumWeeks As Integer
+    If BegDate > EndDate Then
+        DateDiffW = 0
+    Else
+        Select Case Weekday(BegDate)
+            Case SUNDAY: BegDate = BegDate + 1
+            Case SATURDAY: BegDate = BegDate + 2
+        End Select
+        Select Case Weekday(EndDate)
+            Case SUNDAY: EndDate = EndDate - 2
+            Case SATURDAY: EndDate = EndDate - 1
+        End Select
+        NumWeeks = DateDiff("ww", BegDate, EndDate)
+        DateDiffW = NumWeeks * 5 + Weekday(EndDate) - Weekday(BegDate) + 1
+    End If
+End Function
 Public Function CalcYearsWorked(EmpNum As Variant) As Tenure
-     Dim lngDaysWorked As Long, lngYearsWorked As Single
+    Dim lngYearsWorked As Integer
     CalcYearsWorked.YearsWorked = 0
     CalcYearsWorked.VacaWeeksAvail = 0
-    lngDaysWorked = DateDiff("d", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$(Date, strUserDateFormat)) - 1
-    lngYearsWorked = lngDaysWorked / 365
-    CalcYearsWorked.YearsWorked = Int(lngYearsWorked)
+    lngYearsWorked = DateDiff("yyyy", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$(Date, strUserDateFormat)) - 1
+    CalcYearsWorked.YearsWorked = lngYearsWorked
     If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
         CalcYearsWorked.VacaWeeksAvail = ReturnEmpInfo(EmpNum).VacaWeeks
         Exit Function
     End If
     Select Case CalcYearsWorked.YearsWorked
-        Case 1
-            CalcYearsWorked.VacaWeeksAvail = 1
-        Case 2 To 7
-            CalcYearsWorked.VacaWeeksAvail = 2
-        Case 8 To 14
-            CalcYearsWorked.VacaWeeksAvail = 3
-        Case 15 To 24
-            CalcYearsWorked.VacaWeeksAvail = 4
+        Case 1 To 4
+            CalcYearsWorked.VacaHoursAvail = 80
+        Case 5 To 11
+            CalcYearsWorked.VacaHoursAvail = 120
+        Case 12 To 20
+            CalcYearsWorked.VacaHoursAvail = 160
+        Case 21
+            CalcYearsWorked.VacaHoursAvail = 168
+        Case 22
+            CalcYearsWorked.VacaHoursAvail = 176
+        Case 23
+            CalcYearsWorked.VacaHoursAvail = 184
+        Case 24
+            CalcYearsWorked.VacaHoursAvail = 192
         Case Is >= 25
-            CalcYearsWorked.VacaWeeksAvail = 5
+            CalcYearsWorked.VacaHoursAvail = 200
     End Select
 End Function
 Public Sub GetEmpInfo()
@@ -375,9 +381,9 @@ Public Sub GetEmpInfo()
             strEmpInfo(.AbsolutePosition - 1).HireDate = !idHireDate
             strEmpInfo(.AbsolutePosition - 1).Location1 = !idLocation1
             strEmpInfo(.AbsolutePosition - 1).Location2 = !idLocation2
-            strEmpInfo(.AbsolutePosition - 1).name = !idName
+            strEmpInfo(.AbsolutePosition - 1).Name = !idName
             strEmpInfo(.AbsolutePosition - 1).Number = !idNumber
-            strEmpInfo(.AbsolutePosition - 1).VacaWeeks = !idVacaWeeks
+            strEmpInfo(.AbsolutePosition - 1).VacaHours = !idVacaHours
             strEmpInfo(.AbsolutePosition - 1).IsActive = !idIsActive
             .MoveNext
         Loop
@@ -387,62 +393,51 @@ Public Sub GetEmpInfo()
 End Sub
 Public Sub GetCurrentEmp(EmpNum As String)
     strCurrentEmpInfo.Number = EmpNum
-    strCurrentEmpInfo.name = ReturnEmpInfo(EmpNum).name
+    strCurrentEmpInfo.Name = ReturnEmpInfo(EmpNum).Name
     strCurrentEmpInfo.HireDate = ReturnEmpInfo(EmpNum).HireDate
     strCurrentEmpInfo.VacaWeeks = ReturnEmpInfo(EmpNum).VacaWeeks
     strCurrentEmpInfo.Location2 = ReturnEmpInfo(EmpNum).Location2
     strCurrentEmpInfo.Location1 = ReturnEmpInfo(EmpNum).Location1
 End Sub
 Public Function ReturnEmpInfo(strEmpNum As Variant) As EmpInfo
-    ReturnEmpInfo.name = vbNull
+    ReturnEmpInfo.Name = vbNull
     ReturnEmpInfo.HireDate = vbNull
     ReturnEmpInfo.IsActive = vbNull
     ReturnEmpInfo.Location1 = vbNull
     ReturnEmpInfo.Location2 = vbNull
     ReturnEmpInfo.Number = vbNull
-    ReturnEmpInfo.VacaWeeks = vbNull
+    ReturnEmpInfo.VacaHours = vbNull
     Dim i As Integer
     For i = 0 To UBound(strEmpInfo)
         If strEmpInfo(i).Number = strEmpNum Then
-            ReturnEmpInfo.name = strEmpInfo(i).name
+            ReturnEmpInfo.Name = strEmpInfo(i).Name
             ReturnEmpInfo.HireDate = strEmpInfo(i).HireDate
             ReturnEmpInfo.IsActive = strEmpInfo(i).IsActive
             ReturnEmpInfo.Location1 = strEmpInfo(i).Location1
             ReturnEmpInfo.Location2 = strEmpInfo(i).Location2
             ReturnEmpInfo.Number = strEmpInfo(i).Number
-            ReturnEmpInfo.VacaWeeks = strEmpInfo(i).VacaWeeks
+            ReturnEmpInfo.VacaHours = strEmpInfo(i).VacaHours
             Exit Function
         End If
     Next i
     MsgBox (strEmpNum & " not found")
 End Function
 Public Function CheckForName(FirstLast As String) As EmpExist
-Dim i As Integer
-CheckForName.Exist = False
-
-For i = 0 To UBound(strEmpInfo)
-
-
-If strEmpInfo(i).name = UCase$(FirstLast) Then
-CheckForName.Exist = True
-CheckForName.Number = strEmpInfo(i).Number
-End If
-
-
-
-
-
-Next i
-
-
-
+    Dim i As Integer
+    CheckForName.Exist = False
+    For i = 0 To UBound(strEmpInfo)
+        If strEmpInfo(i).Name = UCase$(FirstLast) Then
+            CheckForName.Exist = True
+            CheckForName.Number = strEmpInfo(i).Number
+        End If
+    Next i
 End Function
 Public Sub ClearEmpInfo()
     strCurrentEmpInfo.HireDate = vbNull
     strCurrentEmpInfo.IsActive = vbNull
     strCurrentEmpInfo.Location1 = vbNullString
     strCurrentEmpInfo.Location2 = vbNullString
-    strCurrentEmpInfo.name = vbNullString
+    strCurrentEmpInfo.Name = vbNullString
     strCurrentEmpInfo.Number = vbNullString
     strCurrentEmpInfo.VacaWeeks = vbNull
 End Sub
@@ -538,7 +533,7 @@ Public Sub PrintFlexGridSGrid(FlexGrid As vbalGrid, _
     Dim R As Integer
     intMidStart = 1
     With Printer.Font
-        .name = FlexGrid.Font.name
+        .Name = FlexGrid.Font.Name
         .Size = 9
     End With
     With FlexGrid
@@ -790,7 +785,6 @@ Public Function SpellMe(ByVal msSpell As String) As String
     Select Case moApp.Version
         Case "9.0", "10.0", "11.0", "12.0", "14.0"
             Set oDoc = moApp.Documents.Add(, , 1, True)
-           
         Case "8.0"
             Set oDoc = moApp.Documents.Add
         Case Else
@@ -802,7 +796,6 @@ Public Function SpellMe(ByVal msSpell As String) As String
     oDoc.Words.First.InsertBefore msSpell
     iWSE = oDoc.SpellingErrors.Count
     iWGE = oDoc.GrammaticalErrors.Count
-   
     '<CHECK SPELLING AND GRAMMER DIALOG BOX>
     If iWSE > 0 Or iWGE > 0 Then
         '<HIDE MAIN WORD WINDOW>
