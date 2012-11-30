@@ -4,7 +4,7 @@ Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacations 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Vacations"
-   ClientHeight    =   10080
+   ClientHeight    =   9945
    ClientLeft      =   45
    ClientTop       =   675
    ClientWidth     =   9840
@@ -21,7 +21,7 @@ Begin VB.Form frmVacations
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   10080
+   ScaleHeight     =   9945
    ScaleWidth      =   9840
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox List1 
@@ -47,7 +47,7 @@ Begin VB.Form frmVacations
       Height          =   1335
       Left            =   4980
       TabIndex        =   39
-      Top             =   4020
+      Top             =   3900
       Width           =   4755
       Begin VB.CommandButton cmdAttenReports 
          Caption         =   "Attendance Reports"
@@ -79,7 +79,7 @@ Begin VB.Form frmVacations
       Height          =   1335
       Left            =   120
       TabIndex        =   25
-      Top             =   4020
+      Top             =   3900
       Width           =   4755
       Begin VB.CheckBox chkTaken 
          Caption         =   "Taken"
@@ -187,7 +187,7 @@ Begin VB.Form frmVacations
       Height          =   4455
       Left            =   120
       TabIndex        =   2
-      Top             =   5820
+      Top             =   5700
       Width           =   9615
       Begin vbAcceleratorSGrid6.vbalGrid Grid1 
          Height          =   4095
@@ -249,22 +249,22 @@ Begin VB.Form frmVacations
       End
    End
    Begin VB.Frame Frame1 
-      Height          =   2535
+      Height          =   2355
       Left            =   120
       TabIndex        =   1
       Top             =   1440
       Width           =   9615
       Begin VB.Timer tmrButtonEnabler 
          Interval        =   10
-         Left            =   60
-         Top             =   1620
+         Left            =   120
+         Top             =   1020
       End
       Begin VB.CommandButton cmdCancel 
          Caption         =   "Cancel"
          Height          =   360
          Left            =   4860
          TabIndex        =   48
-         Top             =   2040
+         Top             =   1860
          Visible         =   0   'False
          Width           =   990
       End
@@ -288,8 +288,8 @@ Begin VB.Form frmVacations
       Begin VB.Timer tmrLiveSearch 
          Enabled         =   0   'False
          Interval        =   250
-         Left            =   60
-         Top             =   2040
+         Left            =   120
+         Top             =   1500
       End
       Begin VB.CommandButton cmdSpellChk 
          Caption         =   "Spell Check"
@@ -304,7 +304,7 @@ Begin VB.Form frmVacations
          Height          =   360
          Left            =   3300
          TabIndex        =   18
-         Top             =   2040
+         Top             =   1860
          Visible         =   0   'False
          Width           =   1215
       End
@@ -313,7 +313,7 @@ Begin VB.Form frmVacations
          Height          =   360
          Left            =   8520
          TabIndex        =   12
-         Top             =   2040
+         Top             =   1860
          Width           =   990
       End
       Begin VB.CommandButton cmdAdd 
@@ -321,7 +321,7 @@ Begin VB.Form frmVacations
          Height          =   360
          Left            =   4200
          TabIndex        =   11
-         Top             =   2040
+         Top             =   1860
          Width           =   1215
       End
       Begin VB.ComboBox cmbStatus 
@@ -369,7 +369,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   210239489
+         Format          =   207749121
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -391,7 +391,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   210239489
+         Format          =   207749121
          CurrentDate     =   40935
       End
       Begin VB.Label Label8 
@@ -514,7 +514,7 @@ Begin VB.Form frmVacations
          Appearance      =   0  'Flat
          Caption         =   "Edit"
          Height          =   240
-         Left            =   8760
+         Left            =   8940
          TabIndex        =   38
          Top             =   960
          Width           =   510
@@ -552,7 +552,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   7680
+         Left            =   7860
          TabIndex        =   20
          Top             =   720
          Width           =   1020
@@ -562,7 +562,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Hours Taken:"
          Height          =   195
-         Left            =   6240
+         Left            =   6420
          TabIndex        =   19
          Top             =   720
          Width           =   1230
@@ -578,7 +578,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Hours Available:"
          Height          =   195
-         Left            =   6300
+         Left            =   6480
          TabIndex        =   16
          Top             =   960
          Width           =   1185
@@ -588,7 +588,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Years Worked:"
          Height          =   195
-         Left            =   6240
+         Left            =   6420
          TabIndex        =   15
          Top             =   480
          Width           =   1230
@@ -598,7 +598,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Hire Date:"
          Height          =   195
-         Left            =   6240
+         Left            =   6420
          TabIndex        =   14
          Top             =   240
          Width           =   1230
@@ -617,7 +617,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   7680
+         Left            =   7860
          TabIndex        =   13
          Top             =   480
          Width           =   1140
@@ -636,7 +636,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   7680
+         Left            =   7860
          TabIndex        =   4
          Top             =   960
          Width           =   900
@@ -655,7 +655,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   7680
+         Left            =   7860
          TabIndex        =   3
          Top             =   240
          Width           =   750
@@ -664,8 +664,8 @@ Begin VB.Form frmVacations
    Begin VB.Line Line2 
       X1              =   5520
       X2              =   7980
-      Y1              =   5520
-      Y2              =   5520
+      Y1              =   5400
+      Y2              =   5400
    End
    Begin VB.Label Label7 
       AutoSize        =   -1  'True
@@ -674,20 +674,20 @@ Begin VB.Form frmVacations
       Height          =   195
       Left            =   4380
       TabIndex        =   32
-      Top             =   5400
+      Top             =   5280
       Width           =   1050
    End
    Begin VB.Line Line5 
       X1              =   1920
       X2              =   1920
-      Y1              =   5880
-      Y2              =   5520
+      Y1              =   5760
+      Y2              =   5400
    End
    Begin VB.Line Line3 
       X1              =   7980
       X2              =   7980
-      Y1              =   5940
-      Y2              =   5520
+      Y1              =   5820
+      Y2              =   5400
    End
    Begin VB.Label lblCurrentPeriod 
       Alignment       =   2  'Center
@@ -706,14 +706,14 @@ Begin VB.Form frmVacations
       Height          =   195
       Left            =   4320
       TabIndex        =   31
-      Top             =   5580
+      Top             =   5460
       Width           =   1215
    End
    Begin VB.Line Line4 
       X1              =   1920
       X2              =   4260
-      Y1              =   5520
-      Y2              =   5520
+      Y1              =   5400
+      Y2              =   5400
    End
    Begin VB.Menu mnuPopup 
       Caption         =   "Popup"

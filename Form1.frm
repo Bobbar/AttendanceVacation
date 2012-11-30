@@ -5,7 +5,7 @@ Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance"
-   ClientHeight    =   10725
+   ClientHeight    =   9690
    ClientLeft      =   45
    ClientTop       =   675
    ClientWidth     =   10815
@@ -21,24 +21,24 @@ Begin VB.Form Form1
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   10725
+   ScaleHeight     =   9690
    ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer tmrButtonEnable 
       Interval        =   30
-      Left            =   10080
-      Top             =   4440
+      Left            =   9600
+      Top             =   3720
    End
    Begin VB.Timer tmrUpdateTimeRemaining 
       Interval        =   150
-      Left            =   10080
-      Top             =   3960
+      Left            =   9180
+      Top             =   3720
    End
    Begin VB.Timer tmrLiveSearch 
       Enabled         =   0   'False
       Interval        =   250
-      Left            =   10080
-      Top             =   4980
+      Left            =   10020
+      Top             =   3720
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -59,7 +59,7 @@ Begin VB.Form Form1
       Width           =   4155
    End
    Begin VB.Frame Frame3 
-      Height          =   3495
+      Height          =   2475
       Left            =   120
       TabIndex        =   11
       Top             =   2640
@@ -68,20 +68,21 @@ Begin VB.Form Form1
          Height          =   855
          Left            =   1920
          TabIndex        =   32
-         Top             =   1680
+         Top             =   960
          Width           =   6855
          _ExtentX        =   12091
          _ExtentY        =   1508
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
       Begin VB.CommandButton cmdSpellCheck 
          Caption         =   "Spell Check"
          Height          =   240
-         Left            =   7755
+         Left            =   7800
          TabIndex        =   31
-         Top             =   2520
+         Top             =   1800
          Width           =   990
       End
       Begin VB.TextBox txtHoursLate 
@@ -95,10 +96,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   375
-         Left            =   8280
+         Left            =   9540
          TabIndex        =   19
          Text            =   "0.00"
-         Top             =   840
+         Top             =   480
          Width           =   735
       End
       Begin VB.ComboBox cmbTimeOffType 
@@ -112,10 +113,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   5400
+         Left            =   6660
          Style           =   2  'Dropdown List
          TabIndex        =   18
-         Top             =   840
+         Top             =   480
          Width           =   2775
       End
       Begin VB.ComboBox cmbExcused 
@@ -129,10 +130,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   3360
+         Left            =   4620
          Style           =   2  'Dropdown List
          TabIndex        =   17
-         Top             =   840
+         Top             =   480
          Width           =   1935
       End
       Begin VB.CommandButton cmdSubmit 
@@ -141,7 +142,7 @@ Begin VB.Form Form1
          Height          =   480
          Left            =   4620
          TabIndex        =   16
-         Top             =   2640
+         Top             =   1860
          Width           =   1215
       End
       Begin VB.CommandButton cmdClear 
@@ -149,7 +150,7 @@ Begin VB.Form Form1
          Height          =   360
          Left            =   9480
          TabIndex        =   15
-         Top             =   3000
+         Top             =   1980
          Width           =   990
       End
       Begin VB.CommandButton cmdUpdate 
@@ -157,7 +158,7 @@ Begin VB.Form Form1
          Height          =   480
          Left            =   3840
          TabIndex        =   13
-         Top             =   2640
+         Top             =   1860
          Visible         =   0   'False
          Width           =   1215
       End
@@ -166,13 +167,13 @@ Begin VB.Form Form1
          Height          =   480
          Left            =   5220
          TabIndex        =   12
-         Top             =   2640
+         Top             =   1860
          Visible         =   0   'False
          Width           =   1050
       End
       Begin MSComCtl2.DTPicker DTEntryDate 
          Height          =   345
-         Left            =   1560
+         Left            =   300
          TabIndex        =   14
          Top             =   480
          Width           =   1695
@@ -189,14 +190,14 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   210436097
+         Format          =   207749121
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
          Height          =   345
-         Left            =   1560
+         Left            =   2220
          TabIndex        =   20
-         Top             =   1200
+         Top             =   480
          Width           =   1695
          _ExtentX        =   2990
          _ExtentY        =   609
@@ -212,7 +213,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   210436097
+         Format          =   207749121
          CurrentDate     =   40484
       End
       Begin VB.Label Label13 
@@ -228,9 +229,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Excused?"
          Height          =   195
-         Left            =   3375
+         Left            =   4635
          TabIndex        =   26
-         Top             =   600
+         Top             =   240
          Width           =   675
       End
       Begin VB.Label Label5 
@@ -238,9 +239,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Excuse Type"
          Height          =   195
-         Left            =   5400
+         Left            =   6660
          TabIndex        =   25
-         Top             =   600
+         Top             =   240
          Width           =   2715
       End
       Begin VB.Label Label6 
@@ -248,9 +249,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Hours"
          Height          =   195
-         Left            =   8280
+         Left            =   9540
          TabIndex        =   24
-         Top             =   600
+         Top             =   240
          Width           =   420
       End
       Begin VB.Label Label7 
@@ -260,7 +261,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   1440
          TabIndex        =   23
-         Top             =   1980
+         Top             =   1260
          Width           =   420
       End
       Begin VB.Label Label8 
@@ -268,7 +269,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Date"
          Height          =   195
-         Left            =   1560
+         Left            =   300
          TabIndex        =   22
          Top             =   240
          Width           =   585
@@ -278,9 +279,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Date To"
          Height          =   195
-         Left            =   1560
+         Left            =   2220
          TabIndex        =   21
-         Top             =   960
+         Top             =   240
          Width           =   570
       End
    End
@@ -289,7 +290,7 @@ Begin VB.Form Form1
       Height          =   4515
       Left            =   120
       TabIndex        =   6
-      Top             =   6240
+      Top             =   5220
       Width           =   10575
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
          Height          =   4155
@@ -408,7 +409,7 @@ Begin VB.Form Form1
          Width           =   2175
       End
       Begin VB.CommandButton cmdClear2 
-         Caption         =   "Clear"
+         Caption         =   "Clear All"
          Height          =   360
          Left            =   9480
          TabIndex        =   28
@@ -690,9 +691,9 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H00808080&
       Height          =   165
-      Left            =   180
+      Left            =   120
       TabIndex        =   48
-      Top             =   10800
+      Top             =   9780
       Width           =   1290
    End
    Begin VB.Label Label14 
@@ -712,7 +713,7 @@ Begin VB.Form Form1
       Height          =   165
       Left            =   9180
       TabIndex        =   47
-      Top             =   10800
+      Top             =   9780
       Width           =   1470
    End
    Begin VB.Menu mnuPopup 
