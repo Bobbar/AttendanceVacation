@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   12091
          _ExtentY        =   1508
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -190,7 +189,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   198639617
+         Format          =   205455361
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -213,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   198639617
+         Format          =   205455361
          CurrentDate     =   40484
       End
       Begin VB.Label Label13 
@@ -1447,6 +1446,7 @@ Private Sub cmdSubmit_Click()
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     cn.CursorLocation = adUseClient
     strSQL1 = "select * from attenentries"
+    cmdSubmit.Enabled = False
     rs.Open strSQL1, cn, adOpenUnspecified, adLockOptimistic
     With rs
         rs.AddNew

@@ -215,7 +215,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   209321985
+            Format          =   205258753
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -237,7 +237,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   209321985
+            Format          =   205258753
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -928,6 +928,3 @@ Private Sub ReSizeSGrid()
     Grid1.Redraw = True
 End Sub
 
-Private Sub Grid1_ColumnClick(ByVal lCol As Long)
-
-End Sub
