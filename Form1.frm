@@ -52,9 +52,9 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1110
-      Left            =   2520
+      Left            =   2760
       TabIndex        =   27
-      Top             =   900
+      Top             =   930
       Visible         =   0   'False
       Width           =   4155
    End
@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   12091
          _ExtentY        =   1508
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -190,12 +189,12 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   207749121
+         Format          =   213123073
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
          Height          =   345
-         Left            =   2220
+         Left            =   2100
          TabIndex        =   20
          Top             =   480
          Width           =   1695
@@ -213,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   207749121
+         Format          =   213123073
          CurrentDate     =   40484
       End
       Begin VB.Label Label13 
@@ -279,7 +278,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Date To"
          Height          =   195
-         Left            =   2220
+         Left            =   2100
          TabIndex        =   21
          Top             =   240
          Width           =   570
@@ -294,9 +293,9 @@ Begin VB.Form Form1
       Width           =   10575
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
          Height          =   4155
-         Left            =   120
+         Left            =   240
          TabIndex        =   44
-         Top             =   240
+         Top             =   300
          Width           =   10335
          _ExtentX        =   18230
          _ExtentY        =   7329
@@ -447,7 +446,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   405
-         Left            =   2400
+         Left            =   2640
          TabIndex        =   1
          Text            =   "EmpName"
          Top             =   480
@@ -478,7 +477,7 @@ Begin VB.Form Form1
          DisabledPicture =   "Form1.frx":3099
          DownPicture     =   "Form1.frx":5699
          Enabled         =   0   'False
-         Height          =   375
+         Height          =   315
          Left            =   975
          Style           =   1  'Graphical
          TabIndex        =   8
@@ -487,11 +486,11 @@ Begin VB.Form Form1
       End
       Begin VB.Frame Frame4 
          Caption         =   "Alarms"
-         Height          =   1635
-         Left            =   7440
+         Height          =   1575
+         Left            =   7860
          TabIndex        =   33
-         Top             =   300
-         Width           =   2955
+         Top             =   180
+         Width           =   2595
          Begin VB.Label lblAcked 
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
@@ -515,7 +514,6 @@ Begin VB.Form Form1
             Width           =   300
          End
          Begin VB.Label lblPartialUn 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Partial Un -"
@@ -529,13 +527,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   945
+            Left            =   525
             TabIndex        =   37
             Top             =   240
             Width           =   1095
          End
          Begin VB.Label lblFullUn 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Full Un -"
@@ -549,13 +546,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   1170
+            Left            =   525
             TabIndex        =   36
             Top             =   480
             Width           =   750
          End
          Begin VB.Label lblFullEx 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Full Ex -"
@@ -569,13 +565,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   1155
+            Left            =   525
             TabIndex        =   35
             Top             =   1200
             Width           =   720
          End
          Begin VB.Label lblPartialEx 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Partial Ex -"
@@ -589,7 +584,7 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   945
+            Left            =   525
             TabIndex        =   34
             Top             =   960
             Width           =   1065
@@ -622,7 +617,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   375
          TabIndex        =   38
-         Top             =   1890
+         Top             =   1860
          Width           =   465
       End
       Begin VB.Label Label11 
@@ -660,7 +655,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Employee Name"
          Height          =   195
-         Left            =   3900
+         Left            =   4140
          TabIndex        =   4
          Top             =   240
          Width           =   1140
@@ -1443,6 +1438,7 @@ Private Sub cmdSubmit_Click()
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     cn.CursorLocation = adUseClient
     strSQL1 = "select * from attenentries"
+    cmdSubmit.Enabled = False
     rs.Open strSQL1, cn, adOpenUnspecified, adLockOptimistic
     With rs
         rs.AddNew

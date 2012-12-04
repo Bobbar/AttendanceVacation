@@ -369,7 +369,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   207749121
+         Format          =   213123073
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -391,7 +391,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   207749121
+         Format          =   213123073
          CurrentDate     =   40935
       End
       Begin VB.Label Label8 
@@ -1361,10 +1361,10 @@ Private Sub cmdVacaReports_Click()
     frmVacationReports.Show
 End Sub
 Private Sub DTStartDate_Change()
-    DTEndDate.Value = DateAdd("d", 4, DTStartDate.Value)
+    DTEndDate.Value = DTStartDate.Value
 End Sub
 Private Sub DTStartDate_Click()
-    DTEndDate.Value = DateAdd("d", 4, DTStartDate.Value)
+    DTEndDate.Value = DTStartDate.Value
 End Sub
 Private Sub Form_Load()
     bolVacationOpen = True

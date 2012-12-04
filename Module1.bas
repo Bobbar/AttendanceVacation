@@ -340,7 +340,7 @@ Public Function CalcYearsWorked(EmpNum As Variant) As Tenure
     Dim lngYearsWorked As Integer
     CalcYearsWorked.YearsWorked = 0
     CalcYearsWorked.VacaWeeksAvail = 0
-    lngYearsWorked = DateDiff("yyyy", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$(Date, strUserDateFormat)) - 1
+    lngYearsWorked = DateDiff("yyyy", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$(Date, strUserDateFormat)) ' - 1
     CalcYearsWorked.YearsWorked = lngYearsWorked
     If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
         CalcYearsWorked.VacaWeeksAvail = ReturnEmpInfo(EmpNum).VacaWeeks

@@ -154,6 +154,7 @@ Begin VB.Form frmVacationReports
          Width           =   4935
          Begin VB.CommandButton cmdAccruals 
             Caption         =   "Run"
+            Enabled         =   0   'False
             Height          =   360
             Left            =   3540
             TabIndex        =   11
@@ -215,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   207749121
+            Format          =   213123073
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -237,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   207749121
+            Format          =   213123073
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -471,7 +472,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     Grid1.Rows = Grid1.Rows + 1
                     Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , , sFntUnder
                     Grid1.CellDetails Grid1.Rows - 1, 2, "Hire Date: " & ReturnEmpInfo(SortArray(1, i)).HireDate, DT_CENTER, , , , sFntUnder
-                    Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 3, "Hours Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
                     bolHeaderAdded = True
                 End If
                 Grid1.Rows = Grid1.Rows + 1
@@ -490,7 +491,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 Grid1.Rows = Grid1.Rows + 1
                 Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , , sFntUnder
                 Grid1.CellDetails Grid1.Rows - 1, 2, "Hire Date: " & ReturnEmpInfo(SortArray(1, i)).HireDate, DT_CENTER, , , , sFntUnder
-                Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
+                Grid1.CellDetails Grid1.Rows - 1, 3, "Hours Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
                 Grid1.Rows = Grid1.Rows + 1
                 Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER 'StartDate
                 Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER 'EndDate

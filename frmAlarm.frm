@@ -3,10 +3,10 @@ Begin VB.Form frmAlarm
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance Warning"
-   ClientHeight    =   5340
+   ClientHeight    =   4350
    ClientLeft      =   45
    ClientTop       =   375
-   ClientWidth     =   5910
+   ClientWidth     =   5115
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,92 +20,284 @@ Begin VB.Form frmAlarm
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5340
-   ScaleWidth      =   5910
+   ScaleHeight     =   4350
+   ScaleWidth      =   5115
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CheckBox chkAckFullEx 
-      Alignment       =   1  'Right Justify
-      BackColor       =   &H000000FF&
-      Caption         =   "Acknowledge"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   240
-      Style           =   1  'Graphical
-      TabIndex        =   13
-      Top             =   3480
-      Visible         =   0   'False
-      Width           =   1755
+   Begin VB.Frame Frame2 
+      Caption         =   "Alarms"
+      Height          =   2835
+      Left            =   60
+      TabIndex        =   3
+      Top             =   840
+      Width           =   4995
+      Begin VB.CheckBox chkAckPartialUn 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H000000FF&
+         Caption         =   "Acknowledge"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   7
+         Top             =   300
+         Visible         =   0   'False
+         Width           =   1755
+      End
+      Begin VB.CheckBox chkAckFullUn 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H000000FF&
+         Caption         =   "Acknowledge"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   6
+         Top             =   840
+         Visible         =   0   'False
+         Width           =   1755
+      End
+      Begin VB.CheckBox chkAckPartialEx 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H000000FF&
+         Caption         =   "Acknowledge"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   5
+         Top             =   1620
+         Visible         =   0   'False
+         Width           =   1755
+      End
+      Begin VB.CheckBox chkAckFullEx 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H000000FF&
+         Caption         =   "Acknowledge"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   4
+         Top             =   2160
+         Visible         =   0   'False
+         Width           =   1755
+      End
+      Begin VB.Label Label2 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Partial Unexcused: "
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   1980
+         TabIndex        =   15
+         Top             =   360
+         Width           =   2040
+      End
+      Begin VB.Label Label1 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Full Unexcused:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   1920
+         TabIndex        =   14
+         Top             =   900
+         Width           =   2040
+      End
+      Begin VB.Label Label3 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Partial Excused:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   2115
+         TabIndex        =   13
+         Top             =   1680
+         Width           =   1530
+      End
+      Begin VB.Label Label4 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Full Excused:"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   2280
+         TabIndex        =   12
+         Top             =   2220
+         Width           =   1260
+      End
+      Begin VB.Label lblPartialUn 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0000"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   3960
+         TabIndex        =   11
+         Top             =   360
+         Width           =   600
+      End
+      Begin VB.Label lblFullUn 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0000"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   3960
+         TabIndex        =   10
+         Top             =   900
+         Width           =   600
+      End
+      Begin VB.Label lblPartialEx 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0000"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   3840
+         TabIndex        =   9
+         Top             =   1680
+         Width           =   600
+      End
+      Begin VB.Label lblFullEx 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0000"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   3840
+         TabIndex        =   8
+         Top             =   2220
+         Width           =   600
+      End
    End
-   Begin VB.CheckBox chkAckPartialEx 
-      Alignment       =   1  'Right Justify
-      BackColor       =   &H000000FF&
-      Caption         =   "Acknowledge"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   240
-      Style           =   1  'Graphical
-      TabIndex        =   12
-      Top             =   2880
-      Visible         =   0   'False
-      Width           =   1755
-   End
-   Begin VB.CheckBox chkAckFullUn 
-      Alignment       =   1  'Right Justify
-      BackColor       =   &H000000FF&
-      Caption         =   "Acknowledge"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   240
-      Style           =   1  'Graphical
-      TabIndex        =   11
-      Top             =   1920
-      Visible         =   0   'False
-      Width           =   1755
-   End
-   Begin VB.CheckBox chkAckPartialUn 
-      Alignment       =   1  'Right Justify
-      BackColor       =   &H000000FF&
-      Caption         =   "Acknowledge"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   465
-      Left            =   240
-      Style           =   1  'Graphical
-      TabIndex        =   10
-      Top             =   1320
-      Visible         =   0   'False
-      Width           =   1755
+   Begin VB.Frame Frame1 
+      Caption         =   "Name"
+      Height          =   735
+      Left            =   60
+      TabIndex        =   1
+      Top             =   60
+      Width           =   4995
+      Begin VB.Label lblEmpName 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "EmpName"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   2040
+         TabIndex        =   2
+         Top             =   240
+         Width           =   1110
+      End
    End
    Begin VB.CommandButton cmdOk 
       Caption         =   "OK"
@@ -119,190 +311,16 @@ Begin VB.Form frmAlarm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   480
-      Left            =   2160
-      TabIndex        =   9
-      Top             =   4560
-      Width           =   1575
+      Left            =   1740
+      TabIndex        =   0
+      Top             =   3780
+      Width           =   1635
    End
    Begin VB.Timer tmrFlasher 
       Enabled         =   0   'False
       Interval        =   100
-      Left            =   300
-      Top             =   4620
-   End
-   Begin VB.Label lblFullEx 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0000"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   4080
-      TabIndex        =   8
-      Top             =   3600
-      Width           =   600
-   End
-   Begin VB.Label lblPartialEx 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0000"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   4080
-      TabIndex        =   7
-      Top             =   3000
-      Width           =   600
-   End
-   Begin VB.Label lblFullUn 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0000"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   4080
-      TabIndex        =   6
-      Top             =   2100
-      Width           =   600
-   End
-   Begin VB.Label lblPartialUn 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0000"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   4080
-      TabIndex        =   5
-      Top             =   1440
-      Width           =   600
-   End
-   Begin VB.Label Label4 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "Full Excused:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   2100
-      TabIndex        =   4
-      Top             =   3600
-      Width           =   2040
-   End
-   Begin VB.Label Label3 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "Partial Excused:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   2160
-      TabIndex        =   3
-      Top             =   3000
-      Width           =   1680
-   End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "Full Unexcused:"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   2040
-      TabIndex        =   2
-      Top             =   2100
-      Width           =   2040
-   End
-   Begin VB.Label Label2 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "Partial Unexcused: "
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   2100
-      TabIndex        =   1
-      Top             =   1440
-      Width           =   2040
-   End
-   Begin VB.Label lblEmpName 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "EmpName"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   12
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   285
-      Left            =   2355
-      TabIndex        =   0
-      Top             =   360
-      Width           =   1230
+      Left            =   180
+      Top             =   3840
    End
 End
 Attribute VB_Name = "frmAlarm"
@@ -452,11 +470,17 @@ Private Sub tmrFlasher_Timer()
     MaxFlashes = 10
     If frmAlarm.BackColor = &H8000000F And Flashes < MaxFlashes Then
         frmAlarm.BackColor = &HFF&
+        Frame1.BackColor = &HFF&
+        Frame2.BackColor = &HFF&
     ElseIf frmAlarm.BackColor = &HFF& And Flashes < MaxFlashes Then
         frmAlarm.BackColor = &H8000000F
+        Frame1.BackColor = &H8000000F
+        Frame2.BackColor = &H8000000F
     End If
     If Flashes >= MaxFlashes Then
         frmAlarm.BackColor = &H8000000F
+        Frame1.BackColor = &H8000000F
+        Frame2.BackColor = &H8000000F
         tmrFlasher.Enabled = False
         Flashes = 0
         cmdOk.Visible = True
