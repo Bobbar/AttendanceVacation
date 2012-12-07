@@ -254,8 +254,26 @@ Begin VB.Form frmVacations
       TabIndex        =   1
       Top             =   1440
       Width           =   9615
+      Begin VB.TextBox txtHours 
+         Alignment       =   2  'Center
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   4380
+         TabIndex        =   52
+         Text            =   "0"
+         Top             =   480
+         Width           =   735
+      End
       Begin VB.Timer tmrButtonEnabler 
-         Interval        =   10
+         Interval        =   100
          Left            =   120
          Top             =   1020
       End
@@ -279,7 +297,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   7200
+         Left            =   7620
          Style           =   2  'Dropdown List
          TabIndex        =   46
          Top             =   480
@@ -301,6 +319,15 @@ Begin VB.Form frmVacations
       End
       Begin VB.CommandButton cmdUpdate 
          Caption         =   "Update"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   360
          Left            =   3300
          TabIndex        =   18
@@ -318,6 +345,15 @@ Begin VB.Form frmVacations
       End
       Begin VB.CommandButton cmdAdd 
          Caption         =   "Add"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   360
          Left            =   4200
          TabIndex        =   11
@@ -335,7 +371,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   5040
+         Left            =   5460
          Style           =   2  'Dropdown List
          TabIndex        =   10
          Top             =   480
@@ -352,7 +388,7 @@ Begin VB.Form frmVacations
       End
       Begin MSComCtl2.DTPicker DTEndDate 
          Height          =   375
-         Left            =   2520
+         Left            =   2340
          TabIndex        =   7
          Top             =   480
          Width           =   1755
@@ -369,12 +405,12 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   213123073
+         Format          =   199163905
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
          Height          =   375
-         Left            =   540
+         Left            =   360
          TabIndex        =   5
          Top             =   480
          Width           =   1755
@@ -391,26 +427,37 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   213123073
+         Format          =   199163905
          CurrentDate     =   40935
+      End
+      Begin VB.Label Label11 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Hour"
+         Height          =   195
+         Left            =   4380
+         TabIndex        =   53
+         Top             =   240
+         Width           =   705
       End
       Begin VB.Label Label8 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "Paid/UnPaid"
          Height          =   195
-         Left            =   7200
+         Left            =   7620
          TabIndex        =   47
          Top             =   240
          Width           =   855
       End
       Begin VB.Label lblEditing 
+         Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "*EDITING*"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.25
+            Size            =   12
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -418,12 +465,12 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H000000FF&
-         Height          =   195
-         Left            =   8520
+         Height          =   285
+         Left            =   7080
          TabIndex        =   23
-         Top             =   240
+         Top             =   1200
          Visible         =   0   'False
-         Width           =   900
+         Width           =   2445
       End
       Begin VB.Label Label5 
          AutoSize        =   -1  'True
@@ -440,7 +487,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Status"
          Height          =   195
-         Left            =   5040
+         Left            =   5460
          TabIndex        =   21
          Top             =   240
          Width           =   465
@@ -450,7 +497,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "End Date"
          Height          =   195
-         Left            =   2520
+         Left            =   2340
          TabIndex        =   8
          Top             =   240
          Width           =   660
@@ -460,7 +507,7 @@ Begin VB.Form frmVacations
          BackStyle       =   0  'Transparent
          Caption         =   "Start Date"
          Height          =   195
-         Left            =   540
+         Left            =   360
          TabIndex        =   6
          Top             =   240
          Width           =   750
@@ -1083,7 +1130,7 @@ Public Sub LoadEntries(Optional ShowAll As Boolean)
         Do Until .EOF
             Grid1.CellDetails .AbsolutePosition, 1, Format$(!idStartDate, strUserDateFormat), DT_CENTER
             Grid1.CellDetails .AbsolutePosition, 2, Format$(!idEndDate, strUserDateFormat), DT_CENTER
-            Grid1.CellDetails .AbsolutePosition, 3, DateDiffW(!idStartDate, !idEndDate) * 8, DT_CENTER
+            Grid1.CellDetails .AbsolutePosition, 3, !idHours, DT_CENTER 'DateDiffW(!idStartDate, !idEndDate) * 8, DT_CENTER
             If !idStatus = "REQUESTED" Then
                 Grid1.CellDetails .AbsolutePosition, 4, !idStatus, DT_CENTER, , &H8080FF
             ElseIf !idStatus = "RESCHEDULED" Then
@@ -1155,8 +1202,8 @@ Public Sub CalcWeeksAvail()
             Exit Sub
         Else
             Do Until rs.EOF
-                intDays = DateDiffW(!idStartDate, !idEndDate) '+ 1
-                lngHoursTaken = lngHoursTaken + intDays * 8
+                
+                lngHoursTaken = lngHoursTaken + !idHours
                 .MoveNext
             Loop
         End If
@@ -1177,6 +1224,7 @@ End Sub
 Private Sub chkReScheduled_Click()
     Call LoadEntries(optAll)
 End Sub
+
 Private Sub cmdAdd_Click()
     Dim rs      As New ADODB.Recordset
     Dim cn      As New ADODB.Connection
@@ -1191,6 +1239,7 @@ Private Sub cmdAdd_Click()
         rs.AddNew
         !idStartDate = Format$(DTStartDate.Value, strDBDateFormat)
         !idEndDate = Format$(DTEndDate.Value, strDBDateFormat)
+        !idHours = Int(txtHours.Text)
         !idStatus = cmbStatus.Text
         !idStatus2 = cmbStatus2.Text
         !idNotes = strNotes
@@ -1216,6 +1265,7 @@ End Sub
 Private Sub ClearAllButEmpInfo()
     DTStartDate = Date
     DTEndDate = Date
+    txtHours.Text = 0
     txtNotes.Text = ""
     cmdUpdate.Visible = False
     UpdateMode = False
@@ -1225,10 +1275,12 @@ Private Sub ClearAllButEmpInfo()
     cmbStatus2.Text = "PAID"
     'cmbStatus.Enabled = False
     lblEditing.Visible = False
+    Frame1.BackColor = vbButtonFace
 End Sub
 Private Sub ClearAllButEmpName()
     DTStartDate = Date
     DTEndDate = Date
+    txtHours.Text = 0
     txtNotes.Text = ""
     cmdUpdate.Visible = False
     UpdateMode = False
@@ -1244,11 +1296,13 @@ Private Sub ClearAllButEmpName()
     lblVacaHours = "0"
     'cmbStatus.Enabled = False
     lblEditing.Visible = False
+    Frame1.BackColor = vbButtonFace
 End Sub
 Private Sub ClearAll()
     DTStartDate = Date
     DTEndDate = Date
     txtNotes.Text = ""
+    txtHours.Text = 0
     txtEmpNum.Text = ""
     txtEmpName.Text = ""
     lblHireDate.Caption = ""
@@ -1263,6 +1317,7 @@ Private Sub ClearAll()
     cmbStatus.Text = "REQUESTED"
     'cmbStatus.Enabled = False
     lblEditing.Visible = False
+    Frame1.BackColor = vbButtonFace
     'Form1.ClearFields
     'Grid1.Clear
     Grid1.Visible = False
@@ -1340,6 +1395,7 @@ Private Sub UpdateEntry()
     With rs
         !idStartDate = Format$(DTStartDate.Value, strDBDateFormat)
         !idEndDate = Format$(DTEndDate.Value, strDBDateFormat)
+        !idHours = Int(txtHours.Text)
         !idStatus = cmbStatus.Text
         !idStatus2 = cmbStatus2.Text
         !idNotes = strNotes
@@ -1444,16 +1500,19 @@ Private Sub Grid1_DblClick(ByVal lRow As Long, ByVal lCol As Long)
     With Grid1
         DTStartDate.Value = .CellText(.SelectedRow, 1)
         DTEndDate.Value = .CellText(.SelectedRow, 2)
+        txtHours.Text = .CellText(.SelectedRow, 3)
         cmbStatus.Text = .CellText(.SelectedRow, 4)
         cmbStatus2.Text = .CellText(.SelectedRow, 5)
         txtNotes.Text = .CellText(.SelectedRow, 6)
         strGUID = .CellText(.SelectedRow, 7)
+        
     End With
     cmdAdd.Visible = False
-    lblEditing.Visible = True
     cmdUpdate.Visible = True
     cmbStatus.Enabled = True
     cmdCancel.Visible = True
+    lblEditing.Visible = True
+    Frame1.BackColor = &HC0FFC0
     UpdateMode = True
     Exit Sub
 errs:
@@ -1480,6 +1539,7 @@ Private Sub Grid1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As
     Exit Sub
 errs:
 End Sub
+
 Private Sub lblVacaHours_Change()
     On Error Resume Next
     cmdOverride.Left = lblVacaHours.Left + lblVacaHours.Width + 100
@@ -1594,7 +1654,16 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     cn.Close
 End Sub
 Private Sub tmrButtonEnabler_Timer()
-    cmdAdd.Enabled = bolOpenEmp
+    If bolOpenEmp And IsNumeric(txtHours.Text) Then
+        If Int(txtHours.Text) > 0 Then
+            cmdAdd.Enabled = True
+        Else
+            cmdAdd.Enabled = False
+        End If
+    Else
+    cmdAdd.Enabled = False
+    
+    End If
     If cmbStatus.Text = "" Or cmbStatus2.Text = "" Then cmdAdd.Enabled = False
     If UpdateMode Then
         If cmbStatus.Text = "" Or cmbStatus2.Text = "" Then

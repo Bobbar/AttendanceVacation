@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   213123073
+            Format          =   199294977
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   213123073
+            Format          =   199294977
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -340,6 +340,7 @@ Private Sub cmdAccruals_Click()
                 Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
+                
                 .MoveNext
             Loop
             Grid1.Rows = Grid1.Rows + 1

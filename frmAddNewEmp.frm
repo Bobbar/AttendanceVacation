@@ -42,7 +42,7 @@ Begin VB.Form frmAddNewEmp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   210567169
+      Format          =   199294977
       CurrentDate     =   40934
    End
    Begin VB.ComboBox cmbLocation2 

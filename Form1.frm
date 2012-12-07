@@ -5,7 +5,7 @@ Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance"
-   ClientHeight    =   9690
+   ClientHeight    =   9705
    ClientLeft      =   45
    ClientTop       =   675
    ClientWidth     =   10815
@@ -21,24 +21,24 @@ Begin VB.Form Form1
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   9690
+   ScaleHeight     =   9705
    ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer tmrButtonEnable 
       Interval        =   30
-      Left            =   9600
-      Top             =   3720
+      Left            =   600
+      Top             =   4620
    End
    Begin VB.Timer tmrUpdateTimeRemaining 
       Interval        =   150
-      Left            =   9180
-      Top             =   3720
+      Left            =   180
+      Top             =   4620
    End
    Begin VB.Timer tmrLiveSearch 
       Enabled         =   0   'False
       Interval        =   250
-      Left            =   10020
-      Top             =   3720
+      Left            =   1020
+      Top             =   4620
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -65,13 +65,13 @@ Begin VB.Form Form1
       Top             =   2640
       Width           =   10575
       Begin RichTextLib.RichTextBox txtNotes 
-         Height          =   855
-         Left            =   1920
+         Height          =   795
+         Left            =   2340
          TabIndex        =   32
          Top             =   960
-         Width           =   6855
-         _ExtentX        =   12091
-         _ExtentY        =   1508
+         Width           =   5835
+         _ExtentX        =   10292
+         _ExtentY        =   1402
          _Version        =   393217
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
@@ -79,9 +79,9 @@ Begin VB.Form Form1
       Begin VB.CommandButton cmdSpellCheck 
          Caption         =   "Spell Check"
          Height          =   240
-         Left            =   7800
+         Left            =   7140
          TabIndex        =   31
-         Top             =   1800
+         Top             =   1740
          Width           =   990
       End
       Begin VB.TextBox txtHoursLate 
@@ -138,6 +138,15 @@ Begin VB.Form Form1
       Begin VB.CommandButton cmdSubmit 
          Caption         =   "Add Entry"
          Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   480
          Left            =   4620
          TabIndex        =   16
@@ -154,6 +163,15 @@ Begin VB.Form Form1
       End
       Begin VB.CommandButton cmdUpdate 
          Caption         =   "Update Entry"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   480
          Left            =   3840
          TabIndex        =   13
@@ -189,7 +207,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   213123073
+         Format          =   199294977
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -212,8 +230,30 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   213123073
+         Format          =   199294977
          CurrentDate     =   40484
+      End
+      Begin VB.Label lblEditing 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "*EDITING*"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000FF&
+         Height          =   285
+         Left            =   8160
+         TabIndex        =   49
+         Top             =   1260
+         Visible         =   0   'False
+         Width           =   2325
       End
       Begin VB.Label Label13 
          BackStyle       =   0  'Transparent
@@ -258,7 +298,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Notes"
          Height          =   195
-         Left            =   1440
+         Left            =   1860
          TabIndex        =   23
          Top             =   1260
          Width           =   420
@@ -292,13 +332,13 @@ Begin VB.Form Form1
       Top             =   5220
       Width           =   10575
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
-         Height          =   4155
-         Left            =   240
+         Height          =   4035
+         Left            =   180
          TabIndex        =   44
          Top             =   300
-         Width           =   10335
-         _ExtentX        =   18230
-         _ExtentY        =   7329
+         Width           =   10215
+         _ExtentX        =   18018
+         _ExtentY        =   7117
          RowMode         =   -1  'True
          GridLines       =   -1  'True
          BackgroundPicture=   "Form1.frx":0D47
@@ -1131,6 +1171,7 @@ Private Sub ClearAllButEmpNum()
     GridAtten.Visible = False
     GridAtten.Redraw = False
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdSubmit.Visible = True
     NewEmp = False
     UpdateMode = False
@@ -1179,6 +1220,8 @@ Public Sub ClearFields()
     txtNotes.Text = ""
     GridAtten.Visible = False
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
+    
     UpdateMode = False
     cmdSubmit.Visible = True
     NewEmp = False
@@ -1502,6 +1545,7 @@ Private Sub cmdUpdate_Click()
     txtAttenEmpName.Enabled = True
     GetEntries
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdCancel.Visible = False
     cmdSubmit.Visible = True
     ClearBottomFields
@@ -1527,6 +1571,7 @@ Private Sub cmdCancel_Click()
     txtHoursLate.Text = ""
     txtNotes.Text = ""
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdCancel.Visible = False
     UpdateMode = False
     cmdSubmit.Visible = True
@@ -1543,14 +1588,14 @@ Private Sub cmdVacations_Click()
     frmVacations.Show
 End Sub
 Private Sub Form_Initialize()
-    CheckForDLLS
+    'CheckForDLLS
 End Sub
 Private Sub Form_Load()
     FindMySQLDriver
     lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     intQryIndex = 0
     ReDim lngTimeRemainingArray(1)
-    strServerAddress = "10.0.1.232"
+    strServerAddress = "EPICAPP"
     Dim strFullAccessUser As String, strFullAccessPass As String, strROAccessUser As String, strROAccessPass As String
     strFullAccessUser = "AttenUser"
     strFullAccessPass = "y2zq3T21Ejia"
@@ -1750,6 +1795,7 @@ End Sub
 Private Sub GridAtten_DblClick(ByVal lRow As Long, ByVal lCol As Long)
     cmdUpdate.Visible = True
     UpdateMode = True
+    Frame3.BackColor = &HC0FFC0
     cmdSubmit.Visible = False
     cmdCancel.Visible = True
     txtAttenEmpNum.Enabled = False
