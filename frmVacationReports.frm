@@ -66,6 +66,14 @@ Begin VB.Form frmVacationReports
       TabIndex        =   0
       Top             =   120
       Width           =   8715
+      Begin VB.CommandButton Command1 
+         Caption         =   "Command1"
+         Height          =   360
+         Left            =   3840
+         TabIndex        =   23
+         Top             =   3360
+         Width           =   990
+      End
       Begin VB.CommandButton cmdToExcel 
          Caption         =   "To Excel"
          Height          =   300
@@ -215,7 +223,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   205258753
+            Format          =   201916417
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -237,7 +245,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   205258753
+            Format          =   201916417
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -302,10 +310,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 Private strEmpsToRun() As String
-
-
-
-
 Private Sub cmdAccruals_Click()
         
     
@@ -315,6 +319,11 @@ Private Sub cmdAccruals_Click()
     Dim strSQL1   As String
     Dim i         As Integer
     Dim sFntUnder As New StdFont
+    Dim DTEndDate As Date
+    Dim intTaken As Integer
+    
+    DTEndDate = "12/31/12"
+    
     sFntUnder.Underline = True
     sFntUnder.name = "Tahoma"
     Dim sFntNormal As New StdFont
@@ -330,35 +339,41 @@ Private Sub cmdAccruals_Click()
     Grid1.Redraw = False
     Grid1.Clear
     Grid1.Rows = 1
-    For i = 0 To UBound(strEmpsToRun) '(strEmpInfo)
-        strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(dtFiscalYearEnd, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "') " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
-        rs.Open strSQL1, cn, adOpenKeyset
+    For i = 1 To UBound(strEmpsToRun) '(strEmpInfo)
+         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "' " & "AND vacations_0.idStatus = 'TAKEN')"
+        'Debug.Print strSQL1
+        'rs.Open strSQL1, cn, adOpenKeyset
+        intTaken = 0
+        
         With rs
-            If .RecordCount = 0 Then GoTo NextLoop
+           ' If .RecordCount = 0 Then GoTo NextLoop
+           
+            
+            
             Grid1.Rows = Grid1.Rows + 1
-            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).name, DT_CENTER, , , , sFntUnder
-            Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
+            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).name, DT_CENTER
+            'Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
             'Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & CalcYearsWorked(strEmpsToRun(i)).VacaWeeksAvail, DT_CENTER, , , , sFntUnder
-            Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER, , , , sFntUnder
+            Grid1.CellDetails Grid1.Rows - 1, 2, VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER
          
-            Do Until .EOF
-                Grid1.Rows = Grid1.Rows + 1
-                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
-                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
-                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
-                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
-                .MoveNext
-            Loop
-            Grid1.Rows = Grid1.Rows + 1
+'            Do Until .EOF
+'                Grid1.Rows = Grid1.Rows + 1
+'                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
+'                .MoveNext
+'            Loop
+            'Grid1.Rows = Grid1.Rows + 1
 NextLoop:
-            .Close
+           ' .Close
         End With
     Next i
     ReSizeSGrid
     Grid1.Redraw = True
     Screen.MousePointer = vbDefault
     Grid1.BackColor = &H80000005
-    strReportTitle = "Accruals"
+    strReportTitle = "Custom Vacations Available Report" '"Accruals"
     strReportSubTitle = IIf(chkBremen, "Bremen ", "") & IIf(chkWooster, " Wooster ", "") & IIf(chkRockyMtn, " RockyMtn ", "") & IIf(chkNuclear, " Nuclear ", "")
 End Sub
 Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
@@ -539,7 +554,8 @@ Private Function VacaAvailAccrual(EmpNum) As Integer
     
     intTakenWeeks = 0
     DTStartDate = dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
-    DTEndDate = dtFiscalYearEnd
+    DTEndDate = "12/31/12" 'dtFiscalYearEnd
+    'If EmpNum = 954 Then Stop
     
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
@@ -891,6 +907,72 @@ Private Sub cmdPrint_Click()
     PrintFlexGridSGrid Grid1, strReportTitle, strReportSubTitle
     Grid1.Redraw = True
 End Sub
+
+Private Sub Command1_Click()
+ 
+    Dim rs        As New ADODB.Recordset
+    Dim cn        As New ADODB.Connection
+    Dim strSQL1   As String
+    Dim i         As Integer
+    Dim sFntUnder As New StdFont
+    Dim DTEndDate As Date
+    Dim intTaken As Integer
+    
+    DTEndDate = "12/31/12"
+    
+    sFntUnder.Underline = True
+    sFntUnder.name = "Tahoma"
+    Dim sFntNormal As New StdFont
+    sFntNormal.Underline = False
+    sFntNormal.name = "Tahoma"
+    EmpListByCompany
+    Set rs = New ADODB.Recordset
+    Set cn = New ADODB.Connection
+    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
+    cn.CursorLocation = adUseClient
+    Grid1.BackColor = colGridBusy
+    Screen.MousePointer = vbHourglass
+    Grid1.Redraw = False
+    Grid1.Clear
+    Grid1.Rows = 1
+    For i = 1 To UBound(strEmpsToRun) '(strEmpInfo)
+         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "')"
+        'Debug.Print strSQL1
+        'rs.Open strSQL1, cn, adOpenKeyset
+        intTaken = 0
+        
+        With rs
+           ' If .RecordCount = 0 Then GoTo NextLoop
+           
+            
+            
+            Grid1.Rows = Grid1.Rows + 1
+            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).name, DT_CENTER
+            'Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
+            'Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & CalcYearsWorked(strEmpsToRun(i)).VacaWeeksAvail, DT_CENTER, , , , sFntUnder
+            Grid1.CellDetails Grid1.Rows - 1, 2, VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER
+         
+'            Do Until .EOF
+'                Grid1.Rows = Grid1.Rows + 1
+'                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
+'                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
+'                .MoveNext
+'            Loop
+            'Grid1.Rows = Grid1.Rows + 1
+NextLoop:
+           ' .Close
+        End With
+    Next i
+    ReSizeSGrid
+    Grid1.Redraw = True
+    Screen.MousePointer = vbDefault
+    Grid1.BackColor = &H80000005
+    strReportTitle = "Custom Vacations Available Report" '"Accruals"
+    strReportSubTitle = IIf(chkBremen, "Bremen ", "") & IIf(chkWooster, " Wooster ", "") & IIf(chkRockyMtn, " RockyMtn ", "") & IIf(chkNuclear, " Nuclear ", "")
+End Sub
+
 Private Sub Form_Load()
     lstMonths.AddItem "January", 0
     lstMonths.AddItem "Feburary", 1
@@ -906,7 +988,7 @@ Private Sub Form_Load()
     lstMonths.AddItem "December", 11
     DTStartDate.Value = Date
     DTEndDate.Value = Date
-    lblAccrualRange.Caption = "Prev. Anni. Date to " & dtFiscalYearEnd
+    lblAccrualRange.Caption = "Prev. Anni. Date to " & "12/31/12" 'dtFiscalYearEnd
     Grid1.AddColumn "0"
     Grid1.AddColumn "1"
     Grid1.AddColumn "2"

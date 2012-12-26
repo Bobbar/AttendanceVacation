@@ -339,13 +339,15 @@ Public Function CalcYearsWorked(EmpNum As Variant) As Tenure
      Dim lngDaysWorked As Long, lngYearsWorked As Single
     CalcYearsWorked.YearsWorked = 0
     CalcYearsWorked.VacaWeeksAvail = 0
-    lngDaysWorked = DateDiff("d", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$(Date, strUserDateFormat)) - 1
+    lngDaysWorked = DateDiff("d", Format$(ReturnEmpInfo(EmpNum).HireDate, strUserDateFormat), Format$("12/31/12", strUserDateFormat)) - 1
     lngYearsWorked = lngDaysWorked / 365
     CalcYearsWorked.YearsWorked = Int(lngYearsWorked)
     If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
         CalcYearsWorked.VacaWeeksAvail = ReturnEmpInfo(EmpNum).VacaWeeks
         Exit Function
     End If
+    'If EmpNum = 954 Then Stop
+    
     Select Case CalcYearsWorked.YearsWorked
         Case 1
             CalcYearsWorked.VacaWeeksAvail = 1
@@ -454,11 +456,11 @@ Public Function dtAnniDate(HireDate As Date, Optional Period As Integer) As Anni
     Dim strHireDate        As String, strCurrentDate As String
     Dim strSplitHireDate() As String, strSplitCurDate() As String
     strHireDate = Format$(HireDate, "YYYY-MM-DD")
-    strCurrentDate = Format$(Date, "YYYY-MM-DD")
+    strCurrentDate = Format$("12/31/12", "YYYY-MM-DD")
     strSplitHireDate = Split(strHireDate, "-")
     strSplitCurDate = Split(strCurrentDate, "-")
     If Period > 0 Then
-        If DateDiff("d", strSplitCurDate(0) & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2), DateTime.Date) >= 1 Then  'if current date is past current anni date, then calc for current anni to next year anni
+        If DateDiff("d", strSplitCurDate(0) & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2), "2012-12-31") >= 1 Then  'if current date is past current anni date, then calc for current anni to next year anni
             dtAnniDate.PreviousYear = strSplitCurDate(0) - Period & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2)
             dtAnniDate.CurrentYear = strSplitCurDate(0) + 1 - Period & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2)
         Else
@@ -466,7 +468,7 @@ Public Function dtAnniDate(HireDate As Date, Optional Period As Integer) As Anni
             dtAnniDate.PreviousYear = strSplitCurDate(0) - 1 - Period & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2)
         End If
     Else
-        If DateDiff("d", strSplitCurDate(0) & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2), DateTime.Date) >= 1 Then  'if current date is past current anni date, then calc for current anni to next year anni
+        If DateDiff("d", strSplitCurDate(0) & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2), "2012-12-31") >= 1 Then  'if current date is past current anni date, then calc for current anni to next year anni
             dtAnniDate.PreviousYear = strSplitCurDate(0) & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2)
             dtAnniDate.CurrentYear = strSplitCurDate(0) + 1 & "-" & strSplitHireDate(1) & "-" & strSplitHireDate(2)
         Else
