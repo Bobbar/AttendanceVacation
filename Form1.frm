@@ -1,11 +1,11 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance"
-   ClientHeight    =   9705
+   ClientHeight    =   9630
    ClientLeft      =   45
    ClientTop       =   675
    ClientWidth     =   10815
@@ -21,7 +21,7 @@ Begin VB.Form Form1
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   9705
+   ScaleHeight     =   9630
    ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer tmrButtonEnable 
@@ -52,9 +52,9 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1110
-      Left            =   2760
+      Left            =   2100
       TabIndex        =   27
-      Top             =   930
+      Top             =   1050
       Visible         =   0   'False
       Width           =   4155
    End
@@ -62,7 +62,7 @@ Begin VB.Form Form1
       Height          =   2475
       Left            =   120
       TabIndex        =   11
-      Top             =   2640
+      Top             =   2280
       Width           =   10575
       Begin RichTextLib.RichTextBox txtNotes 
          Height          =   795
@@ -73,6 +73,7 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -207,7 +208,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   199294977
+         Format          =   201850881
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -230,7 +231,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   199294977
+         Format          =   201850881
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -329,7 +330,7 @@ Begin VB.Form Form1
       Height          =   4515
       Left            =   120
       TabIndex        =   6
-      Top             =   5220
+      Top             =   4860
       Width           =   10575
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
          Height          =   4035
@@ -392,18 +393,21 @@ Begin VB.Form Form1
       End
    End
    Begin VB.Frame Frame1 
-      Height          =   2535
+      Height          =   2115
       Left            =   120
       TabIndex        =   2
       Top             =   60
       Width           =   10575
       Begin VB.Frame Frame5 
+         Appearance      =   0  'Flat
          Caption         =   "Fuctions"
-         Height          =   735
-         Left            =   2700
+         ForeColor       =   &H80000008&
+         Height          =   435
+         Left            =   7800
          TabIndex        =   40
-         Top             =   1680
-         Width           =   4635
+         Top             =   900
+         Visible         =   0   'False
+         Width           =   1275
          Begin VB.CommandButton cmdAttenReports 
             Caption         =   "Attendance Reports"
             Height          =   360
@@ -444,15 +448,15 @@ Begin VB.Form Form1
          Left            =   3060
          Style           =   2  'Dropdown List
          TabIndex        =   29
-         Top             =   1200
+         Top             =   1320
          Width           =   2175
       End
       Begin VB.CommandButton cmdClear2 
          Caption         =   "Clear All"
-         Height          =   360
+         Height          =   240
          Left            =   9480
          TabIndex        =   28
-         Top             =   2040
+         Top             =   1800
          Width           =   990
       End
       Begin VB.TextBox txtAttenEmpNum 
@@ -470,7 +474,7 @@ Begin VB.Form Form1
          Left            =   300
          TabIndex        =   0
          Text            =   "EmpNum"
-         Top             =   480
+         Top             =   600
          Width           =   1335
       End
       Begin VB.TextBox txtAttenEmpName 
@@ -486,10 +490,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   405
-         Left            =   2640
+         Left            =   1980
          TabIndex        =   1
          Text            =   "EmpName"
-         Top             =   480
+         Top             =   600
          Width           =   4155
       End
       Begin VB.ComboBox cmbLocation 
@@ -507,7 +511,7 @@ Begin VB.Form Form1
          Left            =   300
          Style           =   2  'Dropdown List
          TabIndex        =   9
-         Top             =   1200
+         Top             =   1320
          Width           =   2535
       End
       Begin VB.CheckBox chkIsActive 
@@ -517,17 +521,17 @@ Begin VB.Form Form1
          DisabledPicture =   "Form1.frx":3099
          DownPicture     =   "Form1.frx":5699
          Enabled         =   0   'False
-         Height          =   315
-         Left            =   975
+         Height          =   375
+         Left            =   6375
          Style           =   1  'Graphical
          TabIndex        =   8
-         Top             =   1800
+         Top             =   600
          Width           =   975
       End
       Begin VB.Frame Frame4 
          Caption         =   "Alarms"
          Height          =   1575
-         Left            =   7860
+         Left            =   7740
          TabIndex        =   33
          Top             =   180
          Width           =   2595
@@ -647,7 +651,7 @@ Begin VB.Form Form1
          Height          =   375
          Left            =   5400
          TabIndex        =   46
-         Top             =   1200
+         Top             =   1320
          Width           =   1725
       End
       Begin VB.Label Label12 
@@ -655,9 +659,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Status"
          Height          =   195
-         Left            =   375
+         Left            =   6600
          TabIndex        =   38
-         Top             =   1860
+         Top             =   360
          Width           =   465
       End
       Begin VB.Label Label11 
@@ -667,7 +671,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   3060
          TabIndex        =   30
-         Top             =   960
+         Top             =   1080
          Width           =   735
       End
       Begin VB.Label Label10 
@@ -677,7 +681,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   300
          TabIndex        =   10
-         Top             =   960
+         Top             =   1080
          Width           =   600
       End
       Begin VB.Label Label3 
@@ -687,7 +691,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   5460
          TabIndex        =   5
-         Top             =   960
+         Top             =   1080
          Width           =   675
       End
       Begin VB.Label Label2 
@@ -695,9 +699,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Employee Name"
          Height          =   195
-         Left            =   4140
+         Left            =   3480
          TabIndex        =   4
-         Top             =   240
+         Top             =   360
          Width           =   1140
       End
       Begin VB.Label Label1 
@@ -707,7 +711,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   300
          TabIndex        =   3
-         Top             =   240
+         Top             =   360
          Width           =   1335
       End
    End
@@ -728,7 +732,7 @@ Begin VB.Form Form1
       Height          =   165
       Left            =   120
       TabIndex        =   48
-      Top             =   9780
+      Top             =   9420
       Width           =   1290
    End
    Begin VB.Label Label14 
@@ -746,9 +750,9 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H00808080&
       Height          =   165
-      Left            =   9180
+      Left            =   9240
       TabIndex        =   47
-      Top             =   9780
+      Top             =   9420
       Width           =   1470
    End
    Begin VB.Menu mnuPopup 
@@ -777,6 +781,19 @@ Begin VB.Form Form1
       End
       Begin VB.Menu mnuPrint 
          Caption         =   "Print"
+      End
+   End
+   Begin VB.Menu mnuFunc 
+      Caption         =   "Fuctions"
+      WindowList      =   -1  'True
+      Begin VB.Menu mnuVacations 
+         Caption         =   "Vacations"
+      End
+      Begin VB.Menu mnuVacaReports2 
+         Caption         =   "Vacation Reports"
+      End
+      Begin VB.Menu mnuAttenReports 
+         Caption         =   "Attendance Reports"
       End
    End
 End
@@ -1978,6 +1995,12 @@ Private Sub List1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y 
 errs:
     If Err.Number = 9 Then Exit Sub
 End Sub
+
+Private Sub mnuAttenReports_Click()
+ frmReport.LoadEmpList
+    frmReport.Show
+End Sub
+
 'Private Sub mnuAddHours_Click()
 '
 '    Dim start_row, stop_row, i, Rows As Integer
@@ -2049,6 +2072,7 @@ End Sub
 Private Sub mnuFilter_Click()
     frmFilters.Show
 End Sub
+
 Private Sub mnuPrint_Click()
     On Error Resume Next
     frmPrinters.Show 1
@@ -2355,6 +2379,15 @@ End Sub
 Private Sub mnuVacaReports_Click()
     frmVacationReports.Show
 End Sub
+
+Private Sub mnuVacaReports2_Click()
+ frmVacationReports.Show
+End Sub
+
+Private Sub mnuVacations_Click()
+frmVacations.Show
+End Sub
+
 Private Sub tmrButtonEnable_Timer()
     If NewEmp = False And UpdateMode = False And txtAttenEmpNum.Text <> "" And txtAttenEmpName.Text <> "" And DTEntryDate.Value <> "" And cmbExcused.Text <> "" And cmbTimeOffType.Text <> "" Then
         cmdSubmit.Enabled = True

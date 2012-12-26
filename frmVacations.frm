@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacations 
    BorderStyle     =   1  'Fixed Single
@@ -45,9 +45,10 @@ Begin VB.Form frmVacations
    Begin VB.Frame Frame3 
       Caption         =   "Functions"
       Height          =   1335
-      Left            =   4980
+      Left            =   4680
       TabIndex        =   39
-      Top             =   3900
+      Top             =   5520
+      Visible         =   0   'False
       Width           =   4755
       Begin VB.CommandButton cmdAttenReports 
          Caption         =   "Attendance Reports"
@@ -77,7 +78,7 @@ Begin VB.Form frmVacations
    Begin VB.Frame Frame2 
       Caption         =   "Queries"
       Height          =   1335
-      Left            =   120
+      Left            =   2580
       TabIndex        =   25
       Top             =   3900
       Width           =   4755
@@ -405,7 +406,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   199163905
+         Format          =   201850881
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -427,7 +428,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   199163905
+         Format          =   201850881
          CurrentDate     =   40935
       End
       Begin VB.Label Label11 
