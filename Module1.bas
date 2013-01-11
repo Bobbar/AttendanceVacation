@@ -364,6 +364,10 @@ Public Function CalcYearsWorked(EmpNum As Variant) As Tenure
         Case Is >= 25
             CalcYearsWorked.VacaHoursAvail = 200
     End Select
+    
+    
+    CalcYearsWorked.VacaHoursAvail = CalcYearsWorked.VacaHoursAvail + 8 'Add 8 hours to all for floating holiday.
+    
 End Function
 Public Sub GetEmpInfo()
     Dim rs      As New ADODB.Recordset

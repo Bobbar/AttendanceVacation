@@ -406,7 +406,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   201850881
+         Format          =   197918721
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -428,7 +428,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   201850881
+         Format          =   197918721
          CurrentDate     =   40935
       End
       Begin VB.Label Label11 
@@ -1708,6 +1708,7 @@ End Sub
 Private Sub txtEmpNum_KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 And CheckForEmp(txtEmpNum.Text) Then
         GetCurrentEmp (txtEmpNum.Text)
+        bolOpenEmp = True
         Call LoadEntries(optAll)
         frmVacations.SetFocus
     ElseIf KeyAscii = 13 And Not CheckForEmp(txtEmpNum.Text) Then
@@ -1720,6 +1721,7 @@ Private Sub txtEmpNum_LostFocus()
     If GetTabState And txtEmpNum.Text <> "" Then
         If CheckForEmp(txtEmpNum.Text) Then
             GetCurrentEmp (txtEmpNum.Text)
+            bolOpenEmp = True
             Call LoadEntries(optAll)
             frmVacations.SetFocus
         Else
