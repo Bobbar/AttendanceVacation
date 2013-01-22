@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -208,7 +207,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   201850881
+         Format          =   180944897
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -231,7 +230,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   201850881
+         Format          =   181010433
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -1619,16 +1618,16 @@ Private Sub Form_Load()
     strROAccessUser = "AttenUserRO"
     strROAccessPass = "8f0DYyS7y056"
     Select Case UCase$(Environ$("USERNAME"))
-        Case "SORRELLJ"
+        Case "JALOVELL"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
-        Case "HOWARDS"
+        Case "SLHOWARD"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
-        Case "SCHRINERT"
+        Case "TKSCHRIN"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
-        Case "LOVELLB"
+        Case "RBLOVELL"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
         Case Else
