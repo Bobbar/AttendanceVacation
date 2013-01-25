@@ -73,6 +73,7 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -207,7 +208,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   180944897
+         Format          =   180813825
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -230,7 +231,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   181010433
+         Format          =   180813825
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -1611,7 +1612,7 @@ Private Sub Form_Load()
     lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     intQryIndex = 0
     ReDim lngTimeRemainingArray(1)
-    strServerAddress = "EPICAPP"
+    strServerAddress = "10.35.1.40"
     Dim strFullAccessUser As String, strFullAccessPass As String, strROAccessUser As String, strROAccessPass As String
     strFullAccessUser = "AttenUser"
     strFullAccessPass = "y2zq3T21Ejia"
