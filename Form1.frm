@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -208,7 +207,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   180813825
+         Format          =   181207041
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -231,7 +230,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   180813825
+         Format          =   181207041
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -1313,6 +1312,7 @@ Public Sub GetEntries()
         If bolVacationOpen Then
             Call frmVacations.SetStart
             Call frmVacations.LoadEntries(frmVacations.optAll)
+            Form1.SetFocus
         End If
         Exit Sub
     ElseIf rs.RecordCount >= 1 Then
@@ -1376,6 +1376,7 @@ Public Sub GetEntries()
         If frmVacations.txtEmpNum <> txtAttenEmpNum Then
             Call frmVacations.SetStart
             Call frmVacations.LoadEntries(frmVacations.optAll)
+            Form1.SetFocus
         End If
     End If
 End Sub

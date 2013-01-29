@@ -406,7 +406,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   197918721
+         Format          =   252903425
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -428,7 +428,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   197918721
+         Format          =   252903425
          CurrentDate     =   40935
       End
       Begin VB.Label Label11 
@@ -1155,6 +1155,7 @@ Public Sub LoadEntries(Optional ShowAll As Boolean)
     If txtEmpNum <> Form1.txtAttenEmpNum Then
         Form1.txtAttenEmpNum.Text = strCurrentEmpInfo.Number 'intEmpNum(List1.ListIndex)
         Form1.GetEntries
+        frmVacations.SetFocus
         'GetCurrentEmp (txtEmpNum.Text)
     End If
 End Sub
