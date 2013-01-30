@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacationReports 
    BorderStyle     =   1  'Fixed Single
@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   199294977
+            Format          =   254083073
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   199294977
+            Format          =   254083073
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -695,8 +695,10 @@ Private Sub WhosOnVaca(Month As Integer)
     Set cn = New ADODB.Connection
     cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     cn.CursorLocation = adUseClient
-    strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).EndDate, strDBDateFormat) & "'}) " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
+    strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).EndDate, strDBDateFormat) & "'}) " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order by vacations_0.idStartDate"
     rs.Open strSQL1, cn, adOpenKeyset
+    Debug.Print strSQL1
+    
     With rs
         If rs.RecordCount = 0 Then Exit Sub
         Do Until .EOF
