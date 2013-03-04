@@ -135,6 +135,8 @@ Public Type EmpExist
     Exist As Boolean
     Number As String
 End Type
+Global cn_Global As New ADODB.Connection
+
 Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As String
     'this function is used to send the columns from grid to excel'
     'make column header to look like the letters used in excel'
@@ -291,25 +293,22 @@ Public Sub GetDataBaseStats()
     DataBaseStats.TotalEmployees = 0
     DataBaseStats.TotalVacaEntries = 0
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     Dim strSQL2 As String
     Dim strSQL3 As String
     strSQL1 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0"
     strSQL2 = "SELECT COUNT(*) FROM attendb.emplist emplist_0"
     strSQL3 = "SELECT COUNT(*) FROM attendb.vacations vacations_0"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenForwardOnly, adLockReadOnly
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     DataBaseStats.TotalAttenEntries = rs.Fields(0)
     rs.Close
-    rs.Open strSQL2, cn, adOpenForwardOnly, adLockReadOnly
+    Set rs = cn_Global.Execute(strSQL2)
     DataBaseStats.TotalEmployees = rs.Fields(0)
     rs.Close
-    rs.Open strSQL3, cn, adOpenForwardOnly, adLockReadOnly
+    Set rs = cn_Global.Execute(strSQL3)
     DataBaseStats.TotalVacaEntries = rs.Fields(0)
     rs.Close
-    cn.Close
 End Sub
 Public Function GetTabState() As Boolean
     GetTabState = False
@@ -364,21 +363,14 @@ Public Function CalcYearsWorked(EmpNum As Variant) As Tenure
         Case Is >= 25
             CalcYearsWorked.VacaHoursAvail = 200
     End Select
-    
-    
     CalcYearsWorked.VacaHoursAvail = CalcYearsWorked.VacaHoursAvail + 8 'Add 8 hours to all for floating holiday.
-    
 End Function
 Public Sub GetEmpInfo()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * FROM emplist order by idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         ReDim strEmpInfo(.RecordCount)
         Do Until .EOF
@@ -392,7 +384,6 @@ Public Sub GetEmpInfo()
             .MoveNext
         Loop
         .Close
-        cn.Close
     End With
 End Sub
 Public Sub GetCurrentEmp(EmpNum As String)

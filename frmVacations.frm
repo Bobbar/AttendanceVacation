@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacations 
    BorderStyle     =   1  'Fixed Single
@@ -406,7 +406,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   252903425
+         Format          =   298516481
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -428,7 +428,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   252903425
+         Format          =   298516481
          CurrentDate     =   40935
       End
       Begin VB.Label Label11 
@@ -1097,19 +1097,15 @@ Public Sub LoadEntries(Optional ShowAll As Boolean)
     If strCurrentEmpInfo.Number = "" Then Exit Sub
     Call SetStart
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     If ShowAll Then
         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idEmpNum='" & strCurrentEmpInfo.Number & "')" & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order By vacations_0.idStartDate"
     Else
         'strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strCurrentEmpInfo.HireDate, intPeriod).PreviousYearSub1Week, strDBDateFormat) & "'})" & "AND (vacations_0.idStartDate<={d '" & Format$(dtAnniDate(strCurrentEmpInfo.HireDate, intPeriod).CurrentYearPlus1Week, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & strCurrentEmpInfo.Number & "')" & IIf(chkRequested.Value = 0, "" & "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order By vacations_0.idStartDate"
         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DateAdd("yyyy", -intPeriod, dtVacaPeriod.StartDate), strDBDateFormat) & "'})" & "AND (vacations_0.idStartDate<={d '" & Format$(DateAdd("yyyy", -intPeriod, dtVacaPeriod.EndDate), strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & strCurrentEmpInfo.Number & "')" & IIf(chkRequested.Value = 0, "" & "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order By vacations_0.idStartDate"
     End If
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     If optAll Then
         lblCurrentPeriod.Caption = "All Periods"
     Else
@@ -1178,21 +1174,17 @@ Private Sub ReSizeSGrid()
 End Sub
 Public Sub CalcWeeksAvail()
     Dim rs            As New ADODB.Recordset
-    Dim cn            As New ADODB.Connection
     Dim strSQL1       As String
     Dim intTakenWeeks As Integer
     Dim lngHoursTaken As Long
     Dim intDays       As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     intTakenWeeks = 0
     DTStartDate = dtVacaPeriod.StartDate
     DTEndDate = dtVacaPeriod.EndDate
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idendDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & strCurrentEmpInfo.Number & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount < 1 Then
             lblTakenHours = 0
@@ -1204,7 +1196,6 @@ Public Sub CalcWeeksAvail()
             Exit Sub
         Else
             Do Until rs.EOF
-                
                 lngHoursTaken = lngHoursTaken + !idHours
                 .MoveNext
             Loop
@@ -1226,17 +1217,12 @@ End Sub
 Private Sub chkReScheduled_Click()
     Call LoadEntries(optAll)
 End Sub
-
 Private Sub cmdAdd_Click()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "select * from vacations"
-    rs.Open strSQL1, cn, adOpenUnspecified, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenUnspecified, adLockOptimistic
     With rs
         rs.AddNew
         !idStartDate = Format$(DTStartDate.Value, strDBDateFormat)
@@ -1248,8 +1234,6 @@ Private Sub cmdAdd_Click()
         !idEmpNum = strCurrentEmpInfo.Number
         rs.Update
     End With
-    rs.Close
-    cn.Close
     ClearAllButEmpInfo
     Call LoadEntries(optAll)
 End Sub
@@ -1354,25 +1338,17 @@ Private Sub cmdOverride_Click()
     End If
     intVacaHours = Int(VacaHours)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     strSQL1 = "SELECT * From emplist Where idNumber = '" & strCurrentEmpInfo.Number & "'"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    cn_Global.CursorLocation = adUseClient
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         If intVacaHours = !idVacaHours Then
-            .Close
-            cn.Close
             Exit Sub
         End If
         !idVacaHours = intVacaHours
         .Update
-        .Close
     End With
-    cn.Close
     strCurrentEmpInfo.VacaHours = intVacaHours
     Call LoadEntries(optAll)
 End Sub
@@ -1388,12 +1364,10 @@ End Sub
 Private Sub UpdateEntry()
     On Error GoTo errs
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From vacations Where idGUID = '" & strGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         !idStartDate = Format$(DTStartDate.Value, strDBDateFormat)
         !idEndDate = Format$(DTEndDate.Value, strDBDateFormat)
@@ -1404,8 +1378,6 @@ Private Sub UpdateEntry()
         !idEmpNum = strCurrentEmpInfo.Number
         rs.Update
     End With
-    rs.Close
-    cn.Close
     ClearAllButEmpInfo
     UpdateMode = False
     Call LoadEntries(optAll)
@@ -1448,20 +1420,14 @@ Private Sub Form_Load()
 End Sub
 Private Sub DeleteEntry()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From Vacations Where idGUID = '" & strSelGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         .Delete
         .Update
     End With
-    rs.Close
-    cn.Close
     Call LoadEntries(optAll)
 End Sub
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -1507,7 +1473,6 @@ Private Sub Grid1_DblClick(ByVal lRow As Long, ByVal lCol As Long)
         cmbStatus2.Text = .CellText(.SelectedRow, 5)
         txtNotes.Text = .CellText(.SelectedRow, 6)
         strGUID = .CellText(.SelectedRow, 7)
-        
     End With
     cmdAdd.Visible = False
     cmdUpdate.Visible = True
@@ -1625,7 +1590,6 @@ Private Sub optXYears_Click()
 End Sub
 Private Sub LiveSearch(ByVal strSearchString As String)
     Dim rs               As New ADODB.Recordset
-    Dim cn               As New ADODB.Connection
     Dim strSQL1          As String
     Dim strUsedJobNums() As String
     Dim Row              As Integer
@@ -1633,10 +1597,9 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     Row = 0
     List1.Clear
     Erase intEmpNum
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT idName,idNumber From emplist Where idName Like '%" & strSearchString & "%' Order By EmpList.idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     ReDim intEmpNum(rs.RecordCount)
     ReDim strUsedJobNums(rs.RecordCount + 1)
     Do Until rs.EOF
@@ -1652,8 +1615,6 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     ElseIf rs.RecordCount <= 0 Then
         List1.Visible = False
     End If
-    rs.Close
-    cn.Close
 End Sub
 Private Sub tmrButtonEnabler_Timer()
     If bolOpenEmp And IsNumeric(txtHours.Text) Then
@@ -1663,8 +1624,7 @@ Private Sub tmrButtonEnabler_Timer()
             cmdAdd.Enabled = False
         End If
     Else
-    cmdAdd.Enabled = False
-    
+        cmdAdd.Enabled = False
     End If
     If cmbStatus.Text = "" Or cmbStatus2.Text = "" Then cmdAdd.Enabled = False
     If UpdateMode Then

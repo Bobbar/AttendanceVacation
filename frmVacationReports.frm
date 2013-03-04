@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacationReports 
    BorderStyle     =   1  'Fixed Single
@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   254083073
+            Format          =   298516481
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   254083073
+            Format          =   298516481
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -305,7 +305,6 @@ Option Explicit
 Private strEmpsToRun() As String
 Private Sub cmdAccruals_Click()
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim i         As Integer
     Dim sFntUnder As New StdFont
@@ -315,10 +314,7 @@ Private Sub cmdAccruals_Click()
     sFntNormal.Underline = False
     sFntNormal.Name = "Tahoma"
     EmpListByCompany
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     Grid1.BackColor = colGridBusy
     Screen.MousePointer = vbHourglass
     Grid1.Redraw = False
@@ -326,7 +322,7 @@ Private Sub cmdAccruals_Click()
     Grid1.Rows = 1
     For i = 0 To UBound(strEmpsToRun) '(strEmpInfo)
         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(dtFiscalYearEnd, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "') " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
-        rs.Open strSQL1, cn, adOpenKeyset
+        Set rs = cn_Global.Execute(strSQL1)
         With rs
             If .RecordCount = 0 Then GoTo NextLoop
             Grid1.Rows = Grid1.Rows + 1
@@ -340,12 +336,10 @@ Private Sub cmdAccruals_Click()
                 Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
-                
                 .MoveNext
             Loop
             Grid1.Rows = Grid1.Rows + 1
 NextLoop:
-            .Close
         End With
     Next i
     ReSizeSGrid
@@ -357,7 +351,6 @@ NextLoop:
 End Sub
 Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim rs          As New ADODB.Recordset
-    Dim cn          As New ADODB.Connection
     Dim strSQL1     As String
     Dim i           As Integer, b           As Integer
     Dim SortArray() As Variant
@@ -372,10 +365,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim bolHeaderAdded As Boolean
     Dim Found          As String
     bolHeaderAdded = False
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
     sFntUnder.Name = "Tahoma"
@@ -386,7 +376,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Grid1.Clear
     Grid1.Rows = 1
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(EndDate, strDBDateFormat) & "'})" & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount = 0 Then Exit Sub
         Do Until .EOF
@@ -406,7 +396,6 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 .MoveNext
             End If
         Loop
-        .Close
         If UBound(SortArray, 2) = 0 Then GoTo leavesub
         Call MedianThreeQuickSort1(SortArray) 'Modified quick sort that supports multidimentional arrays (sorts by element 0 (name))
         i = 1
@@ -516,20 +505,16 @@ leavesub:
 End Sub
 Private Function VacaAvailAccrual(EmpNum) As Integer
     Dim rs            As New ADODB.Recordset
-    Dim cn            As New ADODB.Connection
     Dim strSQL1       As String
     Dim intTakenWeeks As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     VacaAvailAccrual = 0
     intTakenWeeks = 0
     DTStartDate = dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
     DTEndDate = dtFiscalYearEnd
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount < 1 Then
             VacaAvailAccrual = 0
@@ -551,22 +536,18 @@ Private Function VacaAvailAccrual(EmpNum) As Integer
 End Function
 Private Function VacaAvail(EmpNum) As Integer
     Dim rs            As New ADODB.Recordset
-    Dim cn            As New ADODB.Connection
     Dim strSQL1       As String
     Dim intTakenWeeks As Integer
     Dim lngHoursTaken As Long
     Dim intDays       As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     VacaAvail = 0
     intTakenWeeks = 0
     DTStartDate = dtVacaPeriod.StartDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
     DTEndDate = dtVacaPeriod.EndDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).CurrentYear
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount < 1 Then
             VacaAvail = 0
@@ -674,7 +655,6 @@ End Sub
 'WhosOnVaca determines which emps will be on vacation by month, ordered desc by week, and alphebetically by name (This was a tough one!)
 Private Sub WhosOnVaca(Month As Integer)
     Dim rs              As New ADODB.Recordset
-    Dim cn              As New ADODB.Connection
     Dim strSQL1         As String
     Dim Found           As Boolean
     Dim bolMonthAdded   As Boolean
@@ -691,14 +671,9 @@ Private Sub WhosOnVaca(Month As Integer)
     sFntNormal.Underline = False
     sFntNormal.Name = "Tahoma"
     bolMonthAdded = False
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).EndDate, strDBDateFormat) & "'}) " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order by vacations_0.idStartDate"
-    rs.Open strSQL1, cn, adOpenKeyset
-    Debug.Print strSQL1
-    
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If rs.RecordCount = 0 Then Exit Sub
         Do Until .EOF
@@ -772,7 +747,6 @@ printarray:
             End If
         Loop
 getout:
-        .Close
     End With
     If intStartingRows < Grid1.Rows Then 'if we added rows to the grid, put a blank row at the end for easier reading
         Grid1.Rows = Grid1.Rows + 1

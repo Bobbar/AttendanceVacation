@@ -97,7 +97,7 @@ Begin VB.Form frmFilters
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   210436097
+            Format          =   296878081
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -121,7 +121,7 @@ Begin VB.Form frmFilters
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   210436097
+            Format          =   296878081
             CurrentDate     =   40487
          End
          Begin VB.Label Label3 

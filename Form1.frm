@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
@@ -73,6 +73,7 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -207,7 +208,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   181207041
+         Format          =   297336833
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -230,7 +231,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   181207041
+         Format          =   297336833
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -951,53 +952,43 @@ Public Sub SetAckLabel(EmpNum As String)
 End Sub
 Public Sub SetEmpLocation(Location As String, Location2 As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     On Error Resume Next
     If txtAttenEmpNum.Text = "" Or NewEmp = True Then Exit Sub
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idNumber = '" & txtAttenEmpNum.Text & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         !idLocation1 = Location
         !idLocation2 = Location2
         rs.Update
     End With
-    rs.Close
-    cn.Close
     GetEmpInfo
 End Sub
 Public Sub SetEmpActive(IsActive As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     If txtAttenEmpNum.Text = "" Or chkIsActive.Enabled = False Or NewEmp = True Then Exit Sub
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idNumber = '" & txtAttenEmpNum.Text & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         !idIsActive = IsActive
     End With
     rs.Update
-    rs.Close
-    cn.Close
     GetEmpInfo
 End Sub
 Private Sub LiveSearch(ByVal strSearchString As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     Dim Row     As Integer
     On Error Resume Next
     Row = 0
     List1.Clear
     Erase intEmpNum
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT idName,idNumber From emplist Where idName Like '%" & strSearchString & "%' Order By EmpList.idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     ReDim intEmpNum(rs.RecordCount)
     Do Until rs.EOF
         With rs
@@ -1012,14 +1003,11 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     ElseIf rs.RecordCount <= 0 Then
         List1.Visible = False
     End If
-    rs.Close
-    cn.Close
 End Sub
 Public Sub DateRangeReport()
     GridAtten.Redraw = False
     GridAtten.Visible = False
     Dim rs               As New ADODB.Recordset
-    Dim cn               As New ADODB.Connection
     Dim strSQL1          As String
     Dim strUsedJobNums() As String
     Dim dtTicketDate     As Date
@@ -1098,12 +1086,9 @@ Public Sub DateRangeReport()
         End If
     End If
     If frmFilters.chkAll.Value = 1 Then Qry = "SELECT * From AttenEntries where idAttenEmpNum like '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = Qry
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     Row = 0
     Line = 1
     GridAtten.Clear
@@ -1156,8 +1141,6 @@ Public Sub DateRangeReport()
             rs.MoveNext
         End With
     Loop
-    rs.Close
-    cn.Close
     Erase strUsedJobNums
     GridAtten.Rows = Line - 1
     intRowsAdded = Line - 1
@@ -1237,7 +1220,6 @@ Public Sub ClearFields()
     GridAtten.Visible = False
     cmdUpdate.Visible = False
     Frame3.BackColor = vbButtonFace
-    
     UpdateMode = False
     cmdSubmit.Visible = True
     NewEmp = False
@@ -1283,7 +1265,6 @@ End Sub
 Public Sub GetEntries()
     On Error Resume Next
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
@@ -1291,24 +1272,19 @@ Public Sub GetEntries()
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
     sFntNormal.Name = "Tahoma"
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     AttenVals.FullExcused = 0
     AttenVals.FullUnExcused = 0
     AttenVals.PartialExcused = 0
     AttenVals.PartialUnExcused = 0
     Call FillHeader(txtAttenEmpNum.Text)
     strSQL1 = "SELECT * From AttenEntries Where idAttenEmpNum = '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     If rs.RecordCount < 1 Then ' No entries
         GridAtten.Visible = False
         GridAtten.Redraw = False
         GridAtten.Clear
         lblGrid.Visible = True
-        rs.Close
-        cn.Close
         If bolVacationOpen Then
             Call frmVacations.SetStart
             Call frmVacations.LoadEntries(frmVacations.optAll)
@@ -1366,7 +1342,6 @@ Public Sub GetEntries()
             rs.MoveNext
         End With
     Loop
-    rs.Close
     ReSizeSGrid
     GridAtten.Redraw = True
     GridAtten.Visible = True
@@ -1474,17 +1449,13 @@ Public Sub AddEmpToDB(Name As Variant, _
                       Location2 As String, _
                       IsActive As String)
     Dim rs         As New ADODB.Recordset
-    Dim cn         As New ADODB.Connection
     Dim strSQL2    As String
     Dim FormatDate As String
     On Error GoTo errs
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     FormatDate = Format$(HireDate, strDBDateFormat)
     strSQL2 = "INSERT INTO attendb.emplist (idName,idLocation1,idLocation2,idNumber,idHireDate,idIsActive) VALUES ('" & Name & "','" & Location1 & "','" & Location2 & "','" & Num & "','" & FormatDate & "','" & IsActive & "')"
-    rs.Open strSQL2, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL2, cn_Global, adOpenKeyset, adLockOptimistic
     Exit Sub
 errs:
     MsgBox Err.Description
@@ -1492,15 +1463,11 @@ End Sub
 Private Sub cmdSubmit_Click()
     On Error GoTo errs
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "select * from attenentries"
     cmdSubmit.Enabled = False
-    rs.Open strSQL1, cn, adOpenUnspecified, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenUnspecified, adLockOptimistic
     With rs
         rs.AddNew
         !idAttenEmpNum = Trim$(txtAttenEmpNum.Text)
@@ -1521,8 +1488,6 @@ Private Sub cmdSubmit_Click()
         !idAttenNotes = strNotes
         rs.Update
     End With
-    rs.Close
-    cn.Close
     GetEntries
     ClearBottomFields
     Exit Sub
@@ -1533,12 +1498,10 @@ End Sub
 Private Sub cmdUpdate_Click()
     On Error GoTo errs
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From AttenEntries Where idGUID Like '" & SelGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         If bolIsDateRange = True Then
             !idAttenEntryDate = Format$(DTEntryDate.Value, strDBDateFormat)
@@ -1557,8 +1520,6 @@ Private Sub cmdUpdate_Click()
         !idAttenNotes = strNotes
         rs.Update
     End With
-    rs.Close
-    cn.Close
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     GetEntries
@@ -1605,6 +1566,7 @@ End Sub
 Private Sub cmdVacations_Click()
     frmVacations.Show
 End Sub
+
 Private Sub Form_Initialize()
     'CheckForDLLS
 End Sub
@@ -1636,6 +1598,7 @@ Private Sub Form_Load()
             strUsername = strROAccessUser
             strPassword = strROAccessPass
     End Select
+    cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     dtVacaPeriod.StartDate = "1/1/" & DateTime.Year(DateTime.Date)
     dtVacaPeriod.EndDate = "12/31/" & DateTime.Year(DateTime.Date)
     cmbExcused.AddItem "", 0
@@ -1680,12 +1643,10 @@ Private Sub SetupGrid()
 End Sub
 Public Sub FillCombos()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From comboitems Order By idTimeOffType"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     cmbTimeOffType.Clear
     cmbLocation.Clear
     cmbLocation2.Clear
@@ -1872,27 +1833,22 @@ Private Sub Label13_Click()
     GetDataBaseStats
     Dim rs      As New ADODB.Recordset
     Dim rs2     As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String, strSQL2 As String
     ReDim AttenStats(0)
     strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = 'Called Off'"
     strSQL1 = "SELECT * FROM attendb.comboitems comboitems_0"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenForwardOnly, adLockReadOnly
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         Do Until .EOF
             AttenStats(UBound(AttenStats)).ExTypeName = !idTimeOffType
             strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = '" & AttenStats(UBound(AttenStats)).ExTypeName & "'"
-            rs2.Open strSQL2, cn, adOpenForwardOnly, adLockReadOnly
+            Set rs2 = cn_Global.Execute(strSQL2)
             AttenStats(UBound(AttenStats)).ExTypeCount = rs2.Fields(0)
-            rs2.Close
             ReDim Preserve AttenStats(UBound(AttenStats) + 1)
             .MoveNext
         Loop
     End With
-    rs.Close
-    cn.Close
     TotAttenEnt = DataBaseStats.TotalAttenEntries
     Dim i As Integer
     For i = 0 To UBound(AttenStats) - 1
@@ -1998,41 +1954,14 @@ errs:
 End Sub
 
 Private Sub mnuAttenReports_Click()
- frmReport.LoadEmpList
+    frmReport.LoadEmpList
     frmReport.Show
 End Sub
-
-'Private Sub mnuAddHours_Click()
-'
-'    Dim start_row, stop_row, i, Rows As Integer
-'
-'    Dim Hours As Single
-'
-'    on error Resume Next
-'
-'    If MSHFlexGridAtten.Row > MSHFlexGridAtten.RowSel Then
-'        start_row = MSHFlexGridAtten.RowSel
-'        stop_row = MSHFlexGridAtten.Row
-'    Else
-'        start_row = MSHFlexGridAtten.Row
-'        stop_row = MSHFlexGridAtten.RowSel
-'
-'    End If
-'
-'    Rows = stop_row - start_row + 1
-'
-'    For i = start_row To stop_row
-'        Hours = Hours + MSHFlexGridAtten.TextMatrix(i, 5)
-'    Next
-'    MsgBox Hours & " hours in " & Rows & " entries.", , "Total Hours"
-'
-'End Sub
 Private Sub mnuDelete_Click()
     DeleteEntry
 End Sub
 Private Sub DeleteEntry()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     Dim blah
     On Error GoTo errs
@@ -2047,17 +1976,12 @@ Private Sub DeleteEntry()
         Exit Sub
     ElseIf blah = vbYes Then
     End If
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From  AttenEntries Where idGUID = '" & SelGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         .Delete
     End With
-    rs.Close
-    cn.Close
     SelDate = vbNullString
     SelExcuse = vbNullString
     SelType = vbNullString
@@ -2382,11 +2306,11 @@ Private Sub mnuVacaReports_Click()
 End Sub
 
 Private Sub mnuVacaReports2_Click()
- frmVacationReports.Show
+    frmVacationReports.Show
 End Sub
 
 Private Sub mnuVacations_Click()
-frmVacations.Show
+    frmVacations.Show
 End Sub
 
 Private Sub tmrButtonEnable_Timer()

@@ -158,14 +158,14 @@ Begin VB.Form frmReport
          TabCaption(1)   =   "Shop"
          TabPicture(1)   =   "frmReport.frx":0CE6
          Tab(1).ControlEnabled=   0   'False
-         Tab(1).Control(0)=   "lstShopEmp"
-         Tab(1).Control(1)=   "lblShopEmp"
+         Tab(1).Control(0)=   "lblShopEmp"
+         Tab(1).Control(1)=   "lstShopEmp"
          Tab(1).ControlCount=   2
          TabCaption(2)   =   "Wooster"
          TabPicture(2)   =   "frmReport.frx":0D02
          Tab(2).ControlEnabled=   0   'False
-         Tab(2).Control(0)=   "lstWoosterShopEmp"
-         Tab(2).Control(1)=   "lblWoosterEmp"
+         Tab(2).Control(0)=   "lblWoosterEmp"
+         Tab(2).Control(1)=   "lstWoosterShopEmp"
          Tab(2).ControlCount=   2
          Begin VB.ListBox lstOfficeEmp 
             Appearance      =   0  'Flat
@@ -377,7 +377,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   210567169
+            Format          =   296943617
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -401,7 +401,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   210567169
+            Format          =   296943617
             CurrentDate     =   40487
          End
          Begin VB.Label Label1 
@@ -484,7 +484,6 @@ Option Explicit
 Public bolShowZeroEntries As Boolean
 Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
@@ -497,21 +496,17 @@ Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
     intOtherRowsAdded = 0
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     DTStartDate = Format$(frmReport.DTStart.Value, "MM/DD/YYYY")
     DTEndDate = Format$(frmReport.DTEnd.Value, "MM/DD/YYYY")
     strSQL1 = "SELECT * FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         strReportNum = EmpNum
         strReportName = ReturnEmpInfo(EmpNum).Name
     End With
     If Not bolShowZeroEntries And rs.RecordCount < 1 Then
         NoEntries = True
-        rs.Close
         Exit Sub
     End If
     Do Until rs.EOF
@@ -538,11 +533,9 @@ Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
             .MoveNext ' goto next entry
         End With
     Loop
-    rs.Close
 End Sub
 Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
@@ -555,21 +548,17 @@ Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
     intOtherRowsAdded = 0
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     DTStartDate = Format$(frmReport.DTStart.Value, "MM/DD/YYYY")
     DTEndDate = Format$(frmReport.DTEnd.Value, "MM/DD/YYYY")
     strSQL1 = "SELECT *" & " FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         strReportNum = EmpNum
         strReportName = ReturnEmpInfo(EmpNum).Name
     End With
     If Not bolShowZeroEntries And rs.RecordCount < 1 Then
         NoEntries = True
-        rs.Close
         Exit Sub
     End If
     Do Until rs.EOF
@@ -596,7 +585,6 @@ Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
             .MoveNext ' goto next entry
         End With
     Loop
-    rs.Close
 End Sub
 Public Sub EmpListReportMulti()
     Dim i As Integer, PagesPrinted As Integer
@@ -1277,15 +1265,11 @@ Public Sub PrintSGridSingle(FlexGrid As vbalGrid)
 End Sub
 Public Sub LoadEmpList()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     Dim iOffice As Integer, iShop As Integer, iWoosterShop As Integer
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idIsActive = 'TRUE' Order By idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     lstOfficeEmp.Clear
     lstShopEmp.Clear
     lstWoosterShopEmp.Clear
@@ -1307,8 +1291,6 @@ Public Sub LoadEmpList()
             .MoveNext
         End With
     Loop
-    rs.Close
-    cn.Close
     lblOfficeEmp.Caption = "Office Employees - " & lstOfficeEmp.ListCount
     lblShopEmp.Caption = "Shop Employees - " & lstShopEmp.ListCount
     lblWoosterEmp.Caption = "Wooster Employees - " & lstWoosterShopEmp.ListCount

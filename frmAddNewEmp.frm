@@ -42,7 +42,7 @@ Begin VB.Form frmAddNewEmp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   199294977
+      Format          =   179306497
       CurrentDate     =   40934
    End
    Begin VB.ComboBox cmbLocation2 
@@ -247,8 +247,6 @@ Public Sub CancelButton_Click()
     frmAddNewEmp.Hide
 End Sub
 Private Sub cmdAddNew_Click()
-    Dim rs         As New ADODB.Recordset
-    Dim cn         As New ADODB.Connection
     Dim strEmpName As String, FormatDate As String
     Dim blah
     If txtFirstName.Text = "" Or txtLastName.Text = "" Or cmbLocation1.Text = "" Or cmbLocation2.Text = "" Then
