@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   298516481
+            Format          =   179437569
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   298516481
+            Format          =   179437569
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -666,6 +666,8 @@ Private Sub WhosOnVaca(Month As Integer)
     Dim i         As Integer
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
+    sFntUnder.Bold = True
+    sFntUnder.Size = 10
     sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
@@ -682,6 +684,7 @@ Private Sub WhosOnVaca(Month As Integer)
                 If Not bolMonthAdded Then
                     Grid1.Rows = Grid1.Rows + 1
                     Grid1.CellDetails Grid1.Rows - 1, 1, lstMonths.List(Month - 1), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 4, "Hours", DT_CENTER, , , , sFntUnder
                     bolMonthAdded = True
                 End If
                 CurDate = !idStartDate 'set to current position date
@@ -699,7 +702,7 @@ Private Sub WhosOnVaca(Month As Integer)
                         SortArray(0, UBound(SortArray, 2)) = ReturnEmpInfo(!idEmpNum).Name 'add data to array
                         SortArray(1, UBound(SortArray, 2)) = !idStartDate
                         SortArray(2, UBound(SortArray, 2)) = !idEndDate
-                        SortArray(3, UBound(SortArray, 2)) = !idStatus2
+                        SortArray(3, UBound(SortArray, 2)) = !idHours
                         SortArray(4, UBound(SortArray, 2)) = !idNotes
                         ReDim Preserve SortArray(4, UBound(SortArray, 2) + 1) 'make room in array for new data
 filteremp:
@@ -732,7 +735,7 @@ printarray:
                     Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(!idEmpNum).Name, DT_CENTER
                     Grid1.CellDetails Grid1.Rows - 1, 2, !idStartDate, DT_CENTER
                     Grid1.CellDetails Grid1.Rows - 1, 3, !idEndDate, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 4, !idStatus2, DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 4, !idHours, DT_CENTER
                     Grid1.CellDetails Grid1.Rows - 1, 5, !idNotes, DT_CENTER
                     Grid1.Rows = Grid1.Rows + 1
                     .MoveNext
