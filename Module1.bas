@@ -579,6 +579,14 @@ Public Sub PrintFlexGridSGrid(FlexGrid As vbalGrid, _
             X = xmin + GAP
             For c = 1 To .Columns
                 If frmPrinters.optCenterJust And c < .Columns Then
+                    With Printer
+                        .Font.Name = FlexGrid.CellFont(R, c).Name
+                        .Font.Bold = FlexGrid.CellFont(R, c).Bold
+                        .Font.Underline = FlexGrid.CellFont(R, c).Underline
+                        .Font.Italic = FlexGrid.CellFont(R, c).Italic
+                        .Font.Size = FlexGrid.CellFont(R, c).Size
+                        .ForeColor = FlexGrid.Cell(R, c).ForeColor
+                    End With
                     intCenterOffset = ((.ColumnWidth(c) * Screen.TwipsPerPixelX) / 2) - (Printer.TextWidth(.CellText(R, c)) / 2)
                 Else
                     intCenterOffset = 0
@@ -613,11 +621,19 @@ Public Sub PrintFlexGridSGrid(FlexGrid As vbalGrid, _
                         bolFirstLoop = False
                         intTotLen = intTotLen + Len(strSizedTxt) + 1
                         Printer.Font.Underline = .CellFont(R, c).Underline
-                        If .CellFont(R, c).Underline = True Then
-                            Printer.ForeColor = vbBlack
-                        Else
-                            Printer.ForeColor = &H808080
-                        End If
+                        '                        If .CellFont(R, c).Underline = True Then
+                        '                            Printer.ForeColor = vbBlack
+                        '                        Else
+                        '                            Printer.ForeColor = &H808080
+                        '                        End If
+                        With Printer
+                            .Font.Name = FlexGrid.CellFont(R, c).Name
+                            .Font.Bold = FlexGrid.CellFont(R, c).Bold
+                            .Font.Underline = FlexGrid.CellFont(R, c).Underline
+                            .Font.Italic = FlexGrid.CellFont(R, c).Italic
+                            .Font.Size = FlexGrid.CellFont(R, c).Size
+                            .ForeColor = FlexGrid.Cell(R, c).ForeColor
+                        End With
                         Printer.Print strSizedTxt
                         If Printer.CurrentY >= ymax Then ' new page
                             Printer.Line (XFirstColumn, ymin)-(xmax, Printer.CurrentY), vbBlack, B
@@ -649,12 +665,20 @@ Public Sub PrintFlexGridSGrid(FlexGrid As vbalGrid, _
                     'bolLongLine = False
                     Printer.CurrentX = X + intCenterOffset
                     TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
-                    Printer.Font.Underline = .CellFont(R, c).Underline
-                    If .CellFont(R, c).Underline = True Then
-                        Printer.ForeColor = vbBlack
-                    Else
-                        Printer.ForeColor = &H808080
-                    End If
+                    'Printer.Font.Underline = .CellFont(R, c).Underline
+                    '                    If .CellFont(R, c).Underline = True Then
+                    '                        Printer.ForeColor = vbBlack
+                    '                    Else
+                    '                        Printer.ForeColor = &H808080
+                    '                    End If
+                    With Printer
+                        .Font.Name = FlexGrid.CellFont(R, c).Name
+                        .Font.Bold = FlexGrid.CellFont(R, c).Bold
+                        .Font.Underline = FlexGrid.CellFont(R, c).Underline
+                        .Font.Italic = FlexGrid.CellFont(R, c).Italic
+                        .Font.Size = FlexGrid.CellFont(R, c).Size
+                        .ForeColor = FlexGrid.Cell(R, c).ForeColor
+                    End With
                     Printer.Print BoundedText(Printer, .CellText(R, c), TwipPix);
                 End If
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX

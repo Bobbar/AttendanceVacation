@@ -73,7 +73,6 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -208,7 +207,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   297336833
+         Format          =   179437569
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -231,7 +230,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   297336833
+         Format          =   3735553
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -2188,7 +2187,14 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                         End If
                         bolFirstLoop = False
                         intTotLen = intTotLen + Len(strSizedTxt) + 1
-                        Printer.Font.Underline = .CellFont(R, c).Underline
+                        With Printer.Font
+                            .Name = FlexGrid.Cell(R, c).Font.Name
+                            .Bold = FlexGrid.Cell(R, c).Font.Bold
+                            .Underline = FlexGrid.Cell(R, c).Font.Underline
+                            .Italic = FlexGrid.Cell(R, c).Font.Italic
+                            .Size = FlexGrid.Cell(R, c).Font.Size
+                        End With
+                        'Printer.Font.Underline = .CellFont(R, c).Underline
                         If .CellFont(R, c).Underline = True Then
                             Printer.ForeColor = vbBlack
                         Else
@@ -2246,6 +2252,13 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                     End If
                     Printer.CurrentX = X + intCenterOffset
                     Printer.CurrentY = PrevY + GAP
+                    With Printer.Font
+                            .Name = FlexGrid.Cell(R, c).Font.Name
+                            .Bold = FlexGrid.Cell(R, c).Font.Bold
+                            .Underline = FlexGrid.Cell(R, c).Font.Underline
+                            .Italic = FlexGrid.Cell(R, c).Font.Italic
+                            .Size = FlexGrid.Cell(R, c).Font.Size
+                        End With
                     Printer.Print BoundedText(Printer, .CellText(R, c), TwipPix);
                 End If
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX

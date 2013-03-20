@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   179437569
+            Format          =   282918913
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   179437569
+            Format          =   282918913
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -354,9 +354,9 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim strSQL1     As String
     Dim i           As Integer, b           As Integer
     Dim SortArray() As Variant
-    ReDim SortArray(6, 0)
+    ReDim SortArray(7, 0)
     Dim DateSortArray() As Variant
-    ReDim DateSortArray(6, 0)
+    ReDim DateSortArray(7, 0)
     Dim clStartDate   As Date, clEndDate As Date
     Dim bolFinalEntry As Boolean
     bolFinalEntry = False
@@ -366,7 +366,13 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim Found          As String
     bolHeaderAdded = False
     cn_Global.CursorLocation = adUseClient
+    Dim sFntBold As New StdFont
+    sFntBold.Bold = True
+    sFntBold.Size = 9
+    sFntBold.Name = "Tahoma"
     Dim sFntUnder As New StdFont
+    sFntUnder.Bold = True
+    sFntUnder.Size = 8
     sFntUnder.Underline = True
     sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
@@ -390,7 +396,8 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 SortArray(4, UBound(SortArray, 2)) = !idStatus
                 SortArray(5, UBound(SortArray, 2)) = !idStatus2
                 SortArray(6, UBound(SortArray, 2)) = !idNotes
-                ReDim Preserve SortArray(6, UBound(SortArray, 2) + 1)
+                SortArray(7, UBound(SortArray, 2)) = !idHours
+                ReDim Preserve SortArray(7, UBound(SortArray, 2) + 1)
                 .MoveNext 'move to next position
             Else
                 .MoveNext
@@ -415,7 +422,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     bolHeaderAdded = True
                 End If
                 Do Until FirstEmp <> CurEmp Or i = UBound(SortArray, 2)
-                    ReDim Preserve DateSortArray(6, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                    ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                     DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                     DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                     DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -423,9 +430,10 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     DateSortArray(4, UBound(DateSortArray, 2)) = SortArray(4, i)
                     DateSortArray(5, UBound(DateSortArray, 2)) = SortArray(5, i)
                     DateSortArray(6, UBound(DateSortArray, 2)) = SortArray(6, i)
+                    DateSortArray(7, UBound(DateSortArray, 2)) = SortArray(7, i)
                     i = i + 1
                     If i = UBound(SortArray, 2) And FirstEmp = SortArray(1, i) Then
-                        ReDim Preserve DateSortArray(6, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                        ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                         DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                         DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                         DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -433,6 +441,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                         DateSortArray(4, UBound(DateSortArray, 2)) = SortArray(4, i)
                         DateSortArray(5, UBound(DateSortArray, 2)) = SortArray(5, i)
                         DateSortArray(6, UBound(DateSortArray, 2)) = SortArray(6, i)
+                        DateSortArray(7, UBound(DateSortArray, 2)) = SortArray(7, i)
                         bolFinalEntry = True
                     Else
                         CurEmp = SortArray(1, i)
@@ -447,15 +456,16 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     Grid1.Rows = Grid1.Rows + 1
                     Grid1.CellDetails Grid1.Rows - 1, 1, DateSortArray(0, b), DT_CENTER 'StartDate
                     Grid1.CellDetails Grid1.Rows - 1, 2, DateSortArray(3, b), DT_CENTER 'EndDate
-                    clStartDate = DateSortArray(0, b)
-                    clEndDate = DateSortArray(3, b)
-                    Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                    'clStartDate = DateSortArray(0, b)
+                    'clEndDate = DateSortArray(3, b)
+                    'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 3, DateSortArray(7, b) & " Hours", DT_CENTER
                     Grid1.CellDetails Grid1.Rows - 1, 4, DateSortArray(4, b), DT_CENTER 'Status
                     Grid1.CellDetails Grid1.Rows - 1, 5, DateSortArray(5, b), DT_CENTER 'IsPaid?
                     Grid1.CellDetails Grid1.Rows - 1, 6, DateSortArray(6, b), DT_CENTER 'Notes
                 Next b
                 'Erase DateSortArray
-                ReDim DateSortArray(6, 0)
+                ReDim DateSortArray(7, 0)
                 Grid1.Rows = Grid1.Rows + 1
             Else
                 If Not bolHeaderAdded Then
@@ -468,9 +478,10 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 Grid1.Rows = Grid1.Rows + 1
                 Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER 'StartDate
                 Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER 'EndDate
-                clStartDate = SortArray(2, i)
-                clEndDate = SortArray(3, i)
-                Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                'clStartDate = SortArray(2, i)
+                'clEndDate = SortArray(3, i)
+                'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(7, i) & " Hours", DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(4, i), DT_CENTER 'Status
                 Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(5, i), DT_CENTER 'IsPaid?
                 Grid1.CellDetails Grid1.Rows - 1, 6, SortArray(6, i), DT_CENTER 'Notes
@@ -485,9 +496,10 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 Grid1.Rows = Grid1.Rows + 1
                 Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER 'StartDate
                 Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER 'EndDate
-                clStartDate = SortArray(2, i)
-                clEndDate = SortArray(3, i)
-                Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                'clStartDate = SortArray(2, i)
+                'clEndDate = SortArray(3, i)
+                'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(7, i) & " Hours", DT_CENTER
                 Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(4, i), DT_CENTER 'Status
                 Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(5, i), DT_CENTER 'IsPaid?
                 Grid1.CellDetails Grid1.Rows - 1, 6, SortArray(6, i), DT_CENTER 'Notes
@@ -497,7 +509,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
         Grid1.Rows = Grid1.Rows + 1
 leavesub:
         Erase SortArray
-        ReDim SortArray(6, 0)
+        ReDim SortArray(7, 0)
     End With
     ' Grid1.Redraw = True
     strReportTitle = "Vacations between " & StartDate & " and " & EndDate
@@ -667,8 +679,12 @@ Private Sub WhosOnVaca(Month As Integer)
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
     sFntUnder.Bold = True
-    sFntUnder.Size = 10
+    sFntUnder.Size = 9
     sFntUnder.Name = "Tahoma"
+    Dim sFntBold As New StdFont
+    sFntBold.Bold = True
+    sFntBold.Size = 9
+    sFntBold.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
     sFntNormal.Name = "Tahoma"
@@ -683,7 +699,8 @@ Private Sub WhosOnVaca(Month As Integer)
             If Found Then
                 If Not bolMonthAdded Then
                     Grid1.Rows = Grid1.Rows + 1
-                    Grid1.CellDetails Grid1.Rows - 1, 1, lstMonths.List(Month - 1), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 1, "Name", DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 2, lstMonths.List(Month - 1), DT_CENTER, , , , sFntUnder
                     Grid1.CellDetails Grid1.Rows - 1, 4, "Hours", DT_CENTER, , , , sFntUnder
                     bolMonthAdded = True
                 End If
@@ -714,29 +731,24 @@ filteremp:
                         End If
                     Loop
 printarray:
-                    If UBound(SortArray, 2) > 25 Then
-                        Call MedianThreeQuickSort1(SortArray) 'Modified quick sort that supports multidimentional arrays (sorts by element 0 (name))
-                    Else
-                        Call MySort(SortArray)
-                    End If
+                    Call MySort(SortArray) 'Sort by alpha
                     For i = 1 To UBound(SortArray, 2) 'cycle through the now sorted array and add it to the grid
                         Grid1.Rows = Grid1.Rows + 1
-                        Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(1, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(2, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(3, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(4, i), DT_CENTER
+                        Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , &H808080
+                        Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(1, i), DT_CENTER, , , &H808080, sFntBold
+                        Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(2, i), DT_CENTER, , , &H808080, sFntBold
+                        Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(3, i), DT_CENTER, , , &H808080
+                        Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(4, i), DT_CENTER, , , &H808080
                     Next i
                     Grid1.Rows = Grid1.Rows + 1
-                    'Erase SortArray 'erase that shit
                     ReDim SortArray(4, 0) 'make it an array again
                 Else 'if the current date and next dates dont match, add them directly to the grid
                     Grid1.Rows = Grid1.Rows + 1
-                    Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(!idEmpNum).Name, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 2, !idStartDate, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 3, !idEndDate, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 4, !idHours, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 5, !idNotes, DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(!idEmpNum).Name, DT_CENTER, , , &H808080
+                    Grid1.CellDetails Grid1.Rows - 1, 2, !idStartDate, DT_CENTER, , , &H808080, sFntBold
+                    Grid1.CellDetails Grid1.Rows - 1, 3, !idEndDate, DT_CENTER, , , &H808080, sFntBold
+                    Grid1.CellDetails Grid1.Rows - 1, 4, !idHours, DT_CENTER, , , &H808080
+                    Grid1.CellDetails Grid1.Rows - 1, 5, !idNotes, DT_CENTER, , , &H808080
                     Grid1.Rows = Grid1.Rows + 1
                     .MoveNext
                     If .EOF Then 'if we can set the current date, or leave the loop
