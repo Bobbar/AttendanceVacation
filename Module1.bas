@@ -255,15 +255,11 @@ Public Sub FindMySQLDriver()
     Dim strPossis() As String
     Dim blah
     ReDim strPossis(0)
-    Debug.Print GetODBCDrivers.Count
     For i = 1 To GetODBCDrivers.Count
         If InStr(1, GetODBCDrivers.Item(i), "MySQL") Then
             strPossis(UBound(strPossis)) = GetODBCDrivers.Item(i)
             ReDim Preserve strPossis(UBound(strPossis) + 1)
         End If
-    Next i
-    For i = 0 To UBound(strPossis)
-        Debug.Print i & " " & strPossis(i)
     Next i
     If UBound(strPossis) > 1 Then
         blah = MsgBox("Multiple MySQL Drivers detected!", vbExclamation + vbOKOnly, "Gasp!")

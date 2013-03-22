@@ -73,6 +73,7 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -207,7 +208,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   179437569
+         Format          =   179699713
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -230,7 +231,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   3735553
+         Format          =   179699713
          CurrentDate     =   40484
       End
       Begin VB.Label lblEditing 
@@ -1277,6 +1278,8 @@ Public Sub GetEntries()
     AttenVals.PartialUnExcused = 0
     Call FillHeader(txtAttenEmpNum.Text)
     strSQL1 = "SELECT * From AttenEntries Where idAttenEmpNum = '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
+    Debug.Print strSQL1
+    
     cn_Global.CursorLocation = adUseClient
     Set rs = cn_Global.Execute(strSQL1)
     If rs.RecordCount < 1 Then ' No entries
@@ -1593,6 +1596,9 @@ Private Sub Form_Load()
         Case "RBLOVELL"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
+        Case "HLSCHAAD"
+            strUsername = strFullAccessUser
+            strPassword = strFullAccessPass
         Case Else
             strUsername = strROAccessUser
             strPassword = strROAccessPass
@@ -1678,6 +1684,8 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     End If
     Set moApp = Nothing
     Call EndProgram
+    cn_Global.Close
+    
     'End
 End Sub
 Sub EndProgram()
