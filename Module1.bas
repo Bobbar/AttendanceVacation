@@ -135,7 +135,8 @@ Public Type EmpExist
     Exist As Boolean
     Number As String
 End Type
-Global cn_Global As New ADODB.Connection
+Global cn_Global    As New ADODB.Connection
+Public strLocalUser As String
 
 Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As String
     'this function is used to send the columns from grid to excel'

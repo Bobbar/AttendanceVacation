@@ -37,7 +37,7 @@ Begin VB.Form frmVacations
       EndProperty
       Height          =   1110
       Left            =   2400
-      TabIndex        =   45
+      TabIndex        =   44
       Top             =   1020
       Visible         =   0   'False
       Width           =   3435
@@ -46,7 +46,7 @@ Begin VB.Form frmVacations
       Caption         =   "Functions"
       Height          =   1335
       Left            =   4680
-      TabIndex        =   39
+      TabIndex        =   38
       Top             =   5520
       Visible         =   0   'False
       Width           =   4755
@@ -54,7 +54,7 @@ Begin VB.Form frmVacations
          Caption         =   "Attendance Reports"
          Height          =   360
          Left            =   1740
-         TabIndex        =   42
+         TabIndex        =   41
          Top             =   540
          Width           =   1770
       End
@@ -62,7 +62,7 @@ Begin VB.Form frmVacations
          Caption         =   "Close"
          Height          =   360
          Left            =   3660
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   540
          Width           =   990
       End
@@ -70,7 +70,7 @@ Begin VB.Form frmVacations
          Caption         =   "Vacation Reports"
          Height          =   360
          Left            =   120
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   540
          Width           =   1470
       End
@@ -79,14 +79,14 @@ Begin VB.Form frmVacations
       Caption         =   "Queries"
       Height          =   1335
       Left            =   2580
-      TabIndex        =   25
+      TabIndex        =   24
       Top             =   3900
       Width           =   4755
       Begin VB.CheckBox chkTaken 
          Caption         =   "Taken"
          Height          =   195
          Left            =   2040
-         TabIndex        =   37
+         TabIndex        =   36
          Top             =   840
          Value           =   1  'Checked
          Width           =   735
@@ -95,7 +95,7 @@ Begin VB.Form frmVacations
          Caption         =   "ReScheduled"
          Height          =   195
          Left            =   2040
-         TabIndex        =   36
+         TabIndex        =   35
          Top             =   600
          Value           =   1  'Checked
          Width           =   1275
@@ -104,7 +104,7 @@ Begin VB.Form frmVacations
          Caption         =   "Requested"
          Height          =   195
          Left            =   2040
-         TabIndex        =   35
+         TabIndex        =   34
          Top             =   360
          Value           =   1  'Checked
          Width           =   1215
@@ -113,7 +113,7 @@ Begin VB.Form frmVacations
          Caption         =   "Reset"
          Height          =   360
          Left            =   3540
-         TabIndex        =   34
+         TabIndex        =   33
          Top             =   540
          Width           =   990
       End
@@ -121,7 +121,7 @@ Begin VB.Form frmVacations
          Caption         =   "All Periods"
          Height          =   195
          Left            =   240
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   1020
          Width           =   1695
       End
@@ -142,7 +142,7 @@ Begin VB.Form frmVacations
          ForeColor       =   &H80000005&
          Height          =   255
          Left            =   480
-         TabIndex        =   29
+         TabIndex        =   28
          Text            =   "2"
          Top             =   720
          Width           =   255
@@ -151,7 +151,7 @@ Begin VB.Form frmVacations
          Caption         =   "Option1"
          Height          =   255
          Left            =   240
-         TabIndex        =   28
+         TabIndex        =   27
          Top             =   720
          Width           =   195
       End
@@ -159,7 +159,7 @@ Begin VB.Form frmVacations
          Caption         =   "Previous Period"
          Height          =   255
          Left            =   240
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   480
          Width           =   1455
       End
@@ -167,7 +167,7 @@ Begin VB.Form frmVacations
          Caption         =   "Current Period"
          Height          =   255
          Left            =   240
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   240
          Value           =   -1  'True
          Width           =   1455
@@ -178,7 +178,7 @@ Begin VB.Form frmVacations
          Caption         =   "Periods Ago"
          Height          =   195
          Left            =   780
-         TabIndex        =   30
+         TabIndex        =   29
          Top             =   765
          Width           =   855
       End
@@ -193,7 +193,7 @@ Begin VB.Form frmVacations
       Begin vbAcceleratorSGrid6.vbalGrid Grid1 
          Height          =   4095
          Left            =   120
-         TabIndex        =   49
+         TabIndex        =   48
          Top             =   240
          Visible         =   0   'False
          Width           =   9375
@@ -204,6 +204,7 @@ Begin VB.Form frmVacations
          BackgroundPicture=   "frmVacations.frx":0CCA
          BackgroundPictureHeight=   128
          BackgroundPictureWidth=   128
+         BackColor       =   -2147483633
          GridLineColor   =   4210752
          HighlightForeColor=   4210752
          NoFocusHighlightBackColor=   -2147483635
@@ -268,7 +269,7 @@ Begin VB.Form frmVacations
          EndProperty
          Height          =   375
          Left            =   4380
-         TabIndex        =   52
+         TabIndex        =   51
          Text            =   "0"
          Top             =   480
          Width           =   735
@@ -282,7 +283,7 @@ Begin VB.Form frmVacations
          Caption         =   "Cancel"
          Height          =   360
          Left            =   4860
-         TabIndex        =   48
+         TabIndex        =   47
          Top             =   1860
          Visible         =   0   'False
          Width           =   990
@@ -300,7 +301,7 @@ Begin VB.Form frmVacations
          Height          =   390
          Left            =   7620
          Style           =   2  'Dropdown List
-         TabIndex        =   46
+         TabIndex        =   45
          Top             =   480
          Width           =   1635
       End
@@ -314,7 +315,7 @@ Begin VB.Form frmVacations
          Caption         =   "Spell Check"
          Height          =   240
          Left            =   6120
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   1800
          Width           =   990
       End
@@ -406,7 +407,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   298516481
+         Format          =   180486145
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -428,8 +429,21 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   298516481
+         Format          =   180486145
          CurrentDate     =   40935
+      End
+      Begin VB.Label lblLastModified 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Last Modified:"
+         ForeColor       =   &H00808080&
+         Height          =   195
+         Left            =   7680
+         TabIndex        =   53
+         Top             =   1200
+         Visible         =   0   'False
+         Width           =   1035
       End
       Begin VB.Label Label11 
          AutoSize        =   -1  'True
@@ -437,7 +451,7 @@ Begin VB.Form frmVacations
          Caption         =   "Hour"
          Height          =   195
          Left            =   4380
-         TabIndex        =   53
+         TabIndex        =   52
          Top             =   240
          Width           =   705
       End
@@ -447,31 +461,9 @@ Begin VB.Form frmVacations
          Caption         =   "Paid/UnPaid"
          Height          =   195
          Left            =   7620
-         TabIndex        =   47
+         TabIndex        =   46
          Top             =   240
          Width           =   855
-      End
-      Begin VB.Label lblEditing 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "*EDITING*"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   12
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000FF&
-         Height          =   285
-         Left            =   7080
-         TabIndex        =   23
-         Top             =   1200
-         Visible         =   0   'False
-         Width           =   2445
       End
       Begin VB.Label Label5 
          AutoSize        =   -1  'True
@@ -535,7 +527,7 @@ Begin VB.Form frmVacations
          EndProperty
          Height          =   375
          Left            =   2280
-         TabIndex        =   44
+         TabIndex        =   43
          Text            =   "EmpName"
          Top             =   540
          Width           =   3435
@@ -553,7 +545,7 @@ Begin VB.Form frmVacations
          EndProperty
          Height          =   375
          Left            =   300
-         TabIndex        =   43
+         TabIndex        =   42
          Text            =   "EmpNum"
          Top             =   540
          Width           =   1395
@@ -563,7 +555,7 @@ Begin VB.Form frmVacations
          Caption         =   "Edit"
          Height          =   240
          Left            =   8940
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   960
          Width           =   510
       End
@@ -573,7 +565,7 @@ Begin VB.Form frmVacations
          Caption         =   "Employee Name"
          Height          =   195
          Left            =   2340
-         TabIndex        =   51
+         TabIndex        =   50
          Top             =   300
          Width           =   3360
       End
@@ -582,7 +574,7 @@ Begin VB.Form frmVacations
          Caption         =   "Employee #:"
          Height          =   195
          Left            =   300
-         TabIndex        =   50
+         TabIndex        =   49
          Top             =   300
          Width           =   1395
       End
@@ -721,7 +713,7 @@ Begin VB.Form frmVacations
       Caption         =   "Current Period"
       Height          =   195
       Left            =   4380
-      TabIndex        =   32
+      TabIndex        =   31
       Top             =   5280
       Width           =   1050
    End
@@ -753,7 +745,7 @@ Begin VB.Form frmVacations
       EndProperty
       Height          =   195
       Left            =   4320
-      TabIndex        =   31
+      TabIndex        =   30
       Top             =   5460
       Width           =   1215
    End
@@ -800,7 +792,7 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
     Dim intColumns      As Integer
     Dim lngYTopOfGrid   As Long
     Dim lngStartY       As Long, lngStartX As Long, lngEndX As Long, lngEndY As Long
-    intColumns = FlexGrid.Columns
+    intColumns = 6 'FlexGrid.Columns
     bolLongLine = False
     'On Error Resume Next
     Printer.Font.Underline = False
@@ -892,11 +884,11 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
         X = xmin + GAP
         lngYTopOfGrid = Printer.CurrentY
         If FlexGrid.Header = True Then
-            For c = 1 To .Columns ' - 1
+            For c = 1 To intColumns
                 Printer.CurrentX = X
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
                 PrevY = Printer.CurrentY
-                If c = .Columns Then '- 1
+                If c = intColumns Then '- 1
                     lngStartY = Printer.CurrentY + 5
                     lngStartX = Printer.CurrentX - GAP + 5
                     lngEndX = xmax
@@ -1138,6 +1130,8 @@ Public Sub LoadEntries(Optional ShowAll As Boolean)
             Grid1.CellDetails .AbsolutePosition, 5, !idStatus2, DT_CENTER
             Grid1.CellDetails .AbsolutePosition, 6, !idNotes, DT_WORDBREAK
             Grid1.CellDetails .AbsolutePosition, 7, !idGUID, DT_CENTER
+            Grid1.CellDetails .AbsolutePosition, 8, !idLastModified
+            Grid1.CellDetails .AbsolutePosition, 9, !idLastModifiedBy
             Grid1.ColumnVisible(7) = False
             .MoveNext
         Loop
@@ -1156,6 +1150,7 @@ Public Sub LoadEntries(Optional ShowAll As Boolean)
     End If
 End Sub
 Private Sub ReSizeSGrid()
+    On Error Resume Next
     ' Grid1.Redraw = False
     Dim c As Integer, R As Integer, intCellPadding As Integer
     intCellPadding = 20
@@ -1166,6 +1161,8 @@ Private Sub ReSizeSGrid()
     Grid1.ColumnWidth(3) = 50
     Grid1.ColumnWidth(6) = 500
     Grid1.ColumnWidth(5) = 100
+    Grid1.ColumnWidth(8) = 200
+    Grid1.ColumnWidth(9) = 150
     For R = 1 To Grid1.Rows
         Grid1.AutoHeightRow R
     Next R
@@ -1232,6 +1229,7 @@ Private Sub cmdAdd_Click()
         !idStatus2 = cmbStatus2.Text
         !idNotes = strNotes
         !idEmpNum = strCurrentEmpInfo.Number
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
     ClearAllButEmpInfo
@@ -1259,11 +1257,12 @@ Private Sub ClearAllButEmpInfo()
     cmdAdd.Visible = True
     cmbStatus.Text = "REQUESTED"
     cmbStatus2.Text = "PAID"
+    lblLastModified.Visible = False
     'cmbStatus.Enabled = False
-    lblEditing.Visible = False
     Frame1.BackColor = vbButtonFace
 End Sub
 Private Sub ClearAllButEmpName()
+    lblLastModified.Visible = False
     DTStartDate = Date
     DTEndDate = Date
     txtHours.Text = 0
@@ -1281,10 +1280,10 @@ Private Sub ClearAllButEmpName()
     lblTakenHours = "0"
     lblVacaHours = "0"
     'cmbStatus.Enabled = False
-    lblEditing.Visible = False
     Frame1.BackColor = vbButtonFace
 End Sub
 Private Sub ClearAll()
+    lblLastModified.Visible = False
     DTStartDate = Date
     DTEndDate = Date
     txtNotes.Text = ""
@@ -1302,7 +1301,6 @@ Private Sub ClearAll()
     cmdAdd.Visible = True
     cmbStatus.Text = "REQUESTED"
     'cmbStatus.Enabled = False
-    lblEditing.Visible = False
     Frame1.BackColor = vbButtonFace
     'Form1.ClearFields
     'Grid1.Clear
@@ -1376,6 +1374,7 @@ Private Sub UpdateEntry()
         !idStatus2 = cmbStatus2.Text
         !idNotes = strNotes
         !idEmpNum = strCurrentEmpInfo.Number
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
     ClearAllButEmpInfo
@@ -1414,6 +1413,9 @@ Private Sub Form_Load()
     Grid1.AddColumn 5, "Paid/UnPaid"
     Grid1.AddColumn 6, "Notes"
     Grid1.AddColumn 7
+    Grid1.ColumnVisible(7) = False
+    Grid1.AddColumn 8, "Last Modified"
+    Grid1.AddColumn 9, "Last Modified By"
     'Grid1.ColumnVisible(6) = False
     SetStart
     Call LoadEntries(optAll)
@@ -1473,12 +1475,13 @@ Private Sub Grid1_DblClick(ByVal lRow As Long, ByVal lCol As Long)
         cmbStatus2.Text = .CellText(.SelectedRow, 5)
         txtNotes.Text = .CellText(.SelectedRow, 6)
         strGUID = .CellText(.SelectedRow, 7)
+        lblLastModified.Caption = "Last Modified:" & vbCrLf & .CellText(.SelectedRow, 8)
     End With
     cmdAdd.Visible = False
     cmdUpdate.Visible = True
     cmbStatus.Enabled = True
     cmdCancel.Visible = True
-    lblEditing.Visible = True
+    lblLastModified.Visible = True
     Frame1.BackColor = &HC0FFC0
     UpdateMode = True
     Exit Sub
@@ -1566,9 +1569,9 @@ Private Sub mnuPrint_Click()
     strReportTitle = "Emp #: " & strCurrentEmpInfo.Number & "   Name: " & strCurrentEmpInfo.Name
     frmPBar.Show
     DoEvents
-    Grid1.RemoveColumn 7
+    'Grid1.RemoveColumn 7
     PrintSGrid Grid1, strReportTitle
-    Grid1.AddColumn 7
+    'Grid1.AddColumn 7
     Call LoadEntries(optAll)
 End Sub
 Private Sub optAll_Click()

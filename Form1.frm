@@ -24,21 +24,26 @@ Begin VB.Form Form1
    ScaleHeight     =   9630
    ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer tmrServerTime 
+      Interval        =   5000
+      Left            =   1440
+      Top             =   3660
+   End
    Begin VB.Timer tmrButtonEnable 
       Interval        =   30
-      Left            =   600
-      Top             =   4620
+      Left            =   720
+      Top             =   3660
    End
    Begin VB.Timer tmrUpdateTimeRemaining 
       Interval        =   150
-      Left            =   180
-      Top             =   4620
+      Left            =   300
+      Top             =   3660
    End
    Begin VB.Timer tmrLiveSearch 
       Enabled         =   0   'False
       Interval        =   250
-      Left            =   1020
-      Top             =   4620
+      Left            =   1080
+      Top             =   3660
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -54,7 +59,7 @@ Begin VB.Form Form1
       Height          =   1110
       Left            =   2100
       TabIndex        =   27
-      Top             =   1050
+      Top             =   990
       Visible         =   0   'False
       Width           =   4155
    End
@@ -208,7 +213,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   179699713
+         Format          =   273612801
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -231,30 +236,32 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   179699713
+         Format          =   273612801
          CurrentDate     =   40484
       End
-      Begin VB.Label lblEditing 
+      Begin VB.Label lblLastModified 
          Alignment       =   2  'Center
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "*EDITING*"
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   12
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000FF&
-         Height          =   285
-         Left            =   8160
-         TabIndex        =   49
-         Top             =   1260
+         Caption         =   "Last Modified:"
+         ForeColor       =   &H00808080&
+         Height          =   195
+         Left            =   8715
+         TabIndex        =   50
+         Top             =   1080
          Visible         =   0   'False
-         Width           =   2325
+         Width           =   1035
+      End
+      Begin VB.Label lblDATETIME 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         ForeColor       =   &H00808080&
+         Height          =   195
+         Left            =   180
+         TabIndex        =   49
+         ToolTipText     =   "Current Server Date/Time"
+         Top             =   2160
+         Width           =   45
       End
       Begin VB.Label Label13 
          BackStyle       =   0  'Transparent
@@ -470,7 +477,7 @@ Begin VB.Form Form1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   405
+         Height          =   345
          Left            =   300
          TabIndex        =   0
          Text            =   "EmpNum"
@@ -489,7 +496,7 @@ Begin VB.Form Form1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   405
+         Height          =   345
          Left            =   1980
          TabIndex        =   1
          Text            =   "EmpName"
@@ -1004,6 +1011,16 @@ Private Sub LiveSearch(ByVal strSearchString As String)
         List1.Visible = False
     End If
 End Sub
+Private Function GetTime() As String
+    Dim rs      As New ADODB.Recordset
+    Dim strSQL1 As String
+    On Error Resume Next
+    cn_Global.CursorLocation = adUseClient
+    strSQL1 = "SELECT CURTIME()"
+    Set rs = cn_Global.Execute(strSQL1)
+    GetTime = rs.Fields(0)
+    rs.Close
+End Function
 Public Sub DateRangeReport()
     GridAtten.Redraw = False
     GridAtten.Visible = False
@@ -1149,6 +1166,7 @@ Public Sub DateRangeReport()
     GridAtten.Visible = True
 End Sub
 Private Sub ClearAllButEmpNum()
+    lblLastModified.Visible = False
     bolOpenEmp = False
     strNotes = ""
     txtAttenEmpNum.Enabled = True
@@ -1197,6 +1215,7 @@ Private Sub ClearAllButEmpNum()
 End Sub
 Public Sub ClearFields()
     strNotes = ""
+    lblLastModified.Visible = False
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     txtAttenEmpName.Visible = True
@@ -1251,6 +1270,7 @@ Public Sub ClearFields()
     Frame4.Refresh
 End Sub
 Private Sub ClearBottomFields()
+    lblLastModified.Visible = False
     cmbExcused.ListIndex = 0
     cmbTimeOffType.ListIndex = 0
     txtHoursLate.Text = ""
@@ -1278,8 +1298,6 @@ Public Sub GetEntries()
     AttenVals.PartialUnExcused = 0
     Call FillHeader(txtAttenEmpNum.Text)
     strSQL1 = "SELECT * From AttenEntries Where idAttenEmpNum = '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
-    Debug.Print strSQL1
-    
     cn_Global.CursorLocation = adUseClient
     Set rs = cn_Global.Execute(strSQL1)
     If rs.RecordCount < 1 Then ' No entries
@@ -1340,6 +1358,8 @@ Public Sub GetEntries()
             GridAtten.CellDetails .AbsolutePosition, 4, !idAttenTimeOffType, DT_CENTER
             GridAtten.CellDetails .AbsolutePosition, 5, !idAttenPartialDay, DT_CENTER
             GridAtten.CellDetails .AbsolutePosition, 6, !idAttenNotes, DT_WORDBREAK
+            GridAtten.CellDetails .AbsolutePosition, 8, !idLastModified
+            GridAtten.CellDetails .AbsolutePosition, 9, !idLastModifiedBy
             CountExcusesInYear !idAttenExcused, !idAttenTimeOffType, !idAttenEntryDate
             rs.MoveNext
         End With
@@ -1377,6 +1397,8 @@ Private Sub ReSizeSGrid()
     GridAtten.ColumnWidth(2) = 112
     GridAtten.ColumnWidth(3) = 104
     GridAtten.ColumnWidth(6) = 500
+    GridAtten.ColumnWidth(8) = 200
+    GridAtten.ColumnWidth(9) = 150
     GridAtten.ColumnWidth(2) = GridAtten.ColumnWidth(1)
     GridAtten.ColumnWidth(5) = 70
     For R = 1 To GridAtten.Rows '
@@ -1488,6 +1510,7 @@ Private Sub cmdSubmit_Click()
             !idAttenEntryDateTo = "2000-01-01"
         End If
         !idAttenNotes = strNotes
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
     GetEntries
@@ -1520,12 +1543,14 @@ Private Sub cmdUpdate_Click()
             !idAttenPartialDay = Round(txtHoursLate.Text, 2)
         End If
         !idAttenNotes = strNotes
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     GetEntries
     cmdUpdate.Visible = False
+    lblLastModified.Visible = False
     Frame3.BackColor = vbButtonFace
     cmdCancel.Visible = False
     cmdSubmit.Visible = True
@@ -1542,6 +1567,7 @@ Private Sub cmdCancel_Click()
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     txtAttenEmpName.Visible = True
+    lblLastModified.Visible = False
     DTEntryDate.Enabled = True
     cmbExcused.Enabled = True
     cmbTimeOffType.Enabled = True
@@ -1583,7 +1609,8 @@ Private Sub Form_Load()
     strFullAccessPass = "y2zq3T21Ejia"
     strROAccessUser = "AttenUserRO"
     strROAccessPass = "8f0DYyS7y056"
-    Select Case UCase$(Environ$("USERNAME"))
+    strLocalUser = UCase$(Environ$("USERNAME"))
+    Select Case strLocalUser
         Case "JALOVELL"
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
@@ -1644,6 +1671,8 @@ Private Sub SetupGrid()
     GridAtten.AddColumn 6, "Notes"
     GridAtten.AddColumn 7
     GridAtten.ColumnVisible(7) = False
+    GridAtten.AddColumn 8, "Last Modified"
+    GridAtten.AddColumn 9, "Last Modified By"
     GridAtten.Gridlines = True
 End Sub
 Public Sub FillCombos()
@@ -1685,7 +1714,6 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Set moApp = Nothing
     Call EndProgram
     cn_Global.Close
-    
     'End
 End Sub
 Sub EndProgram()
@@ -1696,6 +1724,7 @@ Sub EndProgram()
             Set tmpForm = Nothing
         End If
     Next
+    cn_Global.Close
 End Sub
 Private Sub Frame1_Click()
     List1.Visible = False
@@ -1786,6 +1815,7 @@ Private Sub GridAtten_DblClick(ByVal lRow As Long, ByVal lCol As Long)
     cmdCancel.Visible = True
     txtAttenEmpNum.Enabled = False
     txtAttenEmpName.Enabled = False
+    lblLastModified.Visible = True
     DTEntryDate.Value = Date
     DTEntryDateTo.Value = Date
     With GridAtten
@@ -1801,6 +1831,7 @@ Private Sub GridAtten_DblClick(ByVal lRow As Long, ByVal lCol As Long)
         End If
         cmbExcused.Text = .CellText(.SelectedRow, 3)
         cmbTimeOffType.Text = .CellText(.SelectedRow, 4)
+        lblLastModified.Caption = "Last Modified:" & vbCrLf & .CellText(.SelectedRow, 8)
         txtHoursLate.Text = .CellText(.SelectedRow, 5)
         txtNotes.Text = .CellText(.SelectedRow, 6)
         SelGUID = .CellText(.SelectedRow, 7)
@@ -2117,11 +2148,11 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
         lngYTopOfGrid = Printer.CurrentY
         Printer.CurrentY = Printer.CurrentY + GAP
         If FlexGrid.Header = True Then
-            For c = 1 To .Columns - 1
+            For c = 1 To intColumns
                 Printer.CurrentX = X
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
                 PrevY = Printer.CurrentY
-                If c = .Columns - 1 Then
+                If c = intColumns Then
                     lngStartY = Printer.CurrentY - GAP + 5
                     lngStartX = Printer.CurrentX - GAP + 5
                     lngEndX = xmax
@@ -2167,7 +2198,7 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                     intCenterOffset = 0
                 End If
                 Printer.CurrentX = X
-                If .CellText(R, c) <> "" And Printer.TextWidth(.CellText(R, c)) + intPadding >= xmax - Printer.CurrentX Then
+                If .CellText(R, c) <> "" And Printer.TextWidth(.CellText(R, c)) + intPadding >= xmax - Printer.CurrentX Then 'word wrap loop
                     lngStartY = Printer.CurrentY + Printer.TextHeight(.CellText(R, c))
                     strOrigTxt = .CellText(R, c)
                     intTotLen = 1
@@ -2261,12 +2292,12 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                     Printer.CurrentX = X + intCenterOffset
                     Printer.CurrentY = PrevY + GAP
                     With Printer.Font
-                            .Name = FlexGrid.Cell(R, c).Font.Name
-                            .Bold = FlexGrid.Cell(R, c).Font.Bold
-                            .Underline = FlexGrid.Cell(R, c).Font.Underline
-                            .Italic = FlexGrid.Cell(R, c).Font.Italic
-                            .Size = FlexGrid.Cell(R, c).Font.Size
-                        End With
+                        .Name = FlexGrid.Cell(R, c).Font.Name
+                        .Bold = FlexGrid.Cell(R, c).Font.Bold
+                        .Underline = FlexGrid.Cell(R, c).Font.Underline
+                        .Italic = FlexGrid.Cell(R, c).Font.Italic
+                        .Size = FlexGrid.Cell(R, c).Font.Size
+                    End With
                     Printer.Print BoundedText(Printer, .CellText(R, c), TwipPix);
                 End If
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
@@ -2360,6 +2391,11 @@ Private Sub tmrLiveSearch_Timer()
         tmrLiveSearch.Enabled = False
     End If
 End Sub
+
+Private Sub tmrServerTime_Timer()
+    lblDATETIME = GetTime
+End Sub
+
 Private Sub tmrUpdateTimeRemaining_Timer()
     frmPBar.lblQryTime.Caption = strTimeRemaining
 End Sub
