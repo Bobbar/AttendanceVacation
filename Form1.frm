@@ -1,11 +1,11 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance"
-   ClientHeight    =   10725
+   ClientHeight    =   9630
    ClientLeft      =   45
    ClientTop       =   675
    ClientWidth     =   10815
@@ -21,24 +21,29 @@ Begin VB.Form Form1
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   10725
+   ScaleHeight     =   9630
    ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Timer tmrServerTime 
+      Interval        =   5000
+      Left            =   1440
+      Top             =   3660
+   End
    Begin VB.Timer tmrButtonEnable 
       Interval        =   30
-      Left            =   10080
-      Top             =   4440
+      Left            =   720
+      Top             =   3660
    End
    Begin VB.Timer tmrUpdateTimeRemaining 
       Interval        =   150
-      Left            =   10080
-      Top             =   3960
+      Left            =   300
+      Top             =   3660
    End
    Begin VB.Timer tmrLiveSearch 
       Enabled         =   0   'False
       Interval        =   250
-      Left            =   10080
-      Top             =   4980
+      Left            =   1080
+      Top             =   3660
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -52,36 +57,37 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1110
-      Left            =   2520
+      Left            =   2100
       TabIndex        =   27
-      Top             =   900
+      Top             =   990
       Visible         =   0   'False
       Width           =   4155
    End
    Begin VB.Frame Frame3 
-      Height          =   3495
+      Height          =   2475
       Left            =   120
       TabIndex        =   11
-      Top             =   2640
+      Top             =   2280
       Width           =   10575
       Begin RichTextLib.RichTextBox txtNotes 
-         Height          =   855
-         Left            =   1920
+         Height          =   795
+         Left            =   2340
          TabIndex        =   32
-         Top             =   1680
-         Width           =   6855
-         _ExtentX        =   12091
-         _ExtentY        =   1508
+         Top             =   960
+         Width           =   5835
+         _ExtentX        =   10292
+         _ExtentY        =   1402
          _Version        =   393217
+         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
       Begin VB.CommandButton cmdSpellCheck 
          Caption         =   "Spell Check"
          Height          =   240
-         Left            =   7755
+         Left            =   7140
          TabIndex        =   31
-         Top             =   2520
+         Top             =   1740
          Width           =   990
       End
       Begin VB.TextBox txtHoursLate 
@@ -95,10 +101,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   375
-         Left            =   8280
+         Left            =   9540
          TabIndex        =   19
          Text            =   "0.00"
-         Top             =   840
+         Top             =   480
          Width           =   735
       End
       Begin VB.ComboBox cmbTimeOffType 
@@ -112,10 +118,10 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   5400
+         Left            =   6660
          Style           =   2  'Dropdown List
          TabIndex        =   18
-         Top             =   840
+         Top             =   480
          Width           =   2775
       End
       Begin VB.ComboBox cmbExcused 
@@ -129,19 +135,28 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          Height          =   390
-         Left            =   3360
+         Left            =   4620
          Style           =   2  'Dropdown List
          TabIndex        =   17
-         Top             =   840
+         Top             =   480
          Width           =   1935
       End
       Begin VB.CommandButton cmdSubmit 
          Caption         =   "Add Entry"
          Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   480
          Left            =   4620
          TabIndex        =   16
-         Top             =   2640
+         Top             =   1860
          Width           =   1215
       End
       Begin VB.CommandButton cmdClear 
@@ -149,15 +164,24 @@ Begin VB.Form Form1
          Height          =   360
          Left            =   9480
          TabIndex        =   15
-         Top             =   3000
+         Top             =   1980
          Width           =   990
       End
       Begin VB.CommandButton cmdUpdate 
          Caption         =   "Update Entry"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   480
          Left            =   3840
          TabIndex        =   13
-         Top             =   2640
+         Top             =   1860
          Visible         =   0   'False
          Width           =   1215
       End
@@ -166,13 +190,13 @@ Begin VB.Form Form1
          Height          =   480
          Left            =   5220
          TabIndex        =   12
-         Top             =   2640
+         Top             =   1860
          Visible         =   0   'False
          Width           =   1050
       End
       Begin MSComCtl2.DTPicker DTEntryDate 
          Height          =   345
-         Left            =   1560
+         Left            =   300
          TabIndex        =   14
          Top             =   480
          Width           =   1695
@@ -189,14 +213,14 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   205455361
+         Format          =   250019841
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
          Height          =   345
-         Left            =   1560
+         Left            =   2100
          TabIndex        =   20
-         Top             =   1200
+         Top             =   480
          Width           =   1695
          _ExtentX        =   2990
          _ExtentY        =   609
@@ -212,14 +236,38 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   205455361
+         Format          =   178257921
          CurrentDate     =   40484
+      End
+      Begin VB.Label lblLastModified 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Last Modified:"
+         ForeColor       =   &H00808080&
+         Height          =   195
+         Left            =   8715
+         TabIndex        =   46
+         Top             =   1080
+         Visible         =   0   'False
+         Width           =   1035
+      End
+      Begin VB.Label lblDATETIME 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         ForeColor       =   &H00808080&
+         Height          =   195
+         Left            =   180
+         TabIndex        =   45
+         ToolTipText     =   "Current Server Date/Time"
+         Top             =   2160
+         Width           =   45
       End
       Begin VB.Label Label13 
          BackStyle       =   0  'Transparent
          Height          =   315
          Left            =   0
-         TabIndex        =   45
+         TabIndex        =   41
          Top             =   60
          Width           =   225
       End
@@ -228,9 +276,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Excused?"
          Height          =   195
-         Left            =   3375
+         Left            =   4635
          TabIndex        =   26
-         Top             =   600
+         Top             =   240
          Width           =   675
       End
       Begin VB.Label Label5 
@@ -238,9 +286,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Excuse Type"
          Height          =   195
-         Left            =   5400
+         Left            =   6660
          TabIndex        =   25
-         Top             =   600
+         Top             =   240
          Width           =   2715
       End
       Begin VB.Label Label6 
@@ -248,9 +296,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Hours"
          Height          =   195
-         Left            =   8280
+         Left            =   9540
          TabIndex        =   24
-         Top             =   600
+         Top             =   240
          Width           =   420
       End
       Begin VB.Label Label7 
@@ -258,9 +306,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Notes"
          Height          =   195
-         Left            =   1440
+         Left            =   1860
          TabIndex        =   23
-         Top             =   1980
+         Top             =   1260
          Width           =   420
       End
       Begin VB.Label Label8 
@@ -268,7 +316,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Date"
          Height          =   195
-         Left            =   1560
+         Left            =   300
          TabIndex        =   22
          Top             =   240
          Width           =   585
@@ -278,9 +326,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Date To"
          Height          =   195
-         Left            =   1560
+         Left            =   2100
          TabIndex        =   21
-         Top             =   960
+         Top             =   240
          Width           =   570
       End
    End
@@ -289,16 +337,16 @@ Begin VB.Form Form1
       Height          =   4515
       Left            =   120
       TabIndex        =   6
-      Top             =   6240
+      Top             =   4860
       Width           =   10575
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
-         Height          =   4155
-         Left            =   120
-         TabIndex        =   44
-         Top             =   240
-         Width           =   10335
-         _ExtentX        =   18230
-         _ExtentY        =   7329
+         Height          =   4035
+         Left            =   180
+         TabIndex        =   40
+         Top             =   300
+         Width           =   10215
+         _ExtentX        =   18018
+         _ExtentY        =   7117
          RowMode         =   -1  'True
          GridLines       =   -1  'True
          BackgroundPicture=   "Form1.frx":0D47
@@ -352,43 +400,11 @@ Begin VB.Form Form1
       End
    End
    Begin VB.Frame Frame1 
-      Height          =   2535
+      Height          =   2115
       Left            =   120
       TabIndex        =   2
       Top             =   60
       Width           =   10575
-      Begin VB.Frame Frame5 
-         Caption         =   "Fuctions"
-         Height          =   735
-         Left            =   2700
-         TabIndex        =   40
-         Top             =   1680
-         Width           =   4635
-         Begin VB.CommandButton cmdAttenReports 
-            Caption         =   "Attendance Reports"
-            Height          =   360
-            Left            =   2880
-            TabIndex        =   43
-            Top             =   240
-            Width           =   1650
-         End
-         Begin VB.CommandButton cmdVacaReports 
-            Caption         =   "Vacation Reports"
-            Height          =   360
-            Left            =   1200
-            TabIndex        =   42
-            Top             =   240
-            Width           =   1590
-         End
-         Begin VB.CommandButton cmdVacations 
-            Caption         =   "Vacations"
-            Height          =   360
-            Left            =   120
-            TabIndex        =   41
-            Top             =   240
-            Width           =   990
-         End
-      End
       Begin VB.ComboBox cmbLocation2 
          Enabled         =   0   'False
          BeginProperty Font 
@@ -404,15 +420,15 @@ Begin VB.Form Form1
          Left            =   3060
          Style           =   2  'Dropdown List
          TabIndex        =   29
-         Top             =   1200
+         Top             =   1320
          Width           =   2175
       End
       Begin VB.CommandButton cmdClear2 
-         Caption         =   "Clear"
-         Height          =   360
+         Caption         =   "Clear All"
+         Height          =   240
          Left            =   9480
          TabIndex        =   28
-         Top             =   2040
+         Top             =   1800
          Width           =   990
       End
       Begin VB.TextBox txtAttenEmpNum 
@@ -426,11 +442,11 @@ Begin VB.Form Form1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   405
+         Height          =   345
          Left            =   300
          TabIndex        =   0
          Text            =   "EmpNum"
-         Top             =   480
+         Top             =   600
          Width           =   1335
       End
       Begin VB.TextBox txtAttenEmpName 
@@ -445,11 +461,11 @@ Begin VB.Form Form1
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   405
-         Left            =   2400
+         Height          =   345
+         Left            =   1980
          TabIndex        =   1
          Text            =   "EmpName"
-         Top             =   480
+         Top             =   600
          Width           =   4155
       End
       Begin VB.ComboBox cmbLocation 
@@ -467,7 +483,7 @@ Begin VB.Form Form1
          Left            =   300
          Style           =   2  'Dropdown List
          TabIndex        =   9
-         Top             =   1200
+         Top             =   1320
          Width           =   2535
       End
       Begin VB.CheckBox chkIsActive 
@@ -478,19 +494,19 @@ Begin VB.Form Form1
          DownPicture     =   "Form1.frx":5699
          Enabled         =   0   'False
          Height          =   375
-         Left            =   975
+         Left            =   6375
          Style           =   1  'Graphical
          TabIndex        =   8
-         Top             =   1800
+         Top             =   600
          Width           =   975
       End
       Begin VB.Frame Frame4 
          Caption         =   "Alarms"
-         Height          =   1635
-         Left            =   7440
+         Height          =   1575
+         Left            =   7740
          TabIndex        =   33
-         Top             =   300
-         Width           =   2955
+         Top             =   180
+         Width           =   2595
          Begin VB.Label lblAcked 
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
@@ -514,7 +530,6 @@ Begin VB.Form Form1
             Width           =   300
          End
          Begin VB.Label lblPartialUn 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Partial Un -"
@@ -528,13 +543,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   945
+            Left            =   525
             TabIndex        =   37
             Top             =   240
             Width           =   1095
          End
          Begin VB.Label lblFullUn 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Full Un -"
@@ -548,13 +562,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   1170
+            Left            =   525
             TabIndex        =   36
             Top             =   480
             Width           =   750
          End
          Begin VB.Label lblFullEx 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Full Ex -"
@@ -568,13 +581,12 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   1155
+            Left            =   525
             TabIndex        =   35
             Top             =   1200
             Width           =   720
          End
          Begin VB.Label lblPartialEx 
-            Alignment       =   2  'Center
             AutoSize        =   -1  'True
             BackStyle       =   0  'Transparent
             Caption         =   "Partial Ex -"
@@ -588,7 +600,7 @@ Begin VB.Form Form1
                Strikethrough   =   0   'False
             EndProperty
             Height          =   240
-            Left            =   945
+            Left            =   525
             TabIndex        =   34
             Top             =   960
             Width           =   1065
@@ -610,8 +622,8 @@ Begin VB.Form Form1
          EndProperty
          Height          =   375
          Left            =   5400
-         TabIndex        =   46
-         Top             =   1200
+         TabIndex        =   42
+         Top             =   1320
          Width           =   1725
       End
       Begin VB.Label Label12 
@@ -619,9 +631,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Status"
          Height          =   195
-         Left            =   375
+         Left            =   6600
          TabIndex        =   38
-         Top             =   1890
+         Top             =   360
          Width           =   465
       End
       Begin VB.Label Label11 
@@ -631,7 +643,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   3060
          TabIndex        =   30
-         Top             =   960
+         Top             =   1080
          Width           =   735
       End
       Begin VB.Label Label10 
@@ -641,7 +653,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   300
          TabIndex        =   10
-         Top             =   960
+         Top             =   1080
          Width           =   600
       End
       Begin VB.Label Label3 
@@ -651,7 +663,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   5460
          TabIndex        =   5
-         Top             =   960
+         Top             =   1080
          Width           =   675
       End
       Begin VB.Label Label2 
@@ -659,9 +671,9 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Caption         =   "Employee Name"
          Height          =   195
-         Left            =   3900
+         Left            =   3480
          TabIndex        =   4
-         Top             =   240
+         Top             =   360
          Width           =   1140
       End
       Begin VB.Label Label1 
@@ -671,7 +683,7 @@ Begin VB.Form Form1
          Height          =   195
          Left            =   300
          TabIndex        =   3
-         Top             =   240
+         Top             =   360
          Width           =   1335
       End
    End
@@ -690,9 +702,9 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H00808080&
       Height          =   165
-      Left            =   180
-      TabIndex        =   48
-      Top             =   10800
+      Left            =   120
+      TabIndex        =   44
+      Top             =   9420
       Width           =   1290
    End
    Begin VB.Label Label14 
@@ -710,9 +722,9 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H00808080&
       Height          =   165
-      Left            =   9180
-      TabIndex        =   47
-      Top             =   10800
+      Left            =   9240
+      TabIndex        =   43
+      Top             =   9420
       Width           =   1470
    End
    Begin VB.Menu mnuPopup 
@@ -743,6 +755,19 @@ Begin VB.Form Form1
          Caption         =   "Print"
       End
    End
+   Begin VB.Menu mnuFunc 
+      Caption         =   "Fuctions"
+      WindowList      =   -1  'True
+      Begin VB.Menu mnuVacations 
+         Caption         =   "Vacations"
+      End
+      Begin VB.Menu mnuVacaReports2 
+         Caption         =   "Vacation Reports"
+      End
+      Begin VB.Menu mnuAttenReports 
+         Caption         =   "Attendance Reports"
+      End
+   End
 End
 Attribute VB_Name = "Form1"
 Attribute VB_GlobalNameSpace = False
@@ -757,7 +782,6 @@ Private Declare Function sndPlaySound _
 Private intSearchWaitTicks As Integer
 Private UpdateMode         As Boolean
 Private strNotes           As String
-
 Private Sub DrawSGridForPrint()
     Dim i     As Integer
     Dim Hours As Single
@@ -900,55 +924,44 @@ Public Sub SetAckLabel(EmpNum As String)
 End Sub
 Public Sub SetEmpLocation(Location As String, Location2 As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     On Error Resume Next
     If txtAttenEmpNum.Text = "" Or NewEmp = True Then Exit Sub
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idNumber = '" & txtAttenEmpNum.Text & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         !idLocation1 = Location
         !idLocation2 = Location2
         rs.Update
     End With
-    rs.Close
-    cn.Close
     GetEmpInfo
 End Sub
 Public Sub SetEmpActive(IsActive As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     If txtAttenEmpNum.Text = "" Or chkIsActive.Enabled = False Or NewEmp = True Then Exit Sub
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idNumber = '" & txtAttenEmpNum.Text & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         !idIsActive = IsActive
     End With
     rs.Update
-    rs.Close
-    cn.Close
     GetEmpInfo
 End Sub
 Private Sub LiveSearch(ByVal strSearchString As String)
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     Dim Row     As Integer
     On Error Resume Next
     Row = 0
     List1.Clear
     Erase intEmpNum
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT idName,idNumber From emplist Where idName Like '%" & strSearchString & "%' Order By EmpList.idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     ReDim intEmpNum(rs.RecordCount)
-    
     Do Until rs.EOF
         With rs
             List1.AddItem !idName, Row
@@ -962,14 +975,21 @@ Private Sub LiveSearch(ByVal strSearchString As String)
     ElseIf rs.RecordCount <= 0 Then
         List1.Visible = False
     End If
-    rs.Close
-    cn.Close
 End Sub
+Private Function GetTime() As String
+    Dim rs      As New ADODB.Recordset
+    Dim strSQL1 As String
+    On Error Resume Next
+    cn_Global.CursorLocation = adUseClient
+    strSQL1 = "SELECT CURTIME()"
+    Set rs = cn_Global.Execute(strSQL1)
+    GetTime = rs.Fields(0)
+    rs.Close
+End Function
 Public Sub DateRangeReport()
     GridAtten.Redraw = False
     GridAtten.Visible = False
     Dim rs               As New ADODB.Recordset
-    Dim cn               As New ADODB.Connection
     Dim strSQL1          As String
     Dim strUsedJobNums() As String
     Dim dtTicketDate     As Date
@@ -981,10 +1001,10 @@ Public Sub DateRangeReport()
     Dim BuiltQrys        As Integer
     Dim sFntUnder        As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     On Error Resume Next
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
@@ -1048,12 +1068,9 @@ Public Sub DateRangeReport()
         End If
     End If
     If frmFilters.chkAll.Value = 1 Then Qry = "SELECT * From AttenEntries where idAttenEmpNum like '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = Qry
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     Row = 0
     Line = 1
     GridAtten.Clear
@@ -1106,8 +1123,6 @@ Public Sub DateRangeReport()
             rs.MoveNext
         End With
     Loop
-    rs.Close
-    cn.Close
     Erase strUsedJobNums
     GridAtten.Rows = Line - 1
     intRowsAdded = Line - 1
@@ -1116,6 +1131,7 @@ Public Sub DateRangeReport()
     GridAtten.Visible = True
 End Sub
 Private Sub ClearAllButEmpNum()
+    lblLastModified.Visible = False
     bolOpenEmp = False
     strNotes = ""
     txtAttenEmpNum.Enabled = True
@@ -1137,6 +1153,7 @@ Private Sub ClearAllButEmpNum()
     GridAtten.Visible = False
     GridAtten.Redraw = False
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdSubmit.Visible = True
     NewEmp = False
     UpdateMode = False
@@ -1163,6 +1180,7 @@ Private Sub ClearAllButEmpNum()
 End Sub
 Public Sub ClearFields()
     strNotes = ""
+    lblLastModified.Visible = False
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     txtAttenEmpName.Visible = True
@@ -1185,6 +1203,7 @@ Public Sub ClearFields()
     txtNotes.Text = ""
     GridAtten.Visible = False
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     UpdateMode = False
     cmdSubmit.Visible = True
     NewEmp = False
@@ -1216,6 +1235,7 @@ Public Sub ClearFields()
     Frame4.Refresh
 End Sub
 Private Sub ClearBottomFields()
+    lblLastModified.Visible = False
     cmbExcused.ListIndex = 0
     cmbTimeOffType.ListIndex = 0
     txtHoursLate.Text = ""
@@ -1230,35 +1250,30 @@ End Sub
 Public Sub GetEntries()
     On Error Resume Next
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
+    sFntNormal.Name = "Tahoma"
     AttenVals.FullExcused = 0
     AttenVals.FullUnExcused = 0
     AttenVals.PartialExcused = 0
     AttenVals.PartialUnExcused = 0
     Call FillHeader(txtAttenEmpNum.Text)
     strSQL1 = "SELECT * From AttenEntries Where idAttenEmpNum = '" & txtAttenEmpNum.Text & "' Order By attenentries.idAttenEntryDate Desc"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     If rs.RecordCount < 1 Then ' No entries
         GridAtten.Visible = False
         GridAtten.Redraw = False
         GridAtten.Clear
         lblGrid.Visible = True
-        rs.Close
-        cn.Close
         If bolVacationOpen Then
             Call frmVacations.SetStart
             Call frmVacations.LoadEntries(frmVacations.optAll)
+            Form1.SetFocus
         End If
         Exit Sub
     ElseIf rs.RecordCount >= 1 Then
@@ -1308,11 +1323,12 @@ Public Sub GetEntries()
             GridAtten.CellDetails .AbsolutePosition, 4, !idAttenTimeOffType, DT_CENTER
             GridAtten.CellDetails .AbsolutePosition, 5, !idAttenPartialDay, DT_CENTER
             GridAtten.CellDetails .AbsolutePosition, 6, !idAttenNotes, DT_WORDBREAK
+            GridAtten.CellDetails .AbsolutePosition, 8, !idLastModified
+            GridAtten.CellDetails .AbsolutePosition, 9, !idLastModifiedBy
             CountExcusesInYear !idAttenExcused, !idAttenTimeOffType, !idAttenEntryDate
             rs.MoveNext
         End With
     Loop
-    rs.Close
     ReSizeSGrid
     GridAtten.Redraw = True
     GridAtten.Visible = True
@@ -1322,6 +1338,7 @@ Public Sub GetEntries()
         If frmVacations.txtEmpNum <> txtAttenEmpNum Then
             Call frmVacations.SetStart
             Call frmVacations.LoadEntries(frmVacations.optAll)
+            Form1.SetFocus
         End If
     End If
 End Sub
@@ -1345,6 +1362,8 @@ Private Sub ReSizeSGrid()
     GridAtten.ColumnWidth(2) = 112
     GridAtten.ColumnWidth(3) = 104
     GridAtten.ColumnWidth(6) = 500
+    GridAtten.ColumnWidth(8) = 200
+    GridAtten.ColumnWidth(9) = 150
     GridAtten.ColumnWidth(2) = GridAtten.ColumnWidth(1)
     GridAtten.ColumnWidth(5) = 70
     For R = 1 To GridAtten.Rows '
@@ -1355,12 +1374,11 @@ End Sub
 Public Sub FillHeader(EmpNum As String)
     txtAttenEmpNum.Text = EmpNum
     strCurrentEmpInfo.Number = EmpNum
-    txtAttenEmpName.Text = ReturnEmpInfo(EmpNum).name
-    strCurrentEmpInfo.name = ReturnEmpInfo(EmpNum).name
+    txtAttenEmpName.Text = ReturnEmpInfo(EmpNum).Name
+    strCurrentEmpInfo.Name = ReturnEmpInfo(EmpNum).Name
     lblHireDate.Caption = ReturnEmpInfo(EmpNum).HireDate
     strCurrentEmpInfo.HireDate = ReturnEmpInfo(EmpNum).HireDate
-    strCurrentEmpInfo.VacaWeeks = ReturnEmpInfo(EmpNum).VacaWeeks
-    
+    strCurrentEmpInfo.VacaHours = ReturnEmpInfo(EmpNum).VacaHours
     If ReturnEmpInfo(EmpNum).IsActive = "TRUE" Then
         chkIsActive.Enabled = True
         chkIsActive.Value = 1
@@ -1370,7 +1388,6 @@ Public Sub FillHeader(EmpNum As String)
         chkIsActive.Value = 0
         chkIsActive.Caption = "Inactive"
     End If
-    
     cmbLocation2.Text = ReturnEmpInfo(EmpNum).Location2
     strCurrentEmpInfo.Location2 = ReturnEmpInfo(EmpNum).Location2
     cmbLocation.Text = ReturnEmpInfo(EmpNum).Location1
@@ -1414,24 +1431,20 @@ Private Sub cmdClear2_Click()
     ClearFields
     'ClearVacation
 End Sub
-Public Sub AddEmpToDB(name As Variant, _
+Public Sub AddEmpToDB(Name As Variant, _
                       Num As String, _
                       HireDate As String, _
                       Location1 As String, _
                       Location2 As String, _
                       IsActive As String)
     Dim rs         As New ADODB.Recordset
-    Dim cn         As New ADODB.Connection
     Dim strSQL2    As String
     Dim FormatDate As String
     On Error GoTo errs
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     FormatDate = Format$(HireDate, strDBDateFormat)
-    strSQL2 = "INSERT INTO attendb.emplist (idName,idLocation1,idLocation2,idNumber,idHireDate,idIsActive) VALUES ('" & name & "','" & Location1 & "','" & Location2 & "','" & Num & "','" & FormatDate & "','" & IsActive & "')"
-    rs.Open strSQL2, cn, adOpenKeyset, adLockOptimistic
+    strSQL2 = "INSERT INTO attendb.emplist (idName,idLocation1,idLocation2,idNumber,idHireDate,idIsActive) VALUES ('" & Name & "','" & Location1 & "','" & Location2 & "','" & Num & "','" & FormatDate & "','" & IsActive & "')"
+    rs.Open strSQL2, cn_Global, adOpenKeyset, adLockOptimistic
     Exit Sub
 errs:
     MsgBox Err.Description
@@ -1439,15 +1452,11 @@ End Sub
 Private Sub cmdSubmit_Click()
     On Error GoTo errs
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "select * from attenentries"
     cmdSubmit.Enabled = False
-    rs.Open strSQL1, cn, adOpenUnspecified, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenUnspecified, adLockOptimistic
     With rs
         rs.AddNew
         !idAttenEmpNum = Trim$(txtAttenEmpNum.Text)
@@ -1466,10 +1475,9 @@ Private Sub cmdSubmit_Click()
             !idAttenEntryDateTo = "2000-01-01"
         End If
         !idAttenNotes = strNotes
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
-    rs.Close
-    cn.Close
     GetEntries
     ClearBottomFields
     Exit Sub
@@ -1480,12 +1488,10 @@ End Sub
 Private Sub cmdUpdate_Click()
     On Error GoTo errs
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From AttenEntries Where idGUID Like '" & SelGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         If bolIsDateRange = True Then
             !idAttenEntryDate = Format$(DTEntryDate.Value, strDBDateFormat)
@@ -1502,14 +1508,15 @@ Private Sub cmdUpdate_Click()
             !idAttenPartialDay = Round(txtHoursLate.Text, 2)
         End If
         !idAttenNotes = strNotes
+        !idLastModifiedBy = strLocalUser
         rs.Update
     End With
-    rs.Close
-    cn.Close
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     GetEntries
     cmdUpdate.Visible = False
+    lblLastModified.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdCancel.Visible = False
     cmdSubmit.Visible = True
     ClearBottomFields
@@ -1525,6 +1532,7 @@ Private Sub cmdCancel_Click()
     txtAttenEmpNum.Enabled = True
     txtAttenEmpName.Enabled = True
     txtAttenEmpName.Visible = True
+    lblLastModified.Visible = False
     DTEntryDate.Enabled = True
     cmbExcused.Enabled = True
     cmbTimeOffType.Enabled = True
@@ -1535,6 +1543,7 @@ Private Sub cmdCancel_Click()
     txtHoursLate.Text = ""
     txtNotes.Text = ""
     cmdUpdate.Visible = False
+    Frame3.BackColor = vbButtonFace
     cmdCancel.Visible = False
     UpdateMode = False
     cmdSubmit.Visible = True
@@ -1550,41 +1559,41 @@ End Sub
 Private Sub cmdVacations_Click()
     frmVacations.Show
 End Sub
+
 Private Sub Form_Initialize()
-    CheckForDLLS
+    'CheckForDLLS
 End Sub
 Private Sub Form_Load()
-
-FindMySQLDriver
-
-lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
+    FindMySQLDriver
+    lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     intQryIndex = 0
     ReDim lngTimeRemainingArray(1)
-    strServerAddress = "10.0.1.232"
+    strServerAddress = "10.35.1.40"
     Dim strFullAccessUser As String, strFullAccessPass As String, strROAccessUser As String, strROAccessPass As String
     strFullAccessUser = "AttenUser"
     strFullAccessPass = "y2zq3T21Ejia"
     strROAccessUser = "AttenUserRO"
     strROAccessPass = "8f0DYyS7y056"
- 
-    Select Case UCase$(Environ$("USERNAME"))
-        Case "SORRELLJ"
+    strLocalUser = UCase$(Environ$("USERNAME"))
+    strUsername = strROAccessUser
+    strPassword = strROAccessPass
+    cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
+    Select Case IsAdmin(strLocalUser)
+        Case 0
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
-        Case "HOWARDS"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case "SCHRINERT"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case "LOVELLB"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case Else
+        Case 1
             strUsername = strROAccessUser
             strPassword = strROAccessPass
+        Case 2
+            Call Form_QueryUnload(0, 0)
+            'End
+            Exit Sub
     End Select
-
+    cn_Global.Close
+    cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
+    dtVacaPeriod.StartDate = "1/1/" & DateTime.Year(DateTime.Date)
+    dtVacaPeriod.EndDate = "12/31/" & DateTime.Year(DateTime.Date)
     cmbExcused.AddItem "", 0
     cmbExcused.AddItem "EXCUSED", 1
     cmbExcused.AddItem "UNEXCUSED", 2
@@ -1623,16 +1632,16 @@ Private Sub SetupGrid()
     GridAtten.AddColumn 6, "Notes"
     GridAtten.AddColumn 7
     GridAtten.ColumnVisible(7) = False
+    GridAtten.AddColumn 8, "Last Modified"
+    GridAtten.AddColumn 9, "Last Modified By"
     GridAtten.Gridlines = True
 End Sub
 Public Sub FillCombos()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From comboitems Order By idTimeOffType"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     cmbTimeOffType.Clear
     cmbLocation.Clear
     cmbLocation2.Clear
@@ -1658,23 +1667,25 @@ Public Sub FillCombos()
         End With
     Loop
 End Sub
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+Public Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     On Error Resume Next
     If KillMe = True Then
         moApp.Quit False
     End If
     Set moApp = Nothing
     Call EndProgram
-    'End
+    cn_Global.Close
+    End
 End Sub
-Sub EndProgram()
+Public Sub EndProgram()
     Dim tmpForm As Form
     For Each tmpForm In Forms
-        If tmpForm.name <> "Form1" Then
+        If tmpForm.Name <> "Form1" Then
             Unload tmpForm
             Set tmpForm = Nothing
         End If
     Next
+    
 End Sub
 Private Sub Frame1_Click()
     List1.Visible = False
@@ -1760,10 +1771,12 @@ End Sub
 Private Sub GridAtten_DblClick(ByVal lRow As Long, ByVal lCol As Long)
     cmdUpdate.Visible = True
     UpdateMode = True
+    Frame3.BackColor = &HC0FFC0
     cmdSubmit.Visible = False
     cmdCancel.Visible = True
     txtAttenEmpNum.Enabled = False
     txtAttenEmpName.Enabled = False
+    lblLastModified.Visible = True
     DTEntryDate.Value = Date
     DTEntryDateTo.Value = Date
     With GridAtten
@@ -1779,6 +1792,7 @@ Private Sub GridAtten_DblClick(ByVal lRow As Long, ByVal lCol As Long)
         End If
         cmbExcused.Text = .CellText(.SelectedRow, 3)
         cmbTimeOffType.Text = .CellText(.SelectedRow, 4)
+        lblLastModified.Caption = "Last Modified:" & vbCrLf & .CellText(.SelectedRow, 8)
         txtHoursLate.Text = .CellText(.SelectedRow, 5)
         txtNotes.Text = .CellText(.SelectedRow, 6)
         SelGUID = .CellText(.SelectedRow, 7)
@@ -1812,34 +1826,28 @@ Private Sub GridAtten_MouseUp(Button As Integer, _
     End If
 End Sub
 Private Sub Label13_Click()
-
     StartTimer
     Dim TotAttenEnt As Long
     Dim blah
     GetDataBaseStats
     Dim rs      As New ADODB.Recordset
     Dim rs2     As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String, strSQL2 As String
     ReDim AttenStats(0)
     strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = 'Called Off'"
     strSQL1 = "SELECT * FROM attendb.comboitems comboitems_0"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenForwardOnly, adLockReadOnly
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         Do Until .EOF
             AttenStats(UBound(AttenStats)).ExTypeName = !idTimeOffType
             strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = '" & AttenStats(UBound(AttenStats)).ExTypeName & "'"
-            rs2.Open strSQL2, cn, adOpenForwardOnly, adLockReadOnly
+            Set rs2 = cn_Global.Execute(strSQL2)
             AttenStats(UBound(AttenStats)).ExTypeCount = rs2.Fields(0)
-            rs2.Close
             ReDim Preserve AttenStats(UBound(AttenStats) + 1)
             .MoveNext
         Loop
     End With
-    rs.Close
-    cn.Close
     TotAttenEnt = DataBaseStats.TotalAttenEntries
     Dim i As Integer
     For i = 0 To UBound(AttenStats) - 1
@@ -1851,39 +1859,24 @@ Private Sub Label13_Click()
         strBreakdown = strBreakdown + AttenStats(i).ExTypeName & ": " & AttenStats(i).ExTypeCount & " (" & AttenStats(i).ExTypePct & "%)" & vbCrLf
     Next i
     ReDim strChartData(UBound(AttenStats) - 1, 1)
-   'ReDim strChartData(1, UBound(AttenStats) - 1)
+    'ReDim strChartData(1, UBound(AttenStats) - 1)
     Dim c As Integer
-  
- 
-     For c = 0 To UBound(AttenStats) - 1
-         strChartData(c, 0) = AttenStats(c).ExTypeName & "(" & AttenStats(c).ExTypeCount & ")"
-         
-      
-     Next c
-     For c = 0 To UBound(AttenStats) - 1
-         strChartData(c, 1) = AttenStats(c).ExTypeCount
-         
-
-     Next c
-     
+    For c = 0 To UBound(AttenStats) - 1
+        strChartData(c, 0) = AttenStats(c).ExTypeName & "(" & AttenStats(c).ExTypeCount & ")"
+    Next c
+    For c = 0 To UBound(AttenStats) - 1
+        strChartData(c, 1) = AttenStats(c).ExTypeCount
+    Next c
     MySort strChartData
-  
-    
-    
-    blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " _
-    & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & _
-    "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " _
-    & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
-     
-     
+    blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
     If blah = vbOK Then
-      frmChart.Show
-'        strBreakdown = vbNullString
-'        For i = 0 To UBound(AttenStats) - 1
-'            strBreakdown = strBreakdown + AttenStats(i).ExTypeName & vbTab & AttenStats(i).ExTypeCount & vbCrLf
-'        Next i
-'        Clipboard.Clear
-'        Clipboard.SetText strBreakdown
+        frmChart.Show
+        '        strBreakdown = vbNullString
+        '        For i = 0 To UBound(AttenStats) - 1
+        '            strBreakdown = strBreakdown + AttenStats(i).ExTypeName & vbTab & AttenStats(i).ExTypeCount & vbCrLf
+        '        Next i
+        '        Clipboard.Clear
+        '        Clipboard.SetText strBreakdown
     Else
     End If
 End Sub
@@ -1958,37 +1951,16 @@ Private Sub List1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y 
 errs:
     If Err.Number = 9 Then Exit Sub
 End Sub
-'Private Sub mnuAddHours_Click()
-'
-'    Dim start_row, stop_row, i, Rows As Integer
-'
-'    Dim Hours As Single
-'
-'    on error Resume Next
-'
-'    If MSHFlexGridAtten.Row > MSHFlexGridAtten.RowSel Then
-'        start_row = MSHFlexGridAtten.RowSel
-'        stop_row = MSHFlexGridAtten.Row
-'    Else
-'        start_row = MSHFlexGridAtten.Row
-'        stop_row = MSHFlexGridAtten.RowSel
-'
-'    End If
-'
-'    Rows = stop_row - start_row + 1
-'
-'    For i = start_row To stop_row
-'        Hours = Hours + MSHFlexGridAtten.TextMatrix(i, 5)
-'    Next
-'    MsgBox Hours & " hours in " & Rows & " entries.", , "Total Hours"
-'
-'End Sub
+
+Private Sub mnuAttenReports_Click()
+    frmReport.LoadEmpList
+    frmReport.Show
+End Sub
 Private Sub mnuDelete_Click()
     DeleteEntry
 End Sub
 Private Sub DeleteEntry()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
     Dim blah
     On Error GoTo errs
@@ -2003,17 +1975,12 @@ Private Sub DeleteEntry()
         Exit Sub
     ElseIf blah = vbYes Then
     End If
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From  AttenEntries Where idGUID = '" & SelGUID & "'"
-    rs.Open strSQL1, cn, adOpenKeyset, adLockOptimistic
+    rs.Open strSQL1, cn_Global, adOpenKeyset, adLockOptimistic
     With rs
         .Delete
     End With
-    rs.Close
-    cn.Close
     SelDate = vbNullString
     SelExcuse = vbNullString
     SelType = vbNullString
@@ -2029,6 +1996,7 @@ End Sub
 Private Sub mnuFilter_Click()
     frmFilters.Show
 End Sub
+
 Private Sub mnuPrint_Click()
     On Error Resume Next
     frmPrinters.Show 1
@@ -2046,7 +2014,6 @@ Private Sub mnuPrint_Click()
     'GridAtten.AddColumn 7
     GetEntries
     Unload frmFilters
-    
 End Sub
 Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                        Optional sTitle As String, _
@@ -2089,7 +2056,7 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
     Printer.Print "    Report date: " & Date & " " & Time & "      Printed by: " & UCase$(Environ$("USERNAME"))
     Const GAP = 40
     With Printer.Font
-        .name = FlexGrid.Font.name
+        .Name = FlexGrid.Font.Name
         .Size = 9
     End With
     Printer.Print ""
@@ -2142,11 +2109,11 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
         lngYTopOfGrid = Printer.CurrentY
         Printer.CurrentY = Printer.CurrentY + GAP
         If FlexGrid.Header = True Then
-            For c = 1 To .Columns - 1
+            For c = 1 To intColumns
                 Printer.CurrentX = X
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
                 PrevY = Printer.CurrentY
-                If c = .Columns - 1 Then
+                If c = intColumns Then
                     lngStartY = Printer.CurrentY - GAP + 5
                     lngStartX = Printer.CurrentX - GAP + 5
                     lngEndX = xmax
@@ -2192,7 +2159,7 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                     intCenterOffset = 0
                 End If
                 Printer.CurrentX = X
-                If .CellText(R, c) <> "" And Printer.TextWidth(.CellText(R, c)) + intPadding >= xmax - Printer.CurrentX Then
+                If .CellText(R, c) <> "" And Printer.TextWidth(.CellText(R, c)) + intPadding >= xmax - Printer.CurrentX Then 'word wrap loop
                     lngStartY = Printer.CurrentY + Printer.TextHeight(.CellText(R, c))
                     strOrigTxt = .CellText(R, c)
                     intTotLen = 1
@@ -2220,7 +2187,14 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                         End If
                         bolFirstLoop = False
                         intTotLen = intTotLen + Len(strSizedTxt) + 1
-                        Printer.Font.Underline = .CellFont(R, c).Underline
+                        With Printer.Font
+                            .Name = FlexGrid.Cell(R, c).Font.Name
+                            .Bold = FlexGrid.Cell(R, c).Font.Bold
+                            .Underline = FlexGrid.Cell(R, c).Font.Underline
+                            .Italic = FlexGrid.Cell(R, c).Font.Italic
+                            .Size = FlexGrid.Cell(R, c).Font.Size
+                        End With
+                        'Printer.Font.Underline = .CellFont(R, c).Underline
                         If .CellFont(R, c).Underline = True Then
                             Printer.ForeColor = vbBlack
                         Else
@@ -2278,6 +2252,13 @@ Private Sub PrintSGrid(FlexGrid As vbalGrid, _
                     End If
                     Printer.CurrentX = X + intCenterOffset
                     Printer.CurrentY = PrevY + GAP
+                    With Printer.Font
+                        .Name = FlexGrid.Cell(R, c).Font.Name
+                        .Bold = FlexGrid.Cell(R, c).Font.Bold
+                        .Underline = FlexGrid.Cell(R, c).Font.Underline
+                        .Italic = FlexGrid.Cell(R, c).Font.Italic
+                        .Size = FlexGrid.Cell(R, c).Font.Size
+                    End With
                     Printer.Print BoundedText(Printer, .CellText(R, c), TwipPix);
                 End If
                 TwipPix = .ColumnWidth(c) * Screen.TwipsPerPixelX
@@ -2336,6 +2317,15 @@ End Sub
 Private Sub mnuVacaReports_Click()
     frmVacationReports.Show
 End Sub
+
+Private Sub mnuVacaReports2_Click()
+    frmVacationReports.Show
+End Sub
+
+Private Sub mnuVacations_Click()
+    frmVacations.Show
+End Sub
+
 Private Sub tmrButtonEnable_Timer()
     If NewEmp = False And UpdateMode = False And txtAttenEmpNum.Text <> "" And txtAttenEmpName.Text <> "" And DTEntryDate.Value <> "" And cmbExcused.Text <> "" And cmbTimeOffType.Text <> "" Then
         cmdSubmit.Enabled = True
@@ -2362,6 +2352,11 @@ Private Sub tmrLiveSearch_Timer()
         tmrLiveSearch.Enabled = False
     End If
 End Sub
+
+Private Sub tmrServerTime_Timer()
+    lblDATETIME = GetTime
+End Sub
+
 Private Sub tmrUpdateTimeRemaining_Timer()
     frmPBar.lblQryTime.Caption = strTimeRemaining
 End Sub

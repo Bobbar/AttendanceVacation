@@ -162,6 +162,7 @@ Begin VB.Form frmVacationReports
          Width           =   4935
          Begin VB.CommandButton cmdAccruals 
             Caption         =   "Run"
+            Enabled         =   0   'False
             Height          =   360
             Left            =   3540
             TabIndex        =   11
@@ -223,7 +224,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   201916417
+            Format          =   248578049
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -245,7 +246,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   201916417
+            Format          =   248578049
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -311,62 +312,42 @@ Attribute VB_Exposed = False
 Option Explicit
 Private strEmpsToRun() As String
 Private Sub cmdAccruals_Click()
-        
-    
-    
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim i         As Integer
     Dim sFntUnder As New StdFont
-    Dim DTEndDate As Date
-    Dim intTaken As Integer
-    
-    DTEndDate = "12/31/12"
-    
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     EmpListByCompany
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     Grid1.BackColor = colGridBusy
     Screen.MousePointer = vbHourglass
     Grid1.Redraw = False
     Grid1.Clear
     Grid1.Rows = 1
-    For i = 1 To UBound(strEmpsToRun) '(strEmpInfo)
-         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "' " & "AND vacations_0.idStatus = 'TAKEN')"
-        'Debug.Print strSQL1
-        'rs.Open strSQL1, cn, adOpenKeyset
-        intTaken = 0
-        
+    For i = 0 To UBound(strEmpsToRun) '(strEmpInfo)
+        strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(dtFiscalYearEnd, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "') " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
+        Set rs = cn_Global.Execute(strSQL1)
         With rs
-           ' If .RecordCount = 0 Then GoTo NextLoop
-           
-            
-            
+            If .RecordCount = 0 Then GoTo NextLoop
             Grid1.Rows = Grid1.Rows + 1
-            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).name, DT_CENTER
-            'Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
+            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).Name, DT_CENTER, , , , sFntUnder
+            Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
             'Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & CalcYearsWorked(strEmpsToRun(i)).VacaWeeksAvail, DT_CENTER, , , , sFntUnder
-            Grid1.CellDetails Grid1.Rows - 1, 2, VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER
-         
-'            Do Until .EOF
-'                Grid1.Rows = Grid1.Rows + 1
-'                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
-'                .MoveNext
-'            Loop
-            'Grid1.Rows = Grid1.Rows + 1
+            Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER, , , , sFntUnder
+            Do Until .EOF
+                Grid1.Rows = Grid1.Rows + 1
+                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
+                .MoveNext
+            Loop
+            Grid1.Rows = Grid1.Rows + 1
 NextLoop:
-           ' .Close
         End With
     Next i
     ReSizeSGrid
@@ -377,16 +358,14 @@ NextLoop:
     strReportSubTitle = IIf(chkBremen, "Bremen ", "") & IIf(chkWooster, " Wooster ", "") & IIf(chkRockyMtn, " RockyMtn ", "") & IIf(chkNuclear, " Nuclear ", "")
 End Sub
 Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
-   
-    
     Dim rs          As New ADODB.Recordset
-    Dim cn          As New ADODB.Connection
     Dim strSQL1     As String
     Dim i           As Integer, b           As Integer
     Dim SortArray() As Variant
-    ReDim SortArray(6, 0)
+    ReDim SortArray(7, 0)
     Dim DateSortArray() As Variant
-    ReDim DateSortArray(6, 0)
+    ReDim DateSortArray(7, 0)
+    Dim clStartDate   As Date, clEndDate As Date
     Dim bolFinalEntry As Boolean
     bolFinalEntry = False
     EmpListByCompany
@@ -394,48 +373,44 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim bolHeaderAdded As Boolean
     Dim Found          As String
     bolHeaderAdded = False
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
+    Dim sFntBold As New StdFont
+    sFntBold.Bold = True
+    sFntBold.Size = 9
+    sFntBold.Name = "Tahoma"
     Dim sFntUnder As New StdFont
+    sFntUnder.Bold = True
+    sFntUnder.Size = 8
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     Grid1.Redraw = False
     Grid1.Clear
     Grid1.Rows = 1
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(EndDate, strDBDateFormat) & "'})" & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount = 0 Then Exit Sub
         Do Until .EOF
             Found = InStr(1, vbNullChar & Join(strEmpsToRun(), vbNullChar) & vbNullChar, vbNullChar & !idEmpNum & vbNullChar) > 0
             If Found Then
                 'make room in array for new data
-                
-                
-                SortArray(0, UBound(SortArray, 2)) = ReturnEmpInfo(!idEmpNum).name 'add data to array
+                SortArray(0, UBound(SortArray, 2)) = ReturnEmpInfo(!idEmpNum).Name 'add data to array
                 SortArray(1, UBound(SortArray, 2)) = !idEmpNum
                 SortArray(2, UBound(SortArray, 2)) = !idStartDate
                 SortArray(3, UBound(SortArray, 2)) = !idEndDate
                 SortArray(4, UBound(SortArray, 2)) = !idStatus
                 SortArray(5, UBound(SortArray, 2)) = !idStatus2
                 SortArray(6, UBound(SortArray, 2)) = !idNotes
-                
-                
-                ReDim Preserve SortArray(6, UBound(SortArray, 2) + 1)
+                SortArray(7, UBound(SortArray, 2)) = !idHours
+                ReDim Preserve SortArray(7, UBound(SortArray, 2) + 1)
                 .MoveNext 'move to next position
             Else
                 .MoveNext
             End If
         Loop
-        .Close
-        
-   
-        
         If UBound(SortArray, 2) = 0 Then GoTo leavesub
         Call MedianThreeQuickSort1(SortArray) 'Modified quick sort that supports multidimentional arrays (sorts by element 0 (name))
         i = 1
@@ -451,11 +426,11 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     Grid1.Rows = Grid1.Rows + 1
                     Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , , sFntUnder
                     Grid1.CellDetails Grid1.Rows - 1, 2, "Hire Date: " & ReturnEmpInfo(SortArray(1, i)).HireDate, DT_CENTER, , , , sFntUnder
-                    Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 3, "Hours Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
                     bolHeaderAdded = True
                 End If
                 Do Until FirstEmp <> CurEmp Or i = UBound(SortArray, 2)
-                    ReDim Preserve DateSortArray(6, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                    ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                     DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                     DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                     DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -463,9 +438,10 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     DateSortArray(4, UBound(DateSortArray, 2)) = SortArray(4, i)
                     DateSortArray(5, UBound(DateSortArray, 2)) = SortArray(5, i)
                     DateSortArray(6, UBound(DateSortArray, 2)) = SortArray(6, i)
+                    DateSortArray(7, UBound(DateSortArray, 2)) = SortArray(7, i)
                     i = i + 1
                     If i = UBound(SortArray, 2) And FirstEmp = SortArray(1, i) Then
-                        ReDim Preserve DateSortArray(6, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                        ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                         DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                         DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                         DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -473,47 +449,50 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                         DateSortArray(4, UBound(DateSortArray, 2)) = SortArray(4, i)
                         DateSortArray(5, UBound(DateSortArray, 2)) = SortArray(5, i)
                         DateSortArray(6, UBound(DateSortArray, 2)) = SortArray(6, i)
+                        DateSortArray(7, UBound(DateSortArray, 2)) = SortArray(7, i)
                         bolFinalEntry = True
                     Else
                         CurEmp = SortArray(1, i)
                     End If
                 Loop
-         
                 If UBound(DateSortArray, 2) > 25 Then
                     Call MedianThreeQuickSort1(DateSortArray) 'Modified quick sort that supports multidimentional arrays (sorts by element 0 (name))
                 Else
                     Call MySort(DateSortArray) 'Custom Selection Sort (Works faster on smaller sorts than the quicksort)
                 End If
-
                 For b = 1 To UBound(DateSortArray, 2)
                     Grid1.Rows = Grid1.Rows + 1
-                    Grid1.CellDetails Grid1.Rows - 1, 1, DateSortArray(0, b), DT_CENTER ', , , , , sFntNormal
-                    Grid1.CellDetails Grid1.Rows - 1, 2, DateSortArray(3, b), DT_CENTER ', , , , , sFntNormal
-                    Grid1.CellDetails Grid1.Rows - 1, 3, DateSortArray(4, b), DT_CENTER ', , , , , sFntNormal
-                    Grid1.CellDetails Grid1.Rows - 1, 4, DateSortArray(5, b), DT_CENTER ', , , , , sFntNormal
-                    Grid1.CellDetails Grid1.Rows - 1, 5, DateSortArray(6, b), DT_CENTER ', , , , , sFntNormal
+                    Grid1.CellDetails Grid1.Rows - 1, 1, DateSortArray(0, b), DT_CENTER 'StartDate
+                    Grid1.CellDetails Grid1.Rows - 1, 2, DateSortArray(3, b), DT_CENTER 'EndDate
+                    'clStartDate = DateSortArray(0, b)
+                    'clEndDate = DateSortArray(3, b)
+                    'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 3, DateSortArray(7, b) & " Hours", DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 4, DateSortArray(4, b), DT_CENTER 'Status
+                    Grid1.CellDetails Grid1.Rows - 1, 5, DateSortArray(5, b), DT_CENTER 'IsPaid?
+                    Grid1.CellDetails Grid1.Rows - 1, 6, DateSortArray(6, b), DT_CENTER 'Notes
                 Next b
                 'Erase DateSortArray
-                ReDim DateSortArray(6, 0)
+                ReDim DateSortArray(7, 0)
                 Grid1.Rows = Grid1.Rows + 1
             Else
-                
                 If Not bolHeaderAdded Then
                     Grid1.Rows = Grid1.Rows + 1
                     Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , , sFntUnder
                     Grid1.CellDetails Grid1.Rows - 1, 2, "Hire Date: " & ReturnEmpInfo(SortArray(1, i)).HireDate, DT_CENTER, , , , sFntUnder
-                    
-                    Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
-                    
-                    
+                    Grid1.CellDetails Grid1.Rows - 1, 3, "Hours Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
                     bolHeaderAdded = True
                 End If
                 Grid1.Rows = Grid1.Rows + 1
-                Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(4, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(5, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(6, i), DT_CENTER ', , , , , sFntNormal
+                Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER 'StartDate
+                Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER 'EndDate
+                'clStartDate = SortArray(2, i)
+                'clEndDate = SortArray(3, i)
+                'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(7, i) & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(4, i), DT_CENTER 'Status
+                Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(5, i), DT_CENTER 'IsPaid?
+                Grid1.CellDetails Grid1.Rows - 1, 6, SortArray(6, i), DT_CENTER 'Notes
                 Grid1.Rows = Grid1.Rows + 1
                 i = i + 1
             End If
@@ -521,46 +500,41 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 Grid1.Rows = Grid1.Rows + 1
                 Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , , sFntUnder
                 Grid1.CellDetails Grid1.Rows - 1, 2, "Hire Date: " & ReturnEmpInfo(SortArray(1, i)).HireDate, DT_CENTER, , , , sFntUnder
-                Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
+                Grid1.CellDetails Grid1.Rows - 1, 3, "Hours Avail: " & VacaAvail(SortArray(1, i)), DT_CENTER, , , , sFntUnder
                 Grid1.Rows = Grid1.Rows + 1
-                Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(4, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(5, i), DT_CENTER ', , , , , sFntNormal
-                Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(6, i), DT_CENTER ', , , , , sFntNormal
+                Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(2, i), DT_CENTER 'StartDate
+                Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(3, i), DT_CENTER 'EndDate
+                'clStartDate = SortArray(2, i)
+                'clEndDate = SortArray(3, i)
+                'Grid1.CellDetails Grid1.Rows - 1, 3, DateDiffW(clStartDate, clEndDate) * 8 & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(7, i) & " Hours", DT_CENTER
+                Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(4, i), DT_CENTER 'Status
+                Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(5, i), DT_CENTER 'IsPaid?
+                Grid1.CellDetails Grid1.Rows - 1, 6, SortArray(6, i), DT_CENTER 'Notes
                 bolHeaderAdded = True
             End If
         Loop Until i >= UBound(SortArray, 2)
         Grid1.Rows = Grid1.Rows + 1
 leavesub:
         Erase SortArray
-        ReDim SortArray(6, 0)
+        ReDim SortArray(7, 0)
     End With
     ' Grid1.Redraw = True
-    
-   
     strReportTitle = "Vacations between " & StartDate & " and " & EndDate
     strReportSubTitle = IIf(chkBremen, "Bremen ", "") & IIf(chkWooster, " Wooster ", "") & IIf(chkRockyMtn, " RockyMtn ", "") & IIf(chkNuclear, " Nuclear ", "")
 End Sub
 Private Function VacaAvailAccrual(EmpNum) As Integer
     Dim rs            As New ADODB.Recordset
-    Dim cn            As New ADODB.Connection
     Dim strSQL1       As String
     Dim intTakenWeeks As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     VacaAvailAccrual = 0
-    
     intTakenWeeks = 0
     DTStartDate = dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
-    DTEndDate = "12/31/12" 'dtFiscalYearEnd
-    'If EmpNum = 954 Then Stop
-    
+    DTEndDate = dtFiscalYearEnd
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount < 1 Then
             VacaAvailAccrual = 0
@@ -574,7 +548,6 @@ Private Function VacaAvailAccrual(EmpNum) As Integer
             intTakenWeeks = .RecordCount
         End If
     End With
-   
     If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
         VacaAvailAccrual = ReturnEmpInfo(EmpNum).VacaWeeks - intTakenWeeks
     Else
@@ -583,42 +556,41 @@ Private Function VacaAvailAccrual(EmpNum) As Integer
 End Function
 Private Function VacaAvail(EmpNum) As Integer
     Dim rs            As New ADODB.Recordset
-    Dim cn            As New ADODB.Connection
     Dim strSQL1       As String
     Dim intTakenWeeks As Integer
+    Dim lngHoursTaken As Long
+    Dim intDays       As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     VacaAvail = 0
-    
     intTakenWeeks = 0
-    DTStartDate = dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
-    DTEndDate = dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).CurrentYear
+    DTStartDate = dtVacaPeriod.StartDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
+    DTEndDate = dtVacaPeriod.EndDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).CurrentYear
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If .RecordCount < 1 Then
             VacaAvail = 0
-            If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
-                VacaAvail = ReturnEmpInfo(EmpNum).VacaWeeks
+            If ReturnEmpInfo(EmpNum).VacaHours <> 0 Then
+                VacaAvail = strCurrentEmpInfo.VacaHours
             Else
-                VacaAvail = CalcYearsWorked(EmpNum).VacaWeeksAvail
+                VacaAvail = CalcYearsWorked(EmpNum).VacaHoursAvail
             End If
             Exit Function
         Else
-            intTakenWeeks = .RecordCount
+            Do Until rs.EOF
+                intDays = DateDiffW(!idStartDate, !idEndDate) '+ 1
+                lngHoursTaken = lngHoursTaken + intDays * 8
+                .MoveNext
+            Loop
         End If
     End With
-   
-    If ReturnEmpInfo(EmpNum).VacaWeeks <> 0 Then
-        VacaAvail = ReturnEmpInfo(EmpNum).VacaWeeks - intTakenWeeks
+    If ReturnEmpInfo(EmpNum).VacaHours <> 0 Then
+        VacaAvail = ReturnEmpInfo(EmpNum).VacaHours - lngHoursTaken
     Else
-        VacaAvail = CalcYearsWorked(EmpNum).VacaWeeksAvail - intTakenWeeks
+        VacaAvail = CalcYearsWorked(EmpNum).VacaHoursAvail - lngHoursTaken
     End If
 End Function
-
 Public Sub MySort(ByRef pvarArray As Variant)
     Dim i               As Long
     Dim c               As Integer
@@ -703,7 +675,6 @@ End Sub
 'WhosOnVaca determines which emps will be on vacation by month, ordered desc by week, and alphebetically by name (This was a tough one!)
 Private Sub WhosOnVaca(Month As Integer)
     Dim rs              As New ADODB.Recordset
-    Dim cn              As New ADODB.Connection
     Dim strSQL1         As String
     Dim Found           As Boolean
     Dim bolMonthAdded   As Boolean
@@ -715,17 +686,20 @@ Private Sub WhosOnVaca(Month As Integer)
     Dim i         As Integer
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Bold = True
+    sFntUnder.Size = 9
+    sFntUnder.Name = "Tahoma"
+    Dim sFntBold As New StdFont
+    sFntBold.Bold = True
+    sFntBold.Size = 9
+    sFntBold.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     bolMonthAdded = False
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).EndDate, strDBDateFormat) & "'}) " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "")
-    rs.Open strSQL1, cn, adOpenKeyset
+    cn_Global.CursorLocation = adUseClient
+    strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).StartDate, strDBDateFormat) & "'}) AND (vacations_0.idStartDate<={d '" & Format$(GetMonthDates(Month, DateTime.Year(Now)).EndDate, strDBDateFormat) & "'}) " & IIf(chkRequested.Value = 0, "AND vacations_0.idStatus <> 'REQUESTED'", "") & IIf(chkReScheduled.Value = 0, "AND vacations_0.idStatus <> 'RESCHEDULED'", "") & IIf(chkTaken.Value = 0, "AND vacations_0.idStatus <> 'TAKEN'", "") & " Order by vacations_0.idStartDate"
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         If rs.RecordCount = 0 Then Exit Sub
         Do Until .EOF
@@ -733,7 +707,9 @@ Private Sub WhosOnVaca(Month As Integer)
             If Found Then
                 If Not bolMonthAdded Then
                     Grid1.Rows = Grid1.Rows + 1
-                    Grid1.CellDetails Grid1.Rows - 1, 1, lstMonths.List(Month - 1), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 1, "Name", DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 2, lstMonths.List(Month - 1), DT_CENTER, , , , sFntUnder
+                    Grid1.CellDetails Grid1.Rows - 1, 4, "Hours", DT_CENTER, , , , sFntUnder
                     bolMonthAdded = True
                 End If
                 CurDate = !idStartDate 'set to current position date
@@ -748,10 +724,10 @@ Private Sub WhosOnVaca(Month As Integer)
                     Do Until FirstDate <> CurDate Or .EOF ' loop through positions until we get to the end, or we find one that doesnt match
                         Found = InStr(1, vbNullChar & Join(strEmpsToRun(), vbNullChar) & vbNullChar, vbNullChar & !idEmpNum & vbNullChar) > 0
                         If Not Found Then GoTo filteremp
-                        SortArray(0, UBound(SortArray, 2)) = ReturnEmpInfo(!idEmpNum).name 'add data to array
+                        SortArray(0, UBound(SortArray, 2)) = ReturnEmpInfo(!idEmpNum).Name 'add data to array
                         SortArray(1, UBound(SortArray, 2)) = !idStartDate
                         SortArray(2, UBound(SortArray, 2)) = !idEndDate
-                        SortArray(3, UBound(SortArray, 2)) = !idStatus2
+                        SortArray(3, UBound(SortArray, 2)) = !idHours
                         SortArray(4, UBound(SortArray, 2)) = !idNotes
                         ReDim Preserve SortArray(4, UBound(SortArray, 2) + 1) 'make room in array for new data
 filteremp:
@@ -763,29 +739,24 @@ filteremp:
                         End If
                     Loop
 printarray:
-                    If UBound(SortArray, 2) > 25 Then
-                        Call MedianThreeQuickSort1(SortArray) 'Modified quick sort that supports multidimentional arrays (sorts by element 0 (name))
-                    Else
-                        Call MySort(SortArray)
-                    End If
+                    Call MySort(SortArray) 'Sort by alpha
                     For i = 1 To UBound(SortArray, 2) 'cycle through the now sorted array and add it to the grid
                         Grid1.Rows = Grid1.Rows + 1
-                        Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(1, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(2, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(3, i), DT_CENTER
-                        Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(4, i), DT_CENTER
+                        Grid1.CellDetails Grid1.Rows - 1, 1, SortArray(0, i), DT_CENTER, , , &H808080
+                        Grid1.CellDetails Grid1.Rows - 1, 2, SortArray(1, i), DT_CENTER, , , &H808080, sFntBold
+                        Grid1.CellDetails Grid1.Rows - 1, 3, SortArray(2, i), DT_CENTER, , , &H808080, sFntBold
+                        Grid1.CellDetails Grid1.Rows - 1, 4, SortArray(3, i), DT_CENTER, , , &H808080
+                        Grid1.CellDetails Grid1.Rows - 1, 5, SortArray(4, i), DT_CENTER, , , &H808080
                     Next i
                     Grid1.Rows = Grid1.Rows + 1
-                    'Erase SortArray 'erase that shit
                     ReDim SortArray(4, 0) 'make it an array again
                 Else 'if the current date and next dates dont match, add them directly to the grid
                     Grid1.Rows = Grid1.Rows + 1
-                    Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(!idEmpNum).name, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 2, !idStartDate, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 3, !idEndDate, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 4, !idStatus2, DT_CENTER
-                    Grid1.CellDetails Grid1.Rows - 1, 5, !idNotes, DT_CENTER
+                    Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(!idEmpNum).Name, DT_CENTER, , , &H808080
+                    Grid1.CellDetails Grid1.Rows - 1, 2, !idStartDate, DT_CENTER, , , &H808080, sFntBold
+                    Grid1.CellDetails Grid1.Rows - 1, 3, !idEndDate, DT_CENTER, , , &H808080, sFntBold
+                    Grid1.CellDetails Grid1.Rows - 1, 4, !idHours, DT_CENTER, , , &H808080
+                    Grid1.CellDetails Grid1.Rows - 1, 5, !idNotes, DT_CENTER, , , &H808080
                     Grid1.Rows = Grid1.Rows + 1
                     .MoveNext
                     If .EOF Then 'if we can set the current date, or leave the loop
@@ -799,7 +770,6 @@ printarray:
             End If
         Loop
 getout:
-        .Close
     End With
     If intStartingRows < Grid1.Rows Then 'if we added rows to the grid, put a blank row at the end for easier reading
         Grid1.Rows = Grid1.Rows + 1
@@ -807,32 +777,24 @@ getout:
     End If
     bolMonthAdded = False
 End Sub
-
 Private Sub cmdToExcel_Click()
-
-    Dim XcLApp   As Object  'used for excel application'
-    Dim XcLWB     As Object 'used for excel work book'
-    Dim XcLWS     As Object 'used for excel work sheet'
-    
-    Dim i As Integer, c As Integer ' counter for the rows of the flexgrid'
-    
+    Dim XcLApp As Object  'used for excel application'
+    Dim XcLWB  As Object 'used for excel work book'
+    Dim XcLWS  As Object 'used for excel work sheet'
+    Dim i      As Integer, c As Integer ' counter for the rows of the flexgrid'
     Set XcLApp = CreateObject("Excel.Application")  'creating new excel application'
     Set XcLWB = XcLApp.Workbooks.Add                'opening new excel work book'
     Set XcLWS = XcLWB.Worksheets.Add                'opening new excel worksheet'
     'taking data from flexgrid and sendting it to excel'
     With Grid1
-    
         For i = 1 To .Rows - 1
-            
             For c = 1 To .Columns
-            XcLWS.Range(Addres_Excel(i, c)).Value = .Cell(i, c).Text
-         
+                XcLWS.Range(Addres_Excel(i, c)).Value = .Cell(i, c).Text
             Next c
         Next i
     End With
     XcLApp.Visible = True
 End Sub
-
 Private Sub cmdWhosOnVaca_Click()
     Dim intMonths() As Integer
     ReDim intMonths(1)
@@ -890,7 +852,6 @@ Private Sub cmdDateRange_Click()
     Call CustomDateRange(DTStartDate, DTEndDate)
     ReSizeSGrid
     Grid1.Redraw = True
-    
     Screen.MousePointer = vbDefault
     Grid1.BackColor = &H80000005
 End Sub
@@ -994,6 +955,7 @@ Private Sub Form_Load()
     Grid1.AddColumn "2"
     Grid1.AddColumn "3"
     Grid1.AddColumn "4"
+    Grid1.AddColumn "5"
     'Grid1.AddColumn "6"
     ' Grid1.AddColumn "7"
     Grid1.Header = False
@@ -1009,4 +971,3 @@ Private Sub ReSizeSGrid()
     Next i
     Grid1.Redraw = True
 End Sub
-

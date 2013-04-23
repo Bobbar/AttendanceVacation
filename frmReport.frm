@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmReport 
@@ -377,7 +377,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   206045185
+            Format          =   296943617
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -401,7 +401,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   206045185
+            Format          =   296943617
             CurrentDate     =   40487
          End
          Begin VB.Label Label1 
@@ -484,34 +484,29 @@ Option Explicit
 Public bolShowZeroEntries As Boolean
 Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     On Error Resume Next
     intRowsAdded = 0
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
     intOtherRowsAdded = 0
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     DTStartDate = Format$(frmReport.DTStart.Value, "MM/DD/YYYY")
     DTEndDate = Format$(frmReport.DTEnd.Value, "MM/DD/YYYY")
     strSQL1 = "SELECT * FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         strReportNum = EmpNum
-        strReportName = ReturnEmpInfo(EmpNum).name
+        strReportName = ReturnEmpInfo(EmpNum).Name
     End With
     If Not bolShowZeroEntries And rs.RecordCount < 1 Then
         NoEntries = True
-        rs.Close
         Exit Sub
     End If
     Do Until rs.EOF
@@ -519,7 +514,6 @@ Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
             Grid1.Rows = Grid1.Rows + 1
             Grid1.CellDetails intGridRow, 1, Format$(!idAttenEntryDate, strUserDateFormat), DT_CENTER
             If Format$(!idAttenEntryDateTo, strUserDateFormat) <> Format$("2000-01-01", strUserDateFormat) Then Grid1.CellDetails intGridRow, 2, Format$(!idAttenEntryDateTo, strUserDateFormat), DT_CENTER
-
             Select Case !idAttenExcused
                 Case "EXCUSED"
                     Grid1.CellDetails intGridRow, 3, !idAttenExcused, DT_CENTER, , &H80FF80
@@ -531,7 +525,6 @@ Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
                     Grid1.CellDetails intGridRow, 3, !idAttenExcused, DT_CENTER, , &HFFFF80
                     intOtherRowsAdded = intOtherRowsAdded + 1
             End Select
-            
             Grid1.CellDetails intGridRow, 4, !idAttenTimeOffType, DT_CENTER
             Grid1.CellDetails intGridRow, 5, !idAttenPartialDay, DT_CENTER
             Grid1.CellDetails intGridRow, 6, !idAttenNotes, DT_CENTER
@@ -540,38 +533,32 @@ Public Sub AddEmpToReportSingle(ByVal EmpNum As String)
             .MoveNext ' goto next entry
         End With
     Loop
-    rs.Close
 End Sub
 Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
     Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim sFntUnder As New StdFont
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     On Error Resume Next
     intRowsAdded = 0
     intUnExcusedRowsAdded = 0
     intExcusedRowsAdded = 0
     intOtherRowsAdded = 0
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     DTStartDate = Format$(frmReport.DTStart.Value, "MM/DD/YYYY")
     DTEndDate = Format$(frmReport.DTEnd.Value, "MM/DD/YYYY")
     strSQL1 = "SELECT *" & " FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     With rs
         strReportNum = EmpNum
-        strReportName = ReturnEmpInfo(EmpNum).name
+        strReportName = ReturnEmpInfo(EmpNum).Name
     End With
     If Not bolShowZeroEntries And rs.RecordCount < 1 Then
         NoEntries = True
-        rs.Close
         Exit Sub
     End If
     Do Until rs.EOF
@@ -579,7 +566,6 @@ Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
             Grid1.Rows = Grid1.Rows + 1
             Grid1.CellDetails intGridRow, 1, Format$(!idAttenEntryDate, strUserDateFormat), DT_CENTER
             If Format$(!idAttenEntryDateTo, strUserDateFormat) <> Format$("2000-01-01", strUserDateFormat) Then Grid1.CellDetails intGridRow, 2, Format$(!idAttenEntryDateTo, strUserDateFormat), DT_CENTER
-
             Select Case !idAttenExcused
                 Case "EXCUSED"
                     Grid1.CellDetails intGridRow, 3, !idAttenExcused, DT_CENTER, , &H80FF80
@@ -599,7 +585,6 @@ Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
             .MoveNext ' goto next entry
         End With
     Loop
-    rs.Close
 End Sub
 Public Sub EmpListReportMulti()
     Dim i As Integer, PagesPrinted As Integer
@@ -813,7 +798,7 @@ Private Sub PrintSGridMulti(FlexGrid As vbalGrid)
     Printer.CurrentY = Printer.CurrentY + 100
     Const GAP = 40
     With Printer.Font
-        .name = FlexGrid.Font.name
+        .Name = FlexGrid.Font.Name
         .Size = 9
     End With
     PrevY = Printer.CurrentY
@@ -1065,7 +1050,7 @@ Public Sub PrintSGridSingle(FlexGrid As vbalGrid)
     Printer.Print "    Report date: " & Date & " " & Time & "      Printed by: " & UCase$(Environ$("USERNAME"))
     Const GAP = 40
     With Printer.Font
-        .name = FlexGrid.Font.name
+        .Name = FlexGrid.Font.Name
         .Size = 9
     End With
     Printer.Print ""
@@ -1280,15 +1265,11 @@ Public Sub PrintSGridSingle(FlexGrid As vbalGrid)
 End Sub
 Public Sub LoadEmpList()
     Dim rs      As New ADODB.Recordset
-    Dim cn      As New ADODB.Connection
     Dim strSQL1 As String
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
     Dim iOffice As Integer, iShop As Integer, iWoosterShop As Integer
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
+    cn_Global.CursorLocation = adUseClient
     strSQL1 = "SELECT * From EmpList Where idIsActive = 'TRUE' Order By idName"
-    rs.Open strSQL1, cn, adOpenKeyset
+    Set rs = cn_Global.Execute(strSQL1)
     lstOfficeEmp.Clear
     lstShopEmp.Clear
     lstWoosterShopEmp.Clear
@@ -1310,8 +1291,6 @@ Public Sub LoadEmpList()
             .MoveNext
         End With
     Loop
-    rs.Close
-    cn.Close
     lblOfficeEmp.Caption = "Office Employees - " & lstOfficeEmp.ListCount
     lblShopEmp.Caption = "Shop Employees - " & lstShopEmp.ListCount
     lblWoosterEmp.Caption = "Wooster Employees - " & lstWoosterShopEmp.ListCount
@@ -1325,7 +1304,6 @@ Private Sub chkDateRange_Click()
         DTEnd.Enabled = False
     End If
 End Sub
-
 Private Sub cmdAddAll_Click()
     Call AddEmps("ADDALL")
 End Sub
@@ -1469,7 +1447,6 @@ End Sub
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     frmReport.Hide
 End Sub
-
 Private Sub lstEmpReport_DblClick()
     Dim A As Integer
     Do Until lstEmpReport.SelCount = 0
@@ -1528,8 +1505,6 @@ Private Sub lstWoosterShopEmp_KeyPress(KeyAscii As Integer)
         lblReportList.Caption = "Report List - " & lstEmpReport.ListCount
     End If
 End Sub
-
 Private Sub optShow_Click()
-bolShowZeroEntries = optShow
-
+    bolShowZeroEntries = optShow
 End Sub

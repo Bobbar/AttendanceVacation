@@ -36,35 +36,27 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private HeightOffset As Long, WidthOffset As Long
-
 Private Sub Form_Load()
-HeightOffset = frmChart.Height - (MSChart1.Top + MSChart1.Height)
-WidthOffset = frmChart.Width - (MSChart1.Left + MSChart1.Width)
-
-
-
-MSChart1.ChartData = strChartData
-MSChart1.Repaint = True
-MSChart1.Refresh
-
-
+    HeightOffset = frmChart.Height - (MSChart1.Top + MSChart1.Height)
+    WidthOffset = frmChart.Width - (MSChart1.Left + MSChart1.Width)
+    MSChart1.ChartData = strChartData
+    MSChart1.Repaint = True
+    MSChart1.Refresh
 End Sub
-
 Private Sub Form_Resize()
-MSChart1.Width = frmChart.Width - WidthOffset
-MSChart1.Height = frmChart.Height - HeightOffset
-
+    MSChart1.Width = frmChart.Width - WidthOffset
+    MSChart1.Height = frmChart.Height - HeightOffset
 End Sub
-Private Sub MSChart1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
- If Button = 2 Then 'Button 2 is "Right Click"
+Private Sub MSChart1_MouseDown(Button As Integer, _
+                               Shift As Integer, _
+                               X As Single, _
+                               Y As Single)
+    If Button = 2 Then 'Button 2 is "Right Click"
         Dim blah
-        
         blah = MsgBox("Copy data to clipboard for input into Excel?", vbOKCancel, "Copy Data")
-        
         If blah = vbOK Then
             Dim strBreakdown
             Dim i As Integer
-            
             For i = 0 To UBound(AttenStats) - 1
                 strBreakdown = strBreakdown + AttenStats(i).ExTypeName & vbTab & AttenStats(i).ExTypeCount & vbCrLf
             Next i

@@ -42,7 +42,7 @@ Begin VB.Form frmAddNewEmp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   209387521
+      Format          =   179306497
       CurrentDate     =   40934
    End
    Begin VB.ComboBox cmbLocation2 
@@ -247,8 +247,6 @@ Public Sub CancelButton_Click()
     frmAddNewEmp.Hide
 End Sub
 Private Sub cmdAddNew_Click()
-    Dim rs         As New ADODB.Recordset
-    Dim cn         As New ADODB.Connection
     Dim strEmpName As String, FormatDate As String
     Dim blah
     If txtFirstName.Text = "" Or txtLastName.Text = "" Or cmbLocation1.Text = "" Or cmbLocation2.Text = "" Then
@@ -260,11 +258,9 @@ Private Sub cmdAddNew_Click()
     txtLastName.Text = Trim$(UCase$(txtLastName.Text))
     strEmpName = txtLastName.Text & "," & txtFirstName.Text
     If CheckForName(strEmpName).Exist Then
-    blah = MsgBox(strEmpName & " is already in the database under Employee #" & CheckForName(strEmpName).Number, vbExclamation + vbOKOnly, "Duplicate entry")
-    Exit Sub
+        blah = MsgBox(strEmpName & " is already in the database under Employee #" & CheckForName(strEmpName).Number, vbExclamation + vbOKOnly, "Duplicate entry")
+        Exit Sub
     End If
-    
-    
     FormatDate = Format$(DTHireDate.Value, strDBDateFormat)
     Form1.AddEmpToDB strEmpName, Form1.txtAttenEmpNum.Text, FormatDate, cmbLocation1.Text, cmbLocation2.Text, "TRUE"
     blah = MsgBox("New employee added to database.", vbOKOnly, "Done")
