@@ -137,7 +137,26 @@ Public Type EmpExist
 End Type
 Global cn_Global    As New ADODB.Connection
 Public strLocalUser As String
-
+Public Function IsAdmin(Username As String) As Integer
+    IsAdmin = 3
+    Dim rs      As New ADODB.Recordset
+    Dim strSQL1 As String
+    cn_Global.CursorLocation = adUseClient
+    strSQL1 = "SELECT * FROM users where idUsers = '" & Username & "' order by idUsers"
+    Set rs = cn_Global.Execute(strSQL1)
+    If rs.RecordCount > 0 Then
+        If rs.Fields(1) = True Then
+            IsAdmin = 0
+        Else
+            IsAdmin = 1
+        End If
+        rs.Close
+    Else
+        IsAdmin = 2
+       Call MsgBox("Access Denied - Username not found.", vbOKOnly + vbExclamation, "No access")
+        rs.Close
+    End If
+End Function
 Public Function Addres_Excel(ByVal lng_row As Long, ByVal lng_col As Long) As String
     'this function is used to send the columns from grid to excel'
     'make column header to look like the letters used in excel'

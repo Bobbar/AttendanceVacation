@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
@@ -213,7 +213,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   273612801
+         Format          =   250019841
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -236,7 +236,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   273612801
+         Format          =   178257921
          CurrentDate     =   40484
       End
       Begin VB.Label lblLastModified 
@@ -247,7 +247,7 @@ Begin VB.Form Form1
          ForeColor       =   &H00808080&
          Height          =   195
          Left            =   8715
-         TabIndex        =   50
+         TabIndex        =   46
          Top             =   1080
          Visible         =   0   'False
          Width           =   1035
@@ -258,7 +258,7 @@ Begin VB.Form Form1
          ForeColor       =   &H00808080&
          Height          =   195
          Left            =   180
-         TabIndex        =   49
+         TabIndex        =   45
          ToolTipText     =   "Current Server Date/Time"
          Top             =   2160
          Width           =   45
@@ -267,7 +267,7 @@ Begin VB.Form Form1
          BackStyle       =   0  'Transparent
          Height          =   315
          Left            =   0
-         TabIndex        =   45
+         TabIndex        =   41
          Top             =   60
          Width           =   225
       End
@@ -342,7 +342,7 @@ Begin VB.Form Form1
       Begin vbAcceleratorSGrid6.vbalGrid GridAtten 
          Height          =   4035
          Left            =   180
-         TabIndex        =   44
+         TabIndex        =   40
          Top             =   300
          Width           =   10215
          _ExtentX        =   18018
@@ -405,41 +405,6 @@ Begin VB.Form Form1
       TabIndex        =   2
       Top             =   60
       Width           =   10575
-      Begin VB.Frame Frame5 
-         Appearance      =   0  'Flat
-         Caption         =   "Fuctions"
-         ForeColor       =   &H80000008&
-         Height          =   435
-         Left            =   7800
-         TabIndex        =   40
-         Top             =   900
-         Visible         =   0   'False
-         Width           =   1275
-         Begin VB.CommandButton cmdAttenReports 
-            Caption         =   "Attendance Reports"
-            Height          =   360
-            Left            =   2880
-            TabIndex        =   43
-            Top             =   240
-            Width           =   1650
-         End
-         Begin VB.CommandButton cmdVacaReports 
-            Caption         =   "Vacation Reports"
-            Height          =   360
-            Left            =   1200
-            TabIndex        =   42
-            Top             =   240
-            Width           =   1590
-         End
-         Begin VB.CommandButton cmdVacations 
-            Caption         =   "Vacations"
-            Height          =   360
-            Left            =   120
-            TabIndex        =   41
-            Top             =   240
-            Width           =   990
-         End
-      End
       Begin VB.ComboBox cmbLocation2 
          Enabled         =   0   'False
          BeginProperty Font 
@@ -657,7 +622,7 @@ Begin VB.Form Form1
          EndProperty
          Height          =   375
          Left            =   5400
-         TabIndex        =   46
+         TabIndex        =   42
          Top             =   1320
          Width           =   1725
       End
@@ -738,7 +703,7 @@ Begin VB.Form Form1
       ForeColor       =   &H00808080&
       Height          =   165
       Left            =   120
-      TabIndex        =   48
+      TabIndex        =   44
       Top             =   9420
       Width           =   1290
    End
@@ -758,7 +723,7 @@ Begin VB.Form Form1
       ForeColor       =   &H00808080&
       Height          =   165
       Left            =   9240
-      TabIndex        =   47
+      TabIndex        =   43
       Top             =   9420
       Width           =   1470
    End
@@ -1610,26 +1575,22 @@ Private Sub Form_Load()
     strROAccessUser = "AttenUserRO"
     strROAccessPass = "8f0DYyS7y056"
     strLocalUser = UCase$(Environ$("USERNAME"))
-    Select Case strLocalUser
-        Case "JALOVELL"
+    strUsername = strROAccessUser
+    strPassword = strROAccessPass
+    cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
+    Select Case IsAdmin(strLocalUser)
+        Case 0
             strUsername = strFullAccessUser
             strPassword = strFullAccessPass
-        Case "SLHOWARD"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case "TKSCHRIN"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case "RBLOVELL"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case "HLSCHAAD"
-            strUsername = strFullAccessUser
-            strPassword = strFullAccessPass
-        Case Else
+        Case 1
             strUsername = strROAccessUser
             strPassword = strROAccessPass
+        Case 2
+            Call Form_QueryUnload(0, 0)
+            'End
+            Exit Sub
     End Select
+    cn_Global.Close
     cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
     dtVacaPeriod.StartDate = "1/1/" & DateTime.Year(DateTime.Date)
     dtVacaPeriod.EndDate = "12/31/" & DateTime.Year(DateTime.Date)
@@ -1706,7 +1667,7 @@ Public Sub FillCombos()
         End With
     Loop
 End Sub
-Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+Public Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     On Error Resume Next
     If KillMe = True Then
         moApp.Quit False
@@ -1714,9 +1675,9 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Set moApp = Nothing
     Call EndProgram
     cn_Global.Close
-    'End
+    End
 End Sub
-Sub EndProgram()
+Public Sub EndProgram()
     Dim tmpForm As Form
     For Each tmpForm In Forms
         If tmpForm.Name <> "Form1" Then
@@ -1724,7 +1685,7 @@ Sub EndProgram()
             Set tmpForm = Nothing
         End If
     Next
-    cn_Global.Close
+    
 End Sub
 Private Sub Frame1_Click()
     List1.Visible = False

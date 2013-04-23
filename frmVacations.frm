@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacations 
    BorderStyle     =   1  'Fixed Single
@@ -407,7 +407,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   180486145
+         Format          =   246022145
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -429,7 +429,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   180486145
+         Format          =   246022145
          CurrentDate     =   40935
       End
       Begin VB.Label lblLastModified 
