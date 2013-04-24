@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmVacationReports 
    BorderStyle     =   1  'Fixed Single
@@ -224,7 +224,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   248578049
+            Format          =   178585601
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -246,7 +246,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   248578049
+            Format          =   178651137
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -362,9 +362,9 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
     Dim strSQL1     As String
     Dim i           As Integer, b           As Integer
     Dim SortArray() As Variant
-    ReDim SortArray(7, 0)
+    ReDim SortArray(8, 0)
     Dim DateSortArray() As Variant
-    ReDim DateSortArray(7, 0)
+    ReDim DateSortArray(8, 0)
     Dim clStartDate   As Date, clEndDate As Date
     Dim bolFinalEntry As Boolean
     bolFinalEntry = False
@@ -405,7 +405,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                 SortArray(5, UBound(SortArray, 2)) = !idStatus2
                 SortArray(6, UBound(SortArray, 2)) = !idNotes
                 SortArray(7, UBound(SortArray, 2)) = !idHours
-                ReDim Preserve SortArray(7, UBound(SortArray, 2) + 1)
+                ReDim Preserve SortArray(8, UBound(SortArray, 2) + 1)
                 .MoveNext 'move to next position
             Else
                 .MoveNext
@@ -430,7 +430,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     bolHeaderAdded = True
                 End If
                 Do Until FirstEmp <> CurEmp Or i = UBound(SortArray, 2)
-                    ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                    ReDim Preserve DateSortArray(8, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                     DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                     DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                     DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -441,7 +441,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     DateSortArray(7, UBound(DateSortArray, 2)) = SortArray(7, i)
                     i = i + 1
                     If i = UBound(SortArray, 2) And FirstEmp = SortArray(1, i) Then
-                        ReDim Preserve DateSortArray(7, UBound(DateSortArray, 2) + 1) 'make room in array for new data
+                        ReDim Preserve DateSortArray(8, UBound(DateSortArray, 2) + 1) 'make room in array for new data
                         DateSortArray(0, UBound(DateSortArray, 2)) = SortArray(2, i) 'ReturnEmpInfo("NAME", SortArray(1, i)) 'add data to array
                         DateSortArray(1, UBound(DateSortArray, 2)) = SortArray(1, i)
                         DateSortArray(2, UBound(DateSortArray, 2)) = SortArray(0, i) 'ReturnEmpInfo(SortArray(1, i)).Name 'SortArray(2, i)
@@ -473,7 +473,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
                     Grid1.CellDetails Grid1.Rows - 1, 6, DateSortArray(6, b), DT_CENTER 'Notes
                 Next b
                 'Erase DateSortArray
-                ReDim DateSortArray(7, 0)
+                ReDim DateSortArray(8, 0)
                 Grid1.Rows = Grid1.Rows + 1
             Else
                 If Not bolHeaderAdded Then
@@ -517,7 +517,7 @@ Private Sub CustomDateRange(StartDate As Date, EndDate As Date)
         Grid1.Rows = Grid1.Rows + 1
 leavesub:
         Erase SortArray
-        ReDim SortArray(7, 0)
+        ReDim SortArray(8, 0)
     End With
     ' Grid1.Redraw = True
     strReportTitle = "Vacations between " & StartDate & " and " & EndDate
@@ -557,12 +557,11 @@ End Function
 Private Function VacaAvail(EmpNum) As Integer
     Dim rs            As New ADODB.Recordset
     Dim strSQL1       As String
-    Dim intTakenWeeks As Integer
     Dim lngHoursTaken As Long
     Dim intDays       As Integer
     Dim DTStartDate   As Date, DTEndDate As Date
     VacaAvail = 0
-    intTakenWeeks = 0
+    lngHoursTaken = 0
     DTStartDate = dtVacaPeriod.StartDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).PreviousYear
     DTEndDate = dtVacaPeriod.EndDate 'dtAnniDate(ReturnEmpInfo(EmpNum).HireDate).CurrentYear
     strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(DTStartDate, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'}) AND (vacations_0.idEmpNum='" & EmpNum & "') AND (vacations_0.idStatus='TAKEN') AND (vacations_0.idStatus2='PAID')"
@@ -579,8 +578,7 @@ Private Function VacaAvail(EmpNum) As Integer
             Exit Function
         Else
             Do Until rs.EOF
-                intDays = DateDiffW(!idStartDate, !idEndDate) '+ 1
-                lngHoursTaken = lngHoursTaken + intDays * 8
+                lngHoursTaken = lngHoursTaken + !idHours
                 .MoveNext
             Loop
         End If
@@ -870,22 +868,19 @@ Private Sub cmdPrint_Click()
 End Sub
 
 Private Sub Command1_Click()
- 
     Dim rs        As New ADODB.Recordset
     Dim cn        As New ADODB.Connection
     Dim strSQL1   As String
     Dim i         As Integer
     Dim sFntUnder As New StdFont
     Dim DTEndDate As Date
-    Dim intTaken As Integer
-    
+    Dim intTaken  As Integer
     DTEndDate = "12/31/12"
-    
     sFntUnder.Underline = True
-    sFntUnder.name = "Tahoma"
+    sFntUnder.Name = "Tahoma"
     Dim sFntNormal As New StdFont
     sFntNormal.Underline = False
-    sFntNormal.name = "Tahoma"
+    sFntNormal.Name = "Tahoma"
     EmpListByCompany
     Set rs = New ADODB.Recordset
     Set cn = New ADODB.Connection
@@ -897,33 +892,28 @@ Private Sub Command1_Click()
     Grid1.Clear
     Grid1.Rows = 1
     For i = 1 To UBound(strEmpsToRun) '(strEmpInfo)
-         strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "')"
+        strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "')"
         'Debug.Print strSQL1
         'rs.Open strSQL1, cn, adOpenKeyset
         intTaken = 0
-        
         With rs
-           ' If .RecordCount = 0 Then GoTo NextLoop
-           
-            
-            
+            ' If .RecordCount = 0 Then GoTo NextLoop
             Grid1.Rows = Grid1.Rows + 1
-            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).name, DT_CENTER
+            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).Name, DT_CENTER
             'Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
             'Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & CalcYearsWorked(strEmpsToRun(i)).VacaWeeksAvail, DT_CENTER, , , , sFntUnder
             Grid1.CellDetails Grid1.Rows - 1, 2, VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER
-         
-'            Do Until .EOF
-'                Grid1.Rows = Grid1.Rows + 1
-'                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
-'                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
-'                .MoveNext
-'            Loop
+            '            Do Until .EOF
+            '                Grid1.Rows = Grid1.Rows + 1
+            '                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
+            '                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
+            '                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
+            '                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
+            '                .MoveNext
+            '            Loop
             'Grid1.Rows = Grid1.Rows + 1
 NextLoop:
-           ' .Close
+            ' .Close
         End With
     Next i
     ReSizeSGrid
