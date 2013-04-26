@@ -66,14 +66,6 @@ Begin VB.Form frmVacationReports
       TabIndex        =   0
       Top             =   120
       Width           =   8715
-      Begin VB.CommandButton Command1 
-         Caption         =   "Command1"
-         Height          =   360
-         Left            =   3840
-         TabIndex        =   23
-         Top             =   3360
-         Width           =   990
-      End
       Begin VB.CommandButton cmdToExcel 
          Caption         =   "To Excel"
          Height          =   300
@@ -224,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   178585601
+            Format          =   178782209
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -246,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   178651137
+            Format          =   178782209
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -865,63 +857,6 @@ Private Sub cmdPrint_Click()
     ReSizeSGrid
     PrintFlexGridSGrid Grid1, strReportTitle, strReportSubTitle
     Grid1.Redraw = True
-End Sub
-
-Private Sub Command1_Click()
-    Dim rs        As New ADODB.Recordset
-    Dim cn        As New ADODB.Connection
-    Dim strSQL1   As String
-    Dim i         As Integer
-    Dim sFntUnder As New StdFont
-    Dim DTEndDate As Date
-    Dim intTaken  As Integer
-    DTEndDate = "12/31/12"
-    sFntUnder.Underline = True
-    sFntUnder.Name = "Tahoma"
-    Dim sFntNormal As New StdFont
-    sFntNormal.Underline = False
-    sFntNormal.Name = "Tahoma"
-    EmpListByCompany
-    Set rs = New ADODB.Recordset
-    Set cn = New ADODB.Connection
-    cn.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
-    cn.CursorLocation = adUseClient
-    Grid1.BackColor = colGridBusy
-    Screen.MousePointer = vbHourglass
-    Grid1.Redraw = False
-    Grid1.Clear
-    Grid1.Rows = 1
-    For i = 1 To UBound(strEmpsToRun) '(strEmpInfo)
-        strSQL1 = "SELECT * " & "FROM attendb.vacations vacations_0" & " WHERE (vacations_0.idStartDate>={d '" & Format$(dtAnniDate(strEmpInfo(i).HireDate).PreviousYear, strDBDateFormat) & "'}) AND (vacations_0.idEndDate<={d '" & Format$(DTEndDate, strDBDateFormat) & "'})" & " AND (vacations_0.idEmpNum='" & strEmpsToRun(i) & "')"
-        'Debug.Print strSQL1
-        'rs.Open strSQL1, cn, adOpenKeyset
-        intTaken = 0
-        With rs
-            ' If .RecordCount = 0 Then GoTo NextLoop
-            Grid1.Rows = Grid1.Rows + 1
-            Grid1.CellDetails Grid1.Rows - 1, 1, ReturnEmpInfo(strEmpsToRun(i)).Name, DT_CENTER
-            'Grid1.CellDetails Grid1.Rows - 1, 2, "Anni. Date: " & dtAnniDate(ReturnEmpInfo(strEmpsToRun(i)).HireDate).PreviousYear, DT_CENTER, , , , sFntUnder
-            'Grid1.CellDetails Grid1.Rows - 1, 3, "Weeks Avail: " & CalcYearsWorked(strEmpsToRun(i)).VacaWeeksAvail, DT_CENTER, , , , sFntUnder
-            Grid1.CellDetails Grid1.Rows - 1, 2, VacaAvailAccrual(strEmpsToRun(i)), DT_CENTER
-            '            Do Until .EOF
-            '                Grid1.Rows = Grid1.Rows + 1
-            '                Grid1.CellDetails Grid1.Rows - 1, 1, !idStartDate, DT_CENTER
-            '                Grid1.CellDetails Grid1.Rows - 1, 2, !idEndDate, DT_CENTER
-            '                Grid1.CellDetails Grid1.Rows - 1, 3, !idStatus, DT_CENTER
-            '                Grid1.CellDetails Grid1.Rows - 1, 4, !idNotes, DT_CENTER
-            '                .MoveNext
-            '            Loop
-            'Grid1.Rows = Grid1.Rows + 1
-NextLoop:
-            ' .Close
-        End With
-    Next i
-    ReSizeSGrid
-    Grid1.Redraw = True
-    Screen.MousePointer = vbDefault
-    Grid1.BackColor = &H80000005
-    strReportTitle = "Custom Vacations Available Report" '"Accruals"
-    strReportSubTitle = IIf(chkBremen, "Bremen ", "") & IIf(chkWooster, " Wooster ", "") & IIf(chkRockyMtn, " RockyMtn ", "") & IIf(chkNuclear, " Nuclear ", "")
 End Sub
 
 Private Sub Form_Load()

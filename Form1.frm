@@ -78,7 +78,6 @@ Begin VB.Form Form1
          _ExtentX        =   10292
          _ExtentY        =   1402
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -213,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   250019841
+         Format          =   295108609
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -236,7 +235,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   178257921
+         Format          =   295108609
          CurrentDate     =   40484
       End
       Begin VB.Label lblLastModified 

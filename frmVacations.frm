@@ -407,7 +407,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   246022145
+         Format          =   295108609
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -429,7 +429,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   246022145
+         Format          =   295108609
          CurrentDate     =   40935
       End
       Begin VB.Label lblLastModified 

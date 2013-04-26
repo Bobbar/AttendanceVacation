@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
 Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmReport 
@@ -158,14 +158,14 @@ Begin VB.Form frmReport
          TabCaption(1)   =   "Shop"
          TabPicture(1)   =   "frmReport.frx":0CE6
          Tab(1).ControlEnabled=   0   'False
-         Tab(1).Control(0)=   "lblShopEmp"
-         Tab(1).Control(1)=   "lstShopEmp"
+         Tab(1).Control(0)=   "lstShopEmp"
+         Tab(1).Control(1)=   "lblShopEmp"
          Tab(1).ControlCount=   2
          TabCaption(2)   =   "Wooster"
          TabPicture(2)   =   "frmReport.frx":0D02
          Tab(2).ControlEnabled=   0   'False
-         Tab(2).Control(0)=   "lblWoosterEmp"
-         Tab(2).Control(1)=   "lstWoosterShopEmp"
+         Tab(2).Control(0)=   "lstWoosterShopEmp"
+         Tab(2).Control(1)=   "lblWoosterEmp"
          Tab(2).ControlCount=   2
          Begin VB.ListBox lstOfficeEmp 
             Appearance      =   0  'Flat
@@ -377,7 +377,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   296943617
+            Format          =   295108609
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -401,7 +401,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   296943617
+            Format          =   295108609
             CurrentDate     =   40487
          End
          Begin VB.Label Label1 
@@ -551,7 +551,7 @@ Public Sub AddEmpToReportMulti(ByVal EmpNum As String)
     cn_Global.CursorLocation = adUseClient
     DTStartDate = Format$(frmReport.DTStart.Value, "MM/DD/YYYY")
     DTEndDate = Format$(frmReport.DTEnd.Value, "MM/DD/YYYY")
-    strSQL1 = "SELECT *" & " FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
+    strSQL1 = "SELECT * FROM attendb.attenentries attenentries_0" & " WHERE (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & (IIf(chkDateRange.Value = 1, " AND (attenentries_0.idAttenEntryDate>={d '" & Format$(frmReport.DTStart.Value, strDBDateFormat) & "'} AND attenentries_0.idAttenEntryDate<={d '" & Format$(frmReport.DTEnd.Value, strDBDateFormat) & "'})", "")) & " AND (attenentries_0.idAttenEmpNum='" & EmpNum & "')" & " ORDER BY attenentries_0.idAttenEntryDate Desc"
     Set rs = cn_Global.Execute(strSQL1)
     With rs
         strReportNum = EmpNum
