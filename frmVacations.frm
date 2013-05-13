@@ -35,7 +35,7 @@ Begin VB.Form frmVacations
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1110
+      Height          =   840
       Left            =   2400
       TabIndex        =   44
       Top             =   1020
@@ -407,7 +407,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   295108609
+         Format          =   281542657
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -429,7 +429,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   295108609
+         Format          =   281542657
          CurrentDate     =   40935
       End
       Begin VB.Label lblLastModified 
@@ -1154,11 +1154,10 @@ Private Sub ReSizeSGrid()
     ' Grid1.Redraw = False
     Dim c As Integer, R As Integer, intCellPadding As Integer
     intCellPadding = 20
-    For c = 1 To Grid1.Columns
-        Grid1.AutoWidthColumn c
-        Grid1.ColumnWidth(c) = Grid1.ColumnWidth(c) + intCellPadding
-    Next c
-    Grid1.ColumnWidth(3) = 50
+    Grid1.ColumnWidth(1) = 130
+    Grid1.ColumnWidth(2) = 130
+    Grid1.ColumnWidth(3) = 70
+    Grid1.ColumnWidth(4) = 130
     Grid1.ColumnWidth(6) = 500
     Grid1.ColumnWidth(5) = 100
     Grid1.ColumnWidth(8) = 200
@@ -1395,6 +1394,7 @@ End Sub
 Private Sub DTStartDate_Click()
     DTEndDate.Value = DTStartDate.Value
 End Sub
+
 Private Sub Form_Load()
     bolVacationOpen = True
     intPeriod = 0
