@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmPBar 
    BorderStyle     =   0  'None
    Caption         =   "Progress..."
@@ -95,3 +95,4 @@ Private Sub cmdCancel_Click()
     DoEvents
     ClearAvgQryTimes
 End Sub
+

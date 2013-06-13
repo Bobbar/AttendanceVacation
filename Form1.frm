@@ -5,13 +5,13 @@ Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Attendance"
-   ClientHeight    =   9636
-   ClientLeft      =   48
-   ClientTop       =   672
-   ClientWidth     =   10812
+   ClientHeight    =   9630
+   ClientLeft      =   45
+   ClientTop       =   675
+   ClientWidth     =   10815
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -21,8 +21,8 @@ Begin VB.Form Form1
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   9636
-   ScaleWidth      =   10812
+   ScaleHeight     =   9630
+   ScaleWidth      =   10815
    StartUpPosition =   2  'CenterScreen
    Begin VB.Timer tmrServerTime 
       Interval        =   5000
@@ -49,14 +49,14 @@ Begin VB.Form Form1
       Appearance      =   0  'Flat
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   11.4
+         Size            =   11.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   852
+      Height          =   840
       Left            =   2100
       TabIndex        =   27
       Top             =   990
@@ -75,10 +75,9 @@ Begin VB.Form Form1
          TabIndex        =   32
          Top             =   960
          Width           =   5835
-         _ExtentX        =   10287
-         _ExtentY        =   1397
+         _ExtentX        =   10292
+         _ExtentY        =   1402
          _Version        =   393217
-         Enabled         =   -1  'True
          MaxLength       =   200
          TextRTF         =   $"Form1.frx":0CCA
       End
@@ -93,7 +92,7 @@ Begin VB.Form Form1
       Begin VB.TextBox txtHoursLate 
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -110,7 +109,7 @@ Begin VB.Form Form1
       Begin VB.ComboBox cmbTimeOffType 
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -127,7 +126,7 @@ Begin VB.Form Form1
       Begin VB.ComboBox cmbExcused 
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -146,7 +145,7 @@ Begin VB.Form Form1
          Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -171,7 +170,7 @@ Begin VB.Form Form1
          Caption         =   "Update Entry"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -200,12 +199,12 @@ Begin VB.Form Form1
          TabIndex        =   14
          Top             =   480
          Width           =   1695
-         _ExtentX        =   2985
-         _ExtentY        =   614
+         _ExtentX        =   2990
+         _ExtentY        =   609
          _Version        =   393216
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -213,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   245628929
+         Format          =   180092929
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -222,13 +221,13 @@ Begin VB.Form Form1
          TabIndex        =   20
          Top             =   480
          Width           =   1695
-         _ExtentX        =   2985
-         _ExtentY        =   614
+         _ExtentX        =   2990
+         _ExtentY        =   609
          _Version        =   393216
          Enabled         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -236,7 +235,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   245628929
+         Format          =   180092929
          CurrentDate     =   40484
       End
       Begin VB.Label lblLastModified 
@@ -345,8 +344,8 @@ Begin VB.Form Form1
          TabIndex        =   40
          Top             =   300
          Width           =   10215
-         _ExtentX        =   18013
-         _ExtentY        =   7112
+         _ExtentX        =   18018
+         _ExtentY        =   7117
          RowMode         =   -1  'True
          GridLines       =   -1  'True
          BackgroundPicture=   "Form1.frx":0D47
@@ -357,7 +356,7 @@ Begin VB.Form Form1
          NoFocusHighlightBackColor=   -2147483635
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
-            Size            =   9.6
+            Size            =   9.75
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -378,7 +377,7 @@ Begin VB.Form Form1
          Caption         =   "No Entries"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   14.4
+            Size            =   14.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -409,7 +408,7 @@ Begin VB.Form Form1
          Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -435,7 +434,7 @@ Begin VB.Form Form1
          Appearance      =   0  'Flat
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -454,7 +453,7 @@ Begin VB.Form Form1
          Appearance      =   0  'Flat
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -472,7 +471,7 @@ Begin VB.Form Form1
          Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -513,7 +512,7 @@ Begin VB.Form Form1
             Caption         =   "Ack"
             BeginProperty Font 
                Name            =   "Tahoma"
-               Size            =   9.6
+               Size            =   9.75
                Charset         =   0
                Weight          =   400
                Underline       =   0   'False
@@ -535,7 +534,7 @@ Begin VB.Form Form1
             Caption         =   "Partial Un -"
             BeginProperty Font 
                Name            =   "Tahoma"
-               Size            =   9.6
+               Size            =   9.75
                Charset         =   0
                Weight          =   700
                Underline       =   0   'False
@@ -554,7 +553,7 @@ Begin VB.Form Form1
             Caption         =   "Full Un -"
             BeginProperty Font 
                Name            =   "Tahoma"
-               Size            =   9.6
+               Size            =   9.75
                Charset         =   0
                Weight          =   700
                Underline       =   0   'False
@@ -573,7 +572,7 @@ Begin VB.Form Form1
             Caption         =   "Full Ex -"
             BeginProperty Font 
                Name            =   "Tahoma"
-               Size            =   9.6
+               Size            =   9.75
                Charset         =   0
                Weight          =   700
                Underline       =   0   'False
@@ -592,7 +591,7 @@ Begin VB.Form Form1
             Caption         =   "Partial Ex -"
             BeginProperty Font 
                Name            =   "Tahoma"
-               Size            =   9.6
+               Size            =   9.75
                Charset         =   0
                Weight          =   700
                Underline       =   0   'False
@@ -613,7 +612,7 @@ Begin VB.Form Form1
          Caption         =   "%HIRE DATE%"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   11.4
+            Size            =   11.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -693,7 +692,7 @@ Begin VB.Form Form1
       Caption         =   "%APP VERSION%"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -713,7 +712,7 @@ Begin VB.Form Form1
       Caption         =   "Coded by Bobby Lovell"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -756,7 +755,7 @@ Begin VB.Form Form1
       End
    End
    Begin VB.Menu mnuFunc 
-      Caption         =   "Fuctions"
+      Caption         =   "Functions"
       WindowList      =   -1  'True
       Begin VB.Menu mnuVacations 
          Caption         =   "Vacations"
@@ -1279,8 +1278,6 @@ Public Sub GetEntries()
     ElseIf rs.RecordCount >= 1 Then
         txtAttenEmpNum.TabIndex = ControlFocus(0)
         txtAttenEmpName.TabIndex = ControlFocus(1)
-        DTEntryDate.TabIndex = ControlFocus(3)
-        cmbExcused.TabIndex = ControlFocus(4)
         cmbTimeOffType.TabIndex = ControlFocus(5)
         txtHoursLate.TabIndex = ControlFocus(6)
         txtNotes.TabIndex = ControlFocus(7)

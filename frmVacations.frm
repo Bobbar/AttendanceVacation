@@ -407,7 +407,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   281542657
+         Format          =   179372033
          CurrentDate     =   40935
       End
       Begin MSComCtl2.DTPicker DTStartDate 
@@ -429,7 +429,7 @@ Begin VB.Form frmVacations
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   281542657
+         Format          =   179372033
          CurrentDate     =   40935
       End
       Begin VB.Label lblLastModified 
@@ -1213,6 +1213,7 @@ End Sub
 Private Sub chkReScheduled_Click()
     Call LoadEntries(optAll)
 End Sub
+
 Private Sub cmdAdd_Click()
     Dim rs      As New ADODB.Recordset
     Dim strSQL1 As String
@@ -1394,7 +1395,6 @@ End Sub
 Private Sub DTStartDate_Click()
     DTEndDate.Value = DTStartDate.Value
 End Sub
-
 Private Sub Form_Load()
     bolVacationOpen = True
     intPeriod = 0
@@ -1543,6 +1543,7 @@ Private Sub List1_GotFocus()
     tmrLiveSearch.Enabled = False
     intSearchWaitTicks = 0
 End Sub
+
 Private Sub mnuDelete_Click()
     On Error GoTo errs
     Dim blah

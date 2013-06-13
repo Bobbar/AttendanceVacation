@@ -216,7 +216,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   178782209
+            Format          =   179306497
             CurrentDate     =   40941
          End
          Begin MSComCtl2.DTPicker DTEndDate 
@@ -238,7 +238,7 @@ Begin VB.Form frmVacationReports
                Strikethrough   =   0   'False
             EndProperty
             CalendarTitleBackColor=   -2147483635
-            Format          =   178782209
+            Format          =   179306497
             CurrentDate     =   40941
          End
          Begin VB.Label Label1 
@@ -767,6 +767,7 @@ getout:
     End If
     bolMonthAdded = False
 End Sub
+
 Private Sub cmdToExcel_Click()
     Dim XcLApp As Object  'used for excel application'
     Dim XcLWB  As Object 'used for excel work book'
