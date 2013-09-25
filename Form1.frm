@@ -212,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   73072641
+         Format          =   180092929
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -235,7 +235,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   73072641
+         Format          =   180092929
          CurrentDate     =   40484
       End
       Begin VB.Label lblLastModified 
@@ -1827,16 +1827,9 @@ Private Sub Label13_Click()
     Dim TotAttenEnt As Long
     Dim blah
     GetDataBaseStats
-    GetFirstDateLastDate
-    
     Dim rs      As New ADODB.Recordset
     Dim rs2     As New ADODB.Recordset
     Dim strSQL1 As String, strSQL2 As String
-    Dim StartDate As String, EndDate As String
-    StartDate = strFirstDate
-    EndDate = strLastDate
-    
-    
     ReDim AttenStats(0)
     strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = 'Called Off'"
     strSQL1 = "SELECT * FROM attendb.comboitems comboitems_0"
@@ -1845,8 +1838,7 @@ Private Sub Label13_Click()
     With rs
         Do Until .EOF
             AttenStats(UBound(AttenStats)).ExTypeName = !idTimeOffType
-            strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = '" & AttenStats(UBound(AttenStats)).ExTypeName & "' AND (idAttenEntryDate>={d '" & Format$(StartDate, strDBDateFormat) & "'}) AND (idAttenEntryDate<={d '" & Format$(EndDate, strDBDateFormat) & "'})"
-                   
+            strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = '" & AttenStats(UBound(AttenStats)).ExTypeName & "'"
             Set rs2 = cn_Global.Execute(strSQL2)
             AttenStats(UBound(AttenStats)).ExTypeCount = rs2.Fields(0)
             ReDim Preserve AttenStats(UBound(AttenStats) + 1)
@@ -1873,8 +1865,8 @@ Private Sub Label13_Click()
         strChartData(c, 1) = AttenStats(c).ExTypeCount
     Next c
     MySort strChartData
-    'blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
-   ' If blah = vbOK Then
+    blah = MsgBox("---DBStats---" & vbCrLf & vbCrLf & "Emps: " & DataBaseStats.TotalEmployees & vbCrLf & "Vaca Entries: " & DataBaseStats.TotalVacaEntries & vbCrLf & "Atten Entries: " & DataBaseStats.TotalAttenEntries & vbCrLf & vbCrLf & "---Breakdown (# and % of Tot.)---" & vbCrLf & vbCrLf & strBreakdown & vbCrLf & "------" & vbCrLf & vbCrLf & "Query Time: " & StopTimer & "ms" & vbCrLf & vbCrLf & "[View stats on a chart?]", vbOKCancel, "DB Stats")
+    If blah = vbOK Then
         frmChart.Show
         '        strBreakdown = vbNullString
         '        For i = 0 To UBound(AttenStats) - 1
@@ -1882,87 +1874,8 @@ Private Sub Label13_Click()
         '        Next i
         '        Clipboard.Clear
         '        Clipboard.SetText strBreakdown
-   ' Else
-  '  End If
-End Sub
-Private Sub GetFirstDateLastDate()
-Dim rs      As New ADODB.Recordset
-    Dim rs2     As New ADODB.Recordset
-    Dim strSQL1 As String, strSQL2 As String
-
-strSQL1 = "SELECT * FROM attendb.attenentries attenentries_0 Order By idAttenEntryDate Desc"
-cn_Global.CursorLocation = adUseClient
-    Set rs = cn_Global.Execute(strSQL1)
-
-With rs
-
-strLastDate = !idAttenEntryDate
-.MoveLast
-strFirstDate = !idAttenEntryDate
-
-
-    
-.Close
-
-End With
-
-
-
-
-End Sub
-Public Sub RefreshDBData(StartDate As String, EndDate As String)
-
- Dim TotAttenEnt As Long
-    Dim blah
-    'GetDataBaseStats
-    Dim rs      As New ADODB.Recordset
-    Dim rs2     As New ADODB.Recordset
-    Dim strSQL1 As String, strSQL2 As String
-    'Dim StartDate As String, EndDate As String
-    'StartDate = "1/1/1900"
-    'EndDate = "7/24/2013"
-    
-    ReDim AttenStats(0)
-    strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = 'Called Off'"
-    strSQL1 = "SELECT * FROM attendb.comboitems comboitems_0"
-    cn_Global.CursorLocation = adUseClient
-    Set rs = cn_Global.Execute(strSQL1)
-    With rs
-        Do Until .EOF
-            AttenStats(UBound(AttenStats)).ExTypeName = !idTimeOffType
-            strSQL2 = "SELECT COUNT(*) FROM attendb.attenentries attenentries_0 where idAttenTimeOffType = '" & AttenStats(UBound(AttenStats)).ExTypeName & "' AND (idAttenEntryDate>={d '" & Format$(StartDate, strDBDateFormat) & "'}) AND (idAttenEntryDate<={d '" & Format$(EndDate, strDBDateFormat) & "'})"
-        
-            Set rs2 = cn_Global.Execute(strSQL2)
-            AttenStats(UBound(AttenStats)).ExTypeCount = rs2.Fields(0)
-            ReDim Preserve AttenStats(UBound(AttenStats) + 1)
-            .MoveNext
-        Loop
-        .Close
-        
-    End With
-    TotAttenEnt = DataBaseStats.TotalAttenEntries
-    Dim i As Integer
-    For i = 0 To UBound(AttenStats) - 1
-        AttenStats(i).ExTypePct = Round((AttenStats(i).ExTypeCount / TotAttenEnt) * 100, 2)
-    Next i
-   ' Dim strBreakdown As String
-    'strBreakdown = vbNullString
-    'For i = 0 To UBound(AttenStats) - 1
-    '    strBreakdown = strBreakdown + AttenStats(i).ExTypeName & ": " & AttenStats(i).ExTypeCount & " (" & AttenStats(i).ExTypePct & "%)" & vbCrLf
-   ' Next i
-    ReDim strChartData(UBound(AttenStats) - 1, 1)
-    'ReDim strChartData(1, UBound(AttenStats) - 1)
-    Dim c As Integer
-    For c = 0 To UBound(AttenStats) - 1
-        strChartData(c, 0) = AttenStats(c).ExTypeName & "(" & AttenStats(c).ExTypeCount & ")"
-    Next c
-    For c = 0 To UBound(AttenStats) - 1
-        strChartData(c, 1) = AttenStats(c).ExTypeCount
-    Next c
-    MySort strChartData
-
-
-
+    Else
+    End If
 End Sub
 Private Sub MySort(ByRef pvarArray As Variant)
     Dim i               As Long
