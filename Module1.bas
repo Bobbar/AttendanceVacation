@@ -137,6 +137,8 @@ Public Type EmpExist
 End Type
 Global cn_Global    As New ADODB.Connection
 Public strLocalUser As String
+Public strFirstDate As String, strLastDate As String
+
 Public Function IsAdmin(Username As String) As Integer
     IsAdmin = 3
     Dim rs      As New ADODB.Recordset

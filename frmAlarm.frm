@@ -334,7 +334,7 @@ Private Declare Function sndPlaySound _
                 Alias "sndPlaySoundA" (ByVal lpszSoundName As String, _
                                        ByVal uFlags As Long) As Long
 Const SND_PURGE = &H40
-Private Sub GetAlarms(EmpNum As Integer)
+Private Sub GetAlarms(EmpNum As String)
     chkAckPartialUn.Value = GetSetting(App.EXEName, EmpNum, "PartialUn", 0)
     chkAckFullUn.Value = GetSetting(App.EXEName, EmpNum, "FullUn", 0)
     chkAckPartialEx.Value = GetSetting(App.EXEName, EmpNum, "PartialEx", 0)
