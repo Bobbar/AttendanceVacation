@@ -377,7 +377,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   295108609
+            Format          =   257556481
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -401,7 +401,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   295108609
+            Format          =   257490945
             CurrentDate     =   40487
          End
          Begin VB.Label Label1 
@@ -617,7 +617,7 @@ Public Sub EmpListReportMulti()
             Grid1.Redraw = True
             Exit Sub
         End If
-        NoEntries = False
+        'NoEntries = False
         ShowData
         AddEmpToReportMulti strListLine(i)
         If NoEntries = False Then
@@ -626,6 +626,7 @@ Public Sub EmpListReportMulti()
             ReSizeSGrid
             'PrintSGridSingle Grid1
             PrintSGridMulti Grid1
+            NoEntries = False
         Else
             ' do not print
         End If
