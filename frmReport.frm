@@ -158,14 +158,14 @@ Begin VB.Form frmReport
          TabCaption(1)   =   "Shop"
          TabPicture(1)   =   "frmReport.frx":0CE6
          Tab(1).ControlEnabled=   0   'False
-         Tab(1).Control(0)=   "lstShopEmp"
-         Tab(1).Control(1)=   "lblShopEmp"
+         Tab(1).Control(0)=   "lblShopEmp"
+         Tab(1).Control(1)=   "lstShopEmp"
          Tab(1).ControlCount=   2
          TabCaption(2)   =   "Wooster"
          TabPicture(2)   =   "frmReport.frx":0D02
          Tab(2).ControlEnabled=   0   'False
-         Tab(2).Control(0)=   "lstWoosterShopEmp"
-         Tab(2).Control(1)=   "lblWoosterEmp"
+         Tab(2).Control(0)=   "lblWoosterEmp"
+         Tab(2).Control(1)=   "lstWoosterShopEmp"
          Tab(2).ControlCount=   2
          Begin VB.ListBox lstOfficeEmp 
             Appearance      =   0  'Flat
@@ -377,7 +377,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   257556481
+            Format          =   316342273
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -401,7 +401,7 @@ Begin VB.Form frmReport
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   257490945
+            Format          =   316342273
             CurrentDate     =   40487
          End
          Begin VB.Label Label1 
@@ -617,7 +617,7 @@ Public Sub EmpListReportMulti()
             Grid1.Redraw = True
             Exit Sub
         End If
-        'NoEntries = False
+        NoEntries = False
         ShowData
         AddEmpToReportMulti strListLine(i)
         If NoEntries = False Then
@@ -626,7 +626,6 @@ Public Sub EmpListReportMulti()
             ReSizeSGrid
             'PrintSGridSingle Grid1
             PrintSGridMulti Grid1
-            NoEntries = False
         Else
             ' do not print
         End If
