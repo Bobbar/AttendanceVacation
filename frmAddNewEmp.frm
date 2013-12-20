@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmAddNewEmp 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add New Employee"
@@ -42,7 +42,7 @@ Begin VB.Form frmAddNewEmp
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   179306497
+      Format          =   180420609
       CurrentDate     =   40934
    End
    Begin VB.ComboBox cmbLocation2 

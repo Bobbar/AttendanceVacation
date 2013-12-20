@@ -56,7 +56,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   840
+      Height          =   1650
       Left            =   2100
       TabIndex        =   27
       Top             =   990
@@ -212,7 +212,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   73072641
+         Format          =   241500161
          CurrentDate     =   40484
       End
       Begin MSComCtl2.DTPicker DTEntryDateTo 
@@ -235,7 +235,7 @@ Begin VB.Form Form1
             Strikethrough   =   0   'False
          EndProperty
          CalendarTitleBackColor=   -2147483635
-         Format          =   73072641
+         Format          =   180486145
          CurrentDate     =   40484
       End
       Begin VB.Label lblLastModified 
@@ -1559,8 +1559,11 @@ End Sub
 
 Private Sub Form_Initialize()
     'CheckForDLLS
+    frmSplash.Show
+    DoEvents
 End Sub
 Private Sub Form_Load()
+    frmSplash.lblStatus.Caption = "Scanning for SQL Driver..."
     FindMySQLDriver
     lblAppVersion.Caption = App.Major & "." & App.Minor & "." & App.Revision
     intQryIndex = 0
@@ -1574,7 +1577,9 @@ Private Sub Form_Load()
     strLocalUser = UCase$(Environ$("USERNAME"))
     strUsername = strROAccessUser
     strPassword = strROAccessPass
+    frmSplash.lblStatus.Caption = "Setting Up Global ADO Connection..."
     cn_Global.Open "uid=" & strUsername & ";pwd=" & strPassword & ";server=" & strServerAddress & ";" & "driver={" & strSQLDriver & "};database=attendb;dsn=;"
+    frmSplash.lblStatus.Caption = "Checking For Admin..."
     Select Case IsAdmin(strLocalUser)
         Case 0
             strUsername = strFullAccessUser
@@ -1595,6 +1600,7 @@ Private Sub Form_Load()
     cmbExcused.AddItem "EXCUSED", 1
     cmbExcused.AddItem "UNEXCUSED", 2
     cmbExcused.AddItem "OTHER", 3
+    frmSplash.lblStatus.Caption = "Loading Combo Items..."
     FillCombos
     bolIsDateRange = False
     mnuPopup.Visible = False
@@ -1614,11 +1620,17 @@ Private Sub Form_Load()
     bolAlarmOKed = False
     bolCancelPrint = False
     Flashes = 0
+    frmSplash.lblStatus.Caption = "Initializing Spell Checker..."
     InitializeMe 'Word Spell checker
     ReDim Preserve strConfirmedAlarms(1)
     dtFiscalYearEnd = "5/31/" & DateTime.Year(Now)
+    frmSplash.lblStatus.Caption = "Getting Employee Info..."
     GetEmpInfo
+    frmSplash.lblStatus.Caption = "Configuring SSGrids..."
     SetupGrid
+    frmSplash.lblStatus.Caption = "Ready!"
+    frmSplash.Hide
+    
 End Sub
 Private Sub SetupGrid()
     GridAtten.AddColumn 1, "Date"

@@ -47,6 +47,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private HeightOffset As Long, WidthOffset As Long
 Private TotalDays As Long
 

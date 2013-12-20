@@ -1,7 +1,8 @@
 [History]
-1=#P0#=mb	#P1#=cell	#P2#=vbAcceleratorSGrid6/vbalGrid/cell [Let]	#P3#=	#P4#=	#P5#=MembPropertyPrivate	#P6#=20121115090127	#P7#=0	#P8#=0	.
+1=#P0#=mb	#P1#=Class_Initialize	#P2#=vbAcceleratorSGrid6/cHeaderControl/Class_Initialize	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20131121085534	#P7#=0	#P8#=22	.
 2=#P0#=mb	#P1#=cell	#P2#=vbAcceleratorSGrid6/vbalGrid/cell [Get]	#P3#=	#P4#=	#P5#=MembPropertyPrivate	#P6#=20121115091053	#P7#=0	#P8#=1	.
-3=#P0#=mb	#P1#=BackgroundPicture	#P2#=vbAcceleratorSGrid6/vbalGrid/BackgroundPicture [Get]	#P3#=	#P4#=	#P5#=MembPropertyPrivate	#P6#=20121115085951	#P7#=0	#P8#=1	.
-4=#P0#=mb	#P1#=UserControl_Initialize	#P2#=vbAcceleratorSGrid6/vbalGrid/UserControl_Initialize	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120611101705	#P7#=0	#P8#=45	.
-5=#P0#=mb	#P1#=pRequestEdit	#P2#=vbAcceleratorSGrid6/vbalGrid/pRequestEdit	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611101335	#P7#=0	#P8#=2	.
-6=#P0#=mb	#P1#=pRemoveRow	#P2#=vbAcceleratorSGrid6/vbalGrid/pRemoveRow	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611101026	#P7#=0	#P8#=4	.
+3=#P0#=mb	#P1#=cell	#P2#=vbAcceleratorSGrid6/vbalGrid/cell [Let]	#P3#=	#P4#=	#P5#=MembPropertyPrivate	#P6#=20121115090127	#P7#=0	#P8#=0	.
+4=#P0#=mb	#P1#=BackgroundPicture	#P2#=vbAcceleratorSGrid6/vbalGrid/BackgroundPicture [Get]	#P3#=	#P4#=	#P5#=MembPropertyPrivate	#P6#=20121115085951	#P7#=0	#P8#=1	.
+5=#P0#=mb	#P1#=UserControl_Initialize	#P2#=vbAcceleratorSGrid6/vbalGrid/UserControl_Initialize	#P3#=	#P4#=	#P5#=MembEventProcPrivate	#P6#=20120611101705	#P7#=0	#P8#=45	.
+6=#P0#=mb	#P1#=pRequestEdit	#P2#=vbAcceleratorSGrid6/vbalGrid/pRequestEdit	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611101335	#P7#=0	#P8#=2	.
+7=#P0#=mb	#P1#=pRemoveRow	#P2#=vbAcceleratorSGrid6/vbalGrid/pRemoveRow	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20120611101026	#P7#=0	#P8#=4	.

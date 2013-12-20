@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmFilters 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Filter"
@@ -97,7 +97,7 @@ Begin VB.Form frmFilters
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   296878081
+            Format          =   241827841
             CurrentDate     =   40487
          End
          Begin MSComCtl2.DTPicker DTStart 
@@ -121,7 +121,7 @@ Begin VB.Form frmFilters
             EndProperty
             CalendarTitleBackColor=   -2147483635
             CustomFormat    =   "MM-dd-yyyy"
-            Format          =   296878081
+            Format          =   241827841
             CurrentDate     =   40487
          End
          Begin VB.Label Label3 

@@ -1,5 +1,5 @@
 Type=Control
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\system32\stdole2.tlb#Standard OLE Types
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#Standard OLE Types
 Reference=*\G{71A2702D-C7D8-11D2-BEF8-525400DFB47A}#1.0#0#..\..\..\..\..\..\Windows\system32\SSubTmr6.dll#vbAccelerator VB6 Subclassing and Timer Assistant (with configurable message response, multi-control support + timer bug fix)
 UserControl=vbalGrid.ctl
 Module=mSGrid; mSGrid.bas
